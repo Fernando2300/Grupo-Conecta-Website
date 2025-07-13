@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grupo Conecta - Workshop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Grupo <span>Conecta</span></h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="main-grid"><!-- ✅ NOVO wrapper -->
+    <section class="workshop-card">
+      
+      <picture>
+        <source srcset="assets/workshop.webp" type="image/webp" />
+        <img src="assets/workshop.jpg" alt="Workshop-Grupo Conecta" class="workshop-img" />
+      </picture>
+    
+      <h2 class="workshop-title">Presença Verbal: Técnicas de Oratória para Projetos com Propósito</h2>
+      <p class="workshop-descricao">
+        Participe deste workshop intensivo com <strong>Maria&nbsp;dos&nbsp;Santos</strong> e descubra
+        como a oratória estratégica pode impulsionar <em>projetos com propósito</em>.
+        Durante a sessão, você praticará técnicas de presença verbal, estrutura de discurso
+        e storytelling de impacto, aprimorando a sua capacidade de inspirar, engajar e
+        mobilizar pessoas em favor de causas sociais.
+      </p>
+    
+      <div class="info-box">
+        <div class="info-item">
+          <span class="icon">📅</span>
+          <div>
+            <strong>Data</strong><br />
+            30 de Julho, 2025
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="icon">🕒</span>
+          <div>
+            <strong>Horário</strong><br />
+            16:00 - 17:45
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="icon">📍</span>
+          <div>
+            <strong>Local</strong><br />
+            Online – Plataforma Cisco Webex
+          </div>
+        </div>
+      </div>
+    
+      <div class="aprendizado-box" hidden>
+        <h4>O que você vai aprender:</h4>
+        <ul>
+          <li>✅ Metodologias de design thinking para projetos sociais</li>
+          <li>✅ Estratégias de captação de recursos e parcerias</li>
+          <li>✅ Ferramentas para medir impacto social</li>
+          <li>✅ Técnicas de comunicação e engajamento comunitário</li>
+        </ul>
+      </div>
+    </section>
+    
+
+    <section class="form-section">
+      <h3>Garanta sua vaga</h3>
+      <form id="inscricao-form">
+        <label for="nome">Nome Completo</label>
+        <input type="text" id="nome" name="nome" />
+
+        <label for="telefone">Telefone (WhatsApp)</label>
+        <input type="tel" id="telefone" name="telefone"/>
+
+        <label>Valor a Contribuir (mínimo 500kz)</label>
+        <div class="valor-botoes">
+          <button type="button" class="valor-btn" data-value="500">500 kz</button>
+          <button type="button" class="valor-btn" data-value="1000">1000 kz</button>
+          <button type="button" class="valor-btn" data-value="2000">2000 kz</button>
+        </div>
+        <input type="number" id="valor" name="valor" min="500"/>
+
+        <label>Como deseja receber o link?</label>
+        <div class="metodo-opcoes">
+          <label><input type="radio" name="metodo" value="whatsapp" checked /> WhatsApp</label>
+          <label><input type="radio" name="metodo" value="email" /> E-mail</label>
+        </div>
+
+        <div id="email-field" class="hidden">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" />
+        </div>
+
+            <!-- ✅ INSIRA O SPINNER AQUI -->
+            <div id="loading" class="hidden" aria-label="Carregando">
+              <div class="spinner"></div>
+            </div>
+
+        <button type="submit" class="btn-destaque">Confirmar Inscrição</button>
+      </form>
+
+      <div id="erro-global" class="erro-global"></div> <!-- Para mensagem de Erros-->
+
+
+    </section>
+  </div> <!--Wrapper-->
+
+   <!-- <div id="loading" class="hidden" aria-label="Carregando">
+  <div class="spinner"></div>
+</div> -->
+
+
+
+<!--Pagamento Section Novo3-->
+
+<section id="pagamento-section" class="pagamento-section hidden"> <!--hidden-->
+  <h3>Obrigado por se inscrever!</h3>
+  <p class="descricao-pagamento">Use os dados abaixo para realizar o <strong>pagamento por referência</strong>:</p>
+
+  <!--
+  <div class="pagamento-dados-wrapper">
+    <div class="logo-topo">
+      <img src="assets/unitelmoney_logo.jfif" alt="Unitel Money" class="logo-unitel" />
+    </div>
+    -->
+
+     <!-- ✅ Posicione o logo aqui, antes da div de dados -->
+  <img src="assets/unitelmoney_logo.jpg" alt="Logo Unitel Money" class="logo-unitel" />
+
+    <div class="pagamento-dados">
+      <p><strong>Entidade:</strong> 00930 <span class="copiar-texto" data-valor="00930" id="copiar-entidade">[copiar]</span></p>
+      <p><strong>Referência:</strong> 930651632 <span class="copiar-texto" data-valor="930651632" id="copiar-referencia">[copiar]</span></p>
+      <p class="nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
+    </div>
+
+  <div class="envio-comprovativo">
+    <a class="btn-wa" href="https://wa.me/244934672722?text=Olá%2C%20segue%20meu%20comprovativo%20do%20workshop" target="_blank">
+      Enviar via WhatsApp
+    </a>
+    <a id="link-email" class="link-email" href="#">
+      Enviar por E-mail
+    </a>
+  </div>
+</section>
+
+
+<!--Pagamento Novo Section
+
+<section id="pagamento-section" class="pagamento-section">
+  <h3>Obrigado por se inscrever!</h3>
+  <p>Use os dados abaixo para realizar o pagamento via <strong>Unitel Money</strong>:</p>
+
+  <div class="pagamento-dados">
+    <img src="assets/unitelmoney_logo.jfif" alt="Unitel Money" class="logo-unitel" />
+
+    <p>Entidade: <strong>00930</strong> <button id="copiar-entidade">Copiar</button></p>
+    <p>Referência: <strong>930651632</strong> <button id="copiar-referencia">Copiar</button></p>
+    <p class="nota">Certifique-se de usar o número de referência corretamente.</p>
+  </div>
+
+  <div class="envio-comprovativo">
+    <a class="btn-wa" href="https://wa.me/244934672722?text=Olá%2C%20segue%20meu%20comprovativo%20do%20workshop" target="_blank">
+      Enviar comprovativo por WhatsApp
+    </a>
+    <a class="link-email" href="mailto:newvibe025@gmail.com?subject=Comprovativo%20de%20Pagamento">
+      Enviar comprovativo por E-mail
+    </a>
+  </div>
+</section>
+-->
+
+
+
+
+<!--
+    <section id="pagamento-section"> <!--class="hidden"
+      <h3>Obrigado por se inscrever!</h3>
+      <p>Use os dados abaixo para realizar o pagamento via <strong>Unitel Money</strong>:</p>
+      <div class="pagamento-dados">
+        <p>Entidade: <strong>00930</strong> <button id="copiar-entidade">Copiar</button></p>
+        <p>Referência: <strong>930651632</strong> <button id="copiar-referencia">Copiar</button></p>
+        <p class="nota">Certifique-se de usar o número de referência corretamente.</p>
+      </div>
+      <div class="envio-comprovativo">
+        <a class="btn-wa" href="https://wa.me/244934672722?text=Olá%2C%20segue%20meu%20comprovativo%20do%20workshop" target="_blank">Enviar comprovativo por WhatsApp</a>
+        <a class="btn-email" href="mailto:newvibe025@gmail.com?subject=Comprovativo%20de%20Pagamento">Enviar comprovativo por E-mail</a>
+      </div>
+    </section>
+    -->
+
+  </main>
+
+  <footer>
+    <p>Transformando ideias em impacto social</p>
+    <p>© 2024 Grupo Conecta. Todos os direitos reservados.</p>
+    <p>contato@grupoconecta.ao | +244 123 456 789</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
