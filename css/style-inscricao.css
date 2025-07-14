@@ -1,0 +1,837 @@
+/* Reset básico */
+
+/*
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fdfdfd;
+    color: #1f1f1f;
+    line-height: 1.6;
+}*/
+
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 0;
+} 
+
+/* Header */
+
+
+
+
+/* Workshop Section */
+.workshop-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+    max-width: 500px;
+    margin: 2rem auto;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+.workshop-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+/*.workshop-title {
+  color: #006494;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}*/
+
+.workshop-title {
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #1e1e1e;
+}
+
+.workshop-title::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #006494;
+    /* ou a cor da marca */
+    margin: 0.5rem auto 0;
+    border-radius: 5px;
+}
+
+.workshop-descricao {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+    line-height: 1.5;
+    hyphens: auto;
+    /*Para uma quebra mais natural em longas palavras*/
+}
+
+.info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item {
+    background: #f2f5f7;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+}
+
+.info-item .icon {
+    font-size: 1.5rem;
+    color: #006494;
+}
+
+.aprendizado-box {
+    background: #f0faff;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: left;
+}
+
+.aprendizado-box h4 {
+    color: #006494;
+    margin-bottom: 0.75rem;
+}
+
+.aprendizado-box ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.aprendizado-box li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+/*Formulário Novo*/
+
+.form-section {
+    position: relative;
+    /* necessário para o ::before funcionar */
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 450px;
+    margin: 2rem auto;
+    font-family: 'Inter', sans-serif;
+}
+
+
+/* Linha vertical com gradiente à esquerda */
+.form-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to bottom, #3fb984, #a0c334);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.form-section h3 {
+    color: #006494;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-section label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #1f1f1f;
+}
+
+.form-section input[type="text"],
+.form-section input[type="number"],
+.form-section input[type="email"],
+.form-section input[type="tel"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e6ecf0;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border 0.2s ease;
+}
+
+.form-section input:focus {
+    border-color: #3fb984;
+    outline: none;
+}
+
+/* Botões de valor (500kz, 1000kz, etc.) */
+.valor-botoes {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.valor-btn {
+    flex: 1;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.valor-btn.selected {
+    background-color: #a0c334;
+    color: white;
+    border-color: #a0c334;
+}
+
+/* Opções de método (radio buttons personalizados) */
+.metodo-opcoes {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.metodo-opcoes label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+/* Botão de submit */
+.btn-destaque {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: #a0c334;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-destaque:hover {
+    background-color: #35a277;
+    /*#8aa92a*/
+}
+
+/* Email opcional */
+#email-field {
+    margin-top: 1rem;
+}
+
+/* Classe de ocultação */
+.hidden {
+    display: none;
+}
+
+
+/* ✅ Estilo para mensagens de erro */
+.mensagem-erro {
+    color: #d93025;
+    font-size: 0.85em;
+    margin-top: 1px;
+    /* era 4px, agora está mais próximo */
+    display: inline-block;
+    line-height: 1.2;
+}
+
+/* ✅ Estilo para input com erro (borda vermelha) */
+.input-erro {
+    border: 1px solid #d93025 !important;
+    outline: none;
+    margin-bottom: 0 !important;
+}
+
+/*Pop-ups de Erros Globais*/
+.erro-global {
+    background-color: #ffecec;
+    color: #d8000c;
+    border: 1px solid #d8000c;
+    padding: 12px 16px;
+    margin-top: 1.5rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    text-align: center;
+    display: none;
+}
+
+.erro-global.visivel {
+    display: block;
+}
+
+
+
+/*
+
+/* Formulário 
+.form-section {
+  background-color: #e6ecf0;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.form-section h3 {
+  margin-bottom: 1rem;
+  color: #006494;
+}
+
+label {
+  display: block;
+  margin: 0.8rem 0 0.3rem;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.valor-botoes {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.valor-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #3fb984;
+  background-color: #fff;
+  color: #3fb984;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.valor-btn.active,
+.valor-btn:hover {
+  background-color: #3fb984;
+  color: white;
+}
+
+.metodo-opcoes {
+  display: flex;
+  gap: 2rem;
+  margin-top: 0.5rem;
+}
+
+.btn-destaque {
+  margin-top: 1.5rem;
+  background-color: #a0c334;
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-destaque:hover {
+  background-color: #8ea927;
+}
+
+.hidden {
+  display: none;
+}
+
+*/
+
+
+/*Carregamento*/
+
+#loading {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+#loading.active {
+    opacity: 1;
+}
+
+/*
+#loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}*/
+
+.spinner {
+    border: 4px solid #e6ecf0;
+    border-top: 4px solid #3fb984;
+    /* Verde menta */
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 0.8s linear infinite;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/*Pagamento Novo3*/
+.pagamento-section {
+    position: relative;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    margin: 3rem auto;
+    font-family: 'Inter', sans-serif;
+    text-align: left;
+}
+
+.pagamento-section h3 {
+    color: #006494;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.pagamento-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to bottom, #006494, #00aaff);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.descricao-pagamento {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.pagamento-dados-wrapper {
+    position: relative;
+}
+
+.logo-topo {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+/* ✅ Logo reposicionado e menor */
+.logo-unitel {
+    width: 50px;
+    /* ⬅️ mais pequeno */
+    border-radius: 20%;
+    float: right;
+    margin-left: 1rem;
+    margin-top: -1rem;
+    /* sobe um pouco */
+    margin-bottom: 0.5rem;
+}
+
+/* ✅ Garante que [copiar] fique ao lado no mobile */
+.pagamento-dados p {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+
+/*
+.logo-unitel {
+  width: 55px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Pagamento Dados 
+.pagamento-dados {
+  padding-right: 70px; /* deixa espaço pro logo 
+}`
+*/
+
+.pagamento-dados p {
+    margin: 0.6rem 0;
+    font-size: 1rem;
+}
+
+.pagamento-dados button {
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    background-color: #006494;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagamento-dados button:hover {
+    background-color: #00587a;
+}
+
+.pagamento-dados p:nth-child(2) {
+    margin-bottom: 1.5rem;
+}
+
+.nota {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 2rem;
+}
+
+/* Envio comprovativo */
+.envio-comprovativo {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-wa {
+    background-color: #a0c334;
+    /* #3fb984*/
+    color: white;
+    padding: 0.9rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.btn-wa:hover {
+    background-color: #35a277;
+    /*#35a277*/
+}
+
+.link-email {
+    font-size: 0.95rem;
+    color: #006494;
+    text-decoration: underline;
+    margin-top: 0.8rem;
+    text-align: center;
+}
+
+
+/* Copiar discreto */
+.copiar-texto {
+    font-size: 0.9rem;
+    color: #006494;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.copiar-texto:hover {
+    color: #00486d;
+    text-decoration: underline;
+}
+
+
+
+
+/*Pagamento Novo2
+
+/* Pagamento Section Estilização 
+.pagamento-section {
+  position: relative;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  margin: 3rem auto;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* Linha vertical azul petróleo 
+.pagamento-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(to bottom, #006494, #0077b6);
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+/* Logo Unitel 
+.logo-unitel {
+  width: 40px;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Estilo da seção de dados 
+.pagamento-dados p {
+  margin: 0.8rem 0;
+  font-size: 1rem;
+}
+
+.pagamento-dados button {
+  margin-left: 1rem;
+  padding: 0.3rem 0.6rem;
+  background-color: #006494;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagamento-dados button:hover {
+  background-color: #00587a;
+}
+
+.nota {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 1rem;
+}
+
+/* Envio de comprovativo 
+.envio-comprovativo {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.btn-wa {
+  background-color: #3fb984;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.btn-wa:hover {
+  background-color: #34a470;
+}
+
+.link-email {
+  font-size: 0.95rem;
+  color: #006494;
+  text-decoration: underline;
+  margin-left: 2px;
+}
+
+*/
+
+
+/* Pagamento 
+#pagamento-section {
+  background-color: #e6ecf0;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.pagamento-dados p {
+  margin-bottom: 1rem;
+}
+
+.pagamento-dados button {
+  margin-left: 1rem;
+  background-color: #006494;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.envio-comprovativo {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.envio-comprovativo a {
+  padding: 0.6rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.btn-wa {
+  background-color: #3fb984;
+}
+
+.btn-email {
+  background-color: #006494;
+}
+
+*/
+
+/* Footer */
+
+
+
+
+
+
+
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .workshop-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .valor-botoes {
+        flex-direction: column;
+    }
+
+    .metodo-opcoes {
+        flex-direction: column;
+    }
+
+    .envio-comprovativo {
+        flex-direction: column;
+    }
+}
+
+
+
+/* ========  DESKTOP / TABLET LAYOUT  ========= */
+@media (min-width: 992px) {
+
+    /* 1. GRID principal: conteúdo à esquerda e formulário à direita */
+    .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        /* 400 px ~ largura do cartão do formulário  */
+        gap: 3rem;
+        align-items: start;
+    }
+
+    /* 2. Workshop maior, alinhado à esquerda (não mais 500 px) */
+    .workshop-card {
+        max-width: 100%;
+        text-align: left;
+        padding: 2.5rem 3rem;
+    }
+
+    .workshop-img {
+        margin-bottom: 2rem;
+    }
+
+    .workshop-title {
+        font-size: 2rem;
+        text-align: left;
+    }
+
+    .workshop-title::after {
+        margin-left: 0;
+    }
+
+    /* risquinho azul alinhado à esquerda */
+
+    /* 3. Info‑box em linha (3 colunas) */
+    .info-box {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+
+    .info-item {
+        flex: 1;
+    }
+
+    /* 4. “O que você vai aprender” visível em desktop
+        (remova o atributo hidden do HTML ou force aqui)      */
+    .aprendizado-box[hidden] {
+        display: block !important;
+    }
+
+    /* 5. Formulário (card à direita) ocupa 100 % do grid‑column
+        – já tem 400 px fixado acima em grid‑template‑columns   */
+    .form-section {
+        margin: 0;
+        max-width: 100%;
+        height: fit-content;
+    }
+}
+
+/* ========  TABLET médio (>= 768 px e < 992 px)  ========= */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+    /* Stack em coluna, mas com largura mais generosa */
+    .workshop-card {
+        max-width: 90%;
+        margin: 2rem auto;
+    }
+
+    .form-section {
+        max-width: 90%;
+        margin: 2rem auto;
+    }
+
+    /* Info‑box em duas colunas */
+    .info-box {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .info-item {
+        flex: 1 1 45%;
+    }
+
+    /* Exibe aprendizagem em tablet */
+    .aprendizado-box[hidden] {
+        display: block !important;
+    }
+}

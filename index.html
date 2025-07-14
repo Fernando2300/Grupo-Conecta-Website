@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Group</title>
+    <!--<link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style-index.css">
+
+    <!-- Google Fonts: Inter (300, 400, 500, 600, 700, 800) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+</head>
+
+
+<body>
+
+    <!-- ===== Header Section ===== -->
+    <header class="header">
+        <!-- Logo image -->
+        <img src="assets/icons/logo.png" alt="Grupo Conecta logo" class="logo" />
+
+        <!-- Menu button for mobile navigation -->
+        <button class="menu-btn">
+            <img src="assets/icons/icon.png" alt="Open menu" class="menu-icon" />
+        </button>
+    </header>
+
+    <!-- ===== Mobile Menu ===== -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-header">
+            <button class="close-menu">
+                <img src="assets/icons/Vector 5.png" alt="Fechar menu" />
+            </button>
+            <img src="assets/icons/logo.png" alt="Grupo Conecta logo" class="logo" />
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#quem-somos">Quem Somos</a></li>
+            <li><a href="#cursos">Cursos e Workshops</a></li>
+            <li><a href="#contato">Contacto</a></li>
+        </ul>
+    </nav>
+
+
+    <main>
+        <!-- ===== Hero Section ===== -->
+        <section class="hero" id="inicio">
+            <!-- Background image -->
+            <div class="hero-overlay"></div>
+            <!-- Text and buttons -->
+            <div class="hero-content">
+                <h1 class="hero-title">Transforme seu potencial em realidade</h1>
+                <p class="hero-subtitle">
+                    Programas educacionais que desenvolvem habilidades
+                </p>
+                <!-- Buttons -->
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Explorar programas</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Value Proposition Section ===== -->
+        <section class="value-section" id="cursos">
+            <h2 class="section-title-value">Nossa Proposta de Valor</h2>
+
+            <!-- The cards will be rendered here via JavaScript -->
+            <div class="value-cards" id="valueCardsContainer"></div>
+        </section>
+
+        <!-- Courses and Workshops Section -->
+        <section class="courses-section">
+            <h2 class="section-title-courses">Cursos e Workshops</h2>
+            <p class="section-subtitle-courses">Conheça nossos programas educacionais</p>
+
+            <div id="courses-container" class="courses-container">
+                <!-- The cards will be rendered here via JavaScript -->
+            </div>
+
+            <div class="see-all-wrapper">
+                <a href="#" class="see-all-button">Ver todos os programas</a>
+            </div>
+        </section>
+
+        <!-- Impact Section -->
+        <section class="impact-section" id="impact-section">
+            <h2 class="impact-title">Nosso Compromisso com o Impacto Social</h2>
+            <p class="impact-subtitle">
+                Acreditamos no poder da educação, da inclusão e da sustentabilidade para <br> transformar comunidades.
+            </p>
+
+            <!-- Impact cards will be rendered here -->
+            <div id="impact-cards-container"></div>
+
+            <a href="#inscricao" class="impact-button">Faça parte desta jornada</a>
+        </section>
+
+        <!-- CTA Section -->
+
+        <section class="cta-section">
+            <h2 class="cta-title">Pronto para transformar seu futuro?</h2>
+            <p class="cta-text">
+                Inscreva-se em nossos programas e comece sua jornada de transformação pessoal e profissional
+            </p>
+            <a href="#inscricao" class="cta-button">Quero me inscrever agora</a>
+        </section>
+    </main>
+
+    <footer>
+
+        <div class="footer-conecta">
+            <h2 class="conecta-title">Fique conectado</h2>
+            <h3>Redes Sociais</h3>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
+                <a href="#" aria-label="Twitter"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
+                <a href="#" aria-label="Instagram"><img src="assets/icons/Instagram.svg" alt="Instagram"></a>
+                <a href="#" aria-label="LinkedIn"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
+                <a href="#" aria-label="YouTube"><img src="assets/icons/YouTube.svg" alt="YouTube"></a>
+            </div>
+            <p class="contact-email">contato@grupoconecta.org</p>
+            <p class="contact-phone">(11) 9999-9999</p>
+        </div>
+
+        <!-- Bloco: Informações legais e créditos -->
+        <div class="footer-legal">
+            <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
+
+            <div class="footer-links">
+                <a href="#">Política de Privacidade</a>
+                <span class="separator">|</span>
+                <a href="#">Termos de Uso</a>
+            </div>
+            <p class="footer-creditos">Desenvolvido por <strong>Contornos Designs</strong></p>
+        </div>
+
+        <!-- Bloco: mobile nav
+        <div class="footer-mobile-nav">
+            <a href="#inicio" class="nav-item active">
+                <img src="assets/icons/home.svg" alt="Início">
+                <span>Início</span>
+            </a>
+            <a href="#cursos" class="nav-item">
+                <img src="assets/icons/cursos.svg" alt="Cursos">
+                <span>Cursos</span>
+            </a>
+            <a href="#sobre" class="nav-item">
+                <img src="assets/icons/sobre.svg" alt="Sobre">
+                <span>Sobre</span>
+            </a>
+            <a href="#impact-section" class="nav-item">
+                <img src="assets/icons/impacto.svg" alt="Impacto">
+                <span>Impacto</span>
+            </a>
+            <a href="#contato" class="nav-item">
+                <img src="assets/icons/contato.svg" alt="Contato">
+                <span>Contato</span>
+            </a>
+        </div> -->
+
+    </footer>
+
+    <script src="js/base.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
