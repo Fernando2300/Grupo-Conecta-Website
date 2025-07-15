@@ -8,6 +8,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const loading = document.getElementById("loading");
 
   // ✅ Exibe mensagem de erro no bloco abaixo do formulário
+
+  function exibirErroGlobal(mensagem) {
+  const erroGlobal = document.getElementById("erro-global");
+  if (erroGlobal) {
+    erroGlobal.textContent = mensagem;
+    erroGlobal.classList.remove("hidden");
+    erroGlobal.classList.add("visivel");
+    setTimeout(() => {
+      erroGlobal.classList.remove("visivel");
+      erroGlobal.classList.add("hidden");
+    }, 6000);
+  }
+}
+
+  /*
   function exibirErroGlobal(mensagem) {
     const erroGlobal = document.getElementById("erro-global");
     if (erroGlobal) {
@@ -17,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         erroGlobal.classList.remove("visivel");
       }, 6000); // esconde após 6s
     }
-  }
+  }*/
 
   // ✅ Detectar dispositivo e ajustar link do email
   const emailLink = document.getElementById("link-email");
@@ -26,10 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (emailLink) {
     if (isMobile) {
       emailLink.href =
-        "mailto:newvibe025@gmail.com?subject=Comprovativo%20de%20Pagamento";
+        "mailto:gconecta05angola@gmail.com?subject=Comprovativo%20de%20Pagamento";
     } else {
       emailLink.href =
-        "https://mail.google.com/mail/?view=cm&fs=1&to=newvibe025@gmail.com&su=Comprovativo%20de%20Pagamento";
+        "https://mail.google.com/mail/?view=cm&fs=1&to=gconecta05angola@gmail.com&su=Comprovativo%20de%20Pagamento";
       emailLink.target = "_blank";
     }
   }

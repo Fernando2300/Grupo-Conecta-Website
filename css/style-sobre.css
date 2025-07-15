@@ -1,109 +1,193 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+/* === Estilos específicos para a página "Quem Somos" (Mobile) === */
 
-/* FONT AWESOME LOCAL */
-@font-face {
-    font-family: 'Font Awesome 6 Brands';
-    font-style: normal;
-    font-weight: 400;
-    src: url('../assets/fontawesome/webfonts/fa-brands-400.woff2') format('woff2'),
-        url('../assets/fontawesome/webfonts/fa-brands-400.woff') format('woff');
-    font-display: swap;
+.quem-somos {
+  padding: 1rem;
 }
 
-@font-face {
-    font-family: 'Font Awesome 6 Free';
-    font-style: normal;
-    font-weight: 900;
-    src: url('../assets/fontawesome/webfonts/fa-solid-900.woff2') format('woff2'),
-        url('../assets/fontawesome/webfonts/fa-solid-900.woff') format('woff');
-    font-display: swap;
+.quem-somos-titulo{
+  margin-bottom: 1rem;
+
 }
 
-/* Reset 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.descricao {
+  margin-bottom: 2rem;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #fdfdfd;
-    color: #1f1f1f;
-    padding: 1rem;
-}
-    */
-
-/* Título */
-h1 {
-    font-size: 1.5rem;
-    color: #006494;
-    text-align: center;
-    margin-bottom: 1.5rem;
+.descricao h1 {
+  margin-bottom: 0.2rem;
 }
 
-/* Cartões */
-.equipe {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.linha-verde {
+  width: 50px;
+  height: 4px;
+  background-color: #006494;
+  margin: 0.2rem auto 1rem;
 }
 
-.membro {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-    padding: 1rem;
-    text-align: center;
+.descricao p {
+  /*background-color: var(--light-gray-blue);*/
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: justify;
+  line-height: 1.6;
+  hyphens: auto;
+    /*Para uma quebra mais natural em longas palavras*/
 }
 
-.membro img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 0.8rem;
+.subtitulo-equipa {
+  text-align: center;
+  font-size: var(--heading-2);
+  font-weight: 600;
+  color: var(--blue-heading);
+  margin-bottom: 2.5rem;
 }
 
-.membro h2 {
+
+.membros .card {
+  background: var(--white);
+  border: 1px solid #006494;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+.card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #006494;
+}
+
+.card h3 {
+  margin-top: 1rem;
+}
+
+.redes {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.redes img {
+  width: 24px;
+  height: 24px;
+}
+
+.topbar {
+  background-color: var(--blue-dark);
+  color: var(--white);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar .back-button {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+
+
+/* === Estilos para Desktop (a partir de 768px) === */
+/* === Estilos para Desktop fixo (5 colunas) === */
+
+@media (min-width: 1024px) {
+  .quem-somos {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .descricao {
+    text-align: justify;
+    margin-bottom: 3rem;
+  }
+
+  .descricao p {
+    max-width: 800px;
+    margin: 0 auto;
+    /*background-color: var(--light-gray-blue);*/
+    text-align: justify;
+    padding: 1.5rem;
+    border-radius: 10px;
     font-size: 1rem;
-    margin-bottom: 0.3rem;
-    color: #1f1f1f;
-}
+    line-height: 1.6;
+    hyphens: auto;
+    /*Para uma quebra mais natural em longas palavras*/
+  }
 
-.membro p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 0.6rem;
-}
+  .subtitulo-equipa {
+    font-size: var(--heading-2);
+    font-weight: 600;
+    margin: 4rem 0 3rem;
+    color: var(--blue-heading);
+  }
 
-/* Ícones sociais */
-.social-icons {
+  .membros {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 cards lado a lado */
+    gap: 2rem;
+    justify-items: center;
+  }
+
+  .membros .card {
+    width: 100%;
+    max-width: 220px;
+    border: 1px solid #006494;
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    background-color: var(--white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+  }
+
+  .membros .card:hover {
+    transform: translateY(-4px);
+  }
+
+  .card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #006494;
+    margin-bottom: 0.5rem;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    /*color: var(--blue-heading);*/
+    margin: 0.5rem 0 0;
+  }
+
+  .redes {
     display: flex;
     justify-content: center;
     gap: 1rem;
-}
+    margin-top: 0.8rem;
+  }
 
-.social-icons a {
-    color: #006494;
-    font-size: 1.1rem;
-    transition: color 0.3s;
-}
+  .redes img {
+    width: 24px;
+    height: 24px;
+    transition: opacity 0.3s ease;
+  }
 
-.social-icons a:hover {
-    color: #3fb984;
-}
-
-/* RESPONSIVO (opcional para mobile) */
-@media (min-width: 600px) {
-    .equipe {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .membro {
-        width: 45%;
-        max-width: 280px;
-    }
+  .redes img:hover {
+    opacity: 0.7;
+  }
 }

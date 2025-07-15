@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Apple iOS Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+
+    <!-- Favicons padrão -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+
+    <!-- Manifest (para PWA ou atalho Android) -->
+    <link rel="manifest" href="assets/icons/site.webmanifest">
+
+  <title>Contacto - Grupo Conecta</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/style-contacto.css" />
+</head>
+
+<body>
+
+<main class="contacto-container main-grid">
+  <!-- COLUNA ESQUERDA: Título + formulário -->
+  <div class="contacto-esquerda">
+    <h1 class="titulo"><span class="destaque">Fale Connosco</span></h1>
+    <p class="subtitulo">
+      Estamos disponíveis para esclarecer dúvidas ou receber sugestões!
+    </p>
+
+<form class="formulario-contacto" id="form-contato">
+  <!-- Campos do formulário -->
+  <input type="text" name="nome" placeholder="Nome completo" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="text" name="assunto" placeholder="Assunto" required />
+  <textarea name="mensagem" placeholder="Mensagem" rows="4" required></textarea>
+
+  <!-- Campos ocultos opcionais -->
+  <input type="hidden" name="_subject" value="Nova mensagem de contacto do site Grupo Conecta">
+  <input type="hidden" name="_captcha" value="false">
+
+  <button type="submit" class="btn-submeter">Submeter</button>
+</form>
+
+<!-- Pop-up de sucesso -->
+<div id="popup-sucesso" class="popup-sucesso hidden">
+  ✅ Mensagem enviada com sucesso!
+</div>
+
+  </div>
+
+  <!-- COLUNA DIREITA: Imagem + redes sociais -->
+  <div class="contacto-direita">
+    <img src="assets/images/imagem-contacto.jpg" alt="Pessoas reunidas em escritório" class="imagem-contacto" />
+
+    <div class="contacto-alternativo">
+      <p>Outras formas de contato</p>
+      <div class="redes-sociais">
+        <a href="https://wa.me/244934672722?text=Olá%2C%20gostaria%20de%20receber%20uma%20informação" class="social-link" target="_blank">
+          <img src="assets/icons/Whatsapp-png.svg" alt="WhatsApp" />
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61565351349400" class="social-link" target="_blank">
+          <img src="assets/icons/Facebookpng.svg" alt="Facebook" />
+          <span>Facebook</span>
+        </a>
+        <a href="https://www.linkedin.com/company/grupoconecta-angola/" class="social-link" target="_blank">
+          <img src="assets/icons/LinkedInpng.svg" alt="LinkedIn" />
+          <span>LinkedIn</span>
+        </a>
+        <a href="#" class="social-link" target="_blank">
+          <img src="assets/icons/Twitterpng.svg" alt="X" />
+          <span>X</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+  <script src="js/contacto.js"></script>
+</body>
+</html>

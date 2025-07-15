@@ -1,0 +1,226 @@
+.contacto-container {
+  width: 90%;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1rem 0;
+  font-family: var(--font-family);
+  text-align: center;
+}
+
+/* Layout base (mobile-first) */
+.main-grid {
+  display: block;
+}
+
+.contacto-esquerda,
+.contacto-direita {
+  width: 100%;
+}
+
+
+/* Título principal */
+.titulo {
+  font-size: var(--heading-2);
+  color: var(--blue-heading);
+  margin-bottom: 0.5rem;
+}
+
+.titulo .destaque {
+  color: var(--blue);
+}
+
+/* Subtítulo */
+.subtitulo {
+  font-size: var(--small-text);
+  color: var(--gray-700);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+/* Formulário */
+.formulario-contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.formulario-contacto input,
+.formulario-contacto textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--light-gray-blue);
+  border-radius: 8px;
+  font-size: var(--body-text);
+  resize: none;
+  font-family: var(--font-family);
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.formulario-contacto input:focus,
+.formulario-contacto textarea:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+/* Botão de envio */
+.btn-submeter {
+  background-color: var(--green);
+  color: var(--white);
+  font-weight: bold;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 8px;
+  font-size: var(--body-text);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submeter:hover {
+  background-color: #7fa728; /* tom mais escuro do verde */
+}
+
+/* Bloco de contato alternativo */
+.contacto-alternativo p {
+  font-size: var(--small-text);
+  margin-bottom: 1rem;
+  color: var(--gray-700);
+}
+
+.redes-sociais {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.redes-sociais a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: var(--gray-700);
+}
+
+.redes-sociais img {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 0.3rem;
+  transition: transform 0.2s ease;
+}
+
+.redes-sociais a:hover img {
+  transform: scale(1.1);
+}
+
+.imagem-contacto {
+  display: none;
+}
+
+
+/*Desktop*/
+
+@media (min-width: 992px) {
+  .main-grid {
+    max-width: 1100px;
+    margin: 4rem auto;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 4rem;
+    align-items: start;
+    text-align: left;
+  }
+
+  .contacto-esquerda .titulo {
+    font-size: var(--heading-1);
+    margin-bottom: 1rem;
+  }
+
+  .contacto-esquerda .subtitulo {
+    font-size: var(--body-text);
+    margin-bottom: 2.5rem;
+    color: var(--gray-600);
+  }
+
+  .formulario-contacto input,
+  .formulario-contacto textarea {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .btn-submeter {
+    font-size: 1rem;
+  }
+
+  .contacto-direita {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .imagem-contacto {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .contacto-alternativo {
+    text-align: center;
+  }
+
+  .contacto-alternativo p {
+    font-size: var(--body-text);
+    margin-bottom: 1rem;
+  }
+
+  .redes-sociais {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .redes-sociais a {
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+
+  .redes-sociais img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+
+/* Pop-up de sucesso */
+
+.popup-sucesso {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--green);
+  color: var(--white);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: var(--body-text);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Quando visível */
+.popup-sucesso:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Classe oculta (padrão) */
+.hidden {
+  display: none;
+}

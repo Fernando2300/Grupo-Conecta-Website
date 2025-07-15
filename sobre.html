@@ -1,115 +1,94 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect Group</title>
-    <!--<link rel="stylesheet" href="style.css">-->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/style-index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google Fonts: Inter (300, 400, 500, 600, 700, 800) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+      <!-- Apple iOS Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
 
+    <!-- Favicons padrão -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+
+    <!-- Manifest (para PWA ou atalho Android) -->
+    <link rel="manifest" href="assets/icons/site.webmanifest">
+
+
+  <title>Quem Somos - Grupo Conecta</title>
+  <!--<link rel="stylesheet" href="css/style-sobre.css">-->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/style-sobre.css">
 </head>
-
-
 <body>
-    <!-- ===== Header Section ===== -->
-    <header class="header">
-        <!-- Logo image -->
-        <img src="assets/icons/logo.png" alt="Grupo Conecta logo" class="logo" />
-    
-        <!-- Menu button for mobile navigation -->
-        <button class="menu-btn">
-            <img src="assets/icons/icon.png" alt="Open menu" class="menu-icon" />
-        </button>
-    </header>
-    
-    <!-- ===== Mobile Menu ===== -->
-    <nav class="mobile-nav">
-        <div class="mobile-nav-header">
-            <button class="close-menu">
-                <img src="assets/icons/Vector 5.png" alt="Fechar menu" />
-            </button>
-            <img src="assets/icons/logo.png" alt="Grupo Conecta logo" class="logo" />
+
+  <main class="quem-somos">
+    <section class="descricao">
+      <h2 class="quem-somos-titulo">Quem Somos</h2>
+      <div class="linha-verde"></div>
+      <p>O Grupo Conecta é uma iniciativa colaborativa que une jovens para transformar comunidades por meio do conhecimento, inovação e impacto social.</p>
+    </section>
+
+    <h2 class="subtitulo-equipa">Direcção Executiva</h2>
+
+    <section class="membros">
+      <!-- Membro 1 -->
+      <div class="card">
+        <img src="assets/images/Salvador_Fernando.jpg" alt="Salvador Fernando">
+        <h3>Salvador Fernando</h3>
+        <div class="redes">
+          <a href="#" target="_blank"><img src="assets/icons/Linkedin.svg" alt="LinkedIn"></a>
+          <a href="#" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
+          <a href="#" target="_blank"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
         </div>
-        <ul class="mobile-nav-links">
-            <li><a href="#quem-somos">Quem Somos</a></li>
-            <li><a href="#cursos">Cursos e Workshops</a></li>
-            <li><a href="#contato">Contacto</a></li>
-        </ul>
-    </nav>
+      </div>
 
-    <main class="container">
-        <h2 class="titulo">Quem Somos</h2>
-        <div class="barra-verde"></div>
-
-        <div class="descricao">
-            <p>
-                O Grupo Conecta é uma iniciativa colaborativa que une jovens para transformar comunidades por meio do
-                conhecimento, inovação e impacto social.
-            </p>
+      <!-- Membro 2 -->
+      <div class="card">
+        <img src="assets/images/Felix_Junior.jpg" alt="Félix Júnior">
+        <h3>Félix Júnior</h3>
+        <div class="redes">
+          <a href="https://www.linkedin.com/in/f%C3%A9lix-j%C3%BAnior-aba790254/" target="_blank"><img src="assets/icons/Linkedin.svg" alt="LinkedIn" target="_blank"></a>
+          <a href="https://web.facebook.com/felixjunio.felix" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
+          <a href="https://x.com/Felix63136"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
         </div>
+      </div>
 
-        <!-- Lista de membros -->
-        <section class="membro-card">
-            <img src="assets/images/Salvador_Fernando.jpg" alt="Salvador Fernando" />
-            <h3>Salvador Fernando</h3>
-            <div class="redes">
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </section>
+      <!-- Membro 3 -->
+      <div class="card">
+        <img src="assets/images/Febe_Jamba.jpg" alt="Febe Jamba">
+        <h3>Febe Jamba</h3>
+        <div class="redes">
+          <a href="https://www.linkedin.com/in/febe-jamba-849148265/" target="_blank"><img src="assets/icons/Linkedin.svg" alt="LinkedIn"></a>
+          <a href="https://www.instagram.com/tchissolaernesto/" target="_blank"><img src="assets/icons/Instagram.svg" alt="Instagram"></a>
+          <a href="#"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
+        </div>
+      </div>
 
-        <section class="membro-card">
-            <img src="assets/images/Felix_Junior.jpg" alt="Félix Júnior" />
-            <h3>Félix Júnior</h3>
-            <div class="redes">
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </section>
+      <!-- Membro 4 -->
+      <div class="card">
+        <img src="assets/images/Sednilson_Maquenha.jpg" alt="Sednilson Maquenha">
+        <h3>Sednilson Maquenha</h3>
+        <div class="redes">
+          <a href="https://www.linkedin.com/in/sednilson-maquenha-b4a76521a/" target="_blank"><img src="assets/icons/Linkedin.svg" alt="LinkedIn"></a>
+          <a href="https://web.facebook.com/pallmerano.smpallmerano" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
+          <a href="https://x.com/SmPallmer" target="_blank"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
+        </div>
+      </div>
 
-        <section class="membro-card">
-            <img src="assets/images/Febe_Jamba.jpg" alt="Febe Jamba" />
-            <h3>Febe Jamba</h3>
-            <div class="redes">
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </section>
+      <!-- Membro 5 -->
+      <div class="card">
+        <img src="assets/images/Ernesto_Xavier.jpg" alt="Ernesto Xavier">
+        <h3>Ernesto Xavier</h3>
+        <div class="redes">
+          <a href="https://www.linkedin.com/in/cacay-xavier-60ab19258/" target="_blank"><img src="assets/icons/Linkedin.svg" alt="LinkedIn"></a>
+          <a href="https://web.facebook.com/ernesternys.xavier" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
+          <a href="#"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-        <section class="membro-card">
-            <img src="assets/images/Sednilson_Maquenha.jpg" alt="Sednilson Maquenha" />
-            <h3>Sednilson Maquenha</h3>
-            <div class="redes">
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </section>
 
-        <section class="membro-card">
-            <img src="assets/images/Ernesto_Xavier.jpg" alt="Ernesto Xavier" />
-            <h3>Ernesto Xavier</h3>
-            <div class="redes">
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </section>
-    </main>
-
-    <footer class="rodape">
-        <p>© 2024 Grupo Conecta. Todos os direitos reservados.</p>
-    </footer>
 </body>
-
 </html>
