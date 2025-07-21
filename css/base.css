@@ -6,11 +6,14 @@
     box-sizing: border-box;
 }
 
-html,
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     height: 100%;
     font-family: var(--font-family);
-    background-color: #fdfdfd;
+    /*background-color: #fdfdfd;*/
         color: #1f1f1f;
         line-height: 1.6;
 }
@@ -92,23 +95,28 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1rem;
-    /* 12px 16px */
+    padding: 1rem 1rem;
     height: 3.75rem;
-    /* 60px */
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
-    /* 2px 4px */
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 1100;
+    background-color: white;
+    }
+
+.header.menu-open {
+    display: none;
 }
+
+
 
 /* === Logo styling === */
 .logo {
-    height: 2rem;
+    height: 2.5rem;
     /* 32px */
-    max-width: 7.5rem;
+    max-width: 9rem;
     /* 120px */
+    width: auto;
     object-fit: contain;
 }
 
@@ -127,58 +135,158 @@ p {
     height: 3rem;
 }
 
-/* Styles for the navigation links */
+/* === Mobile Nav Styles === */
 .mobile-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    /* <- mudou de right: 0 para left: 0 */
-    width: 75%;
-    /* ou 100% se quiser ocupar a tela toda */
-    height: 100%;
-    background-color: white;
-    transform: translateX(-100%);
-    /* <- sai pela esquerda */
-    transition: transform 0.3s ease-in-out;
-    z-index: 999;
-    padding: 2rem 1.5rem;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-    /* <- sombra no lado direito */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
+/* Abrir menu */
 .mobile-nav.open {
-    transform: translateX(0%);
+  transform: translateX(0%);
 }
 
+/* Cabeçalho com logo centralizado */
+/*.mobile-nav-header {
+  position: relative;
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}*/
+
+/* Cabeçalho do menu com logo centralizado e botão X à direita */
 .mobile-nav-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+  position: relative;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
 }
 
+/* Logo dentro do menu */
+.mobile-nav-header .logo {
+  height: 2.5rem;
+  max-width: 9rem;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Botão de fechar */
+/*.close-menu {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: none;
+  z-index: 1101;
+}*/
+
+/* Botão de fechar no topo direito */
 .close-menu {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-10%); /*Valores positivos sobem, Valores 
+   descem o elemento*/
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
 }
 
+.close-menu img {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.mobile-nav.open .close-menu {
+  display: block;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+/*Serviu para testar o fechar menue*/
+/*.close-menu img {
+  background-color: red;
+}*/
+
+
+/* Links */
 .mobile-nav-links {
-    list-style: none;
-    padding: 0;
-    margin-top: 3rem;
+  list-style: none;
+  padding: 2rem 0 0 0;
+  margin: 0;
+  flex-grow: 1;
 }
 
 .mobile-nav-links li {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .mobile-nav-links a {
-    text-decoration: none;
-    font-size: 1.2rem;
-    color: #333;
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 500;
 }
+
+/* Botão destaque no Nav Menu */
+.join-btn {
+  display: block;
+  width: 100%;
+  background-color: var(--green);
+  color: white;
+  text-align: center;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  margin-top: auto;
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+
+
+/* Separador superior acima do botão */
+.mobile-nav-links::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 1.5rem 0;
+}
+
+/* Esconde o botão hambúrguer quando o menu está aberto */
+.header.menu-open .menu-btn {
+  display: none;
+}
+
+/* Mostra o botão de fechar */
+.mobile-nav.open .close-menu {
+  display: block;
+}
+
+/* Garante que o botão de fechar esteja escondido inicialmente */
+.close-menu {
+  display: none;
+}
+
 
 
 /* Footer*/
@@ -259,6 +367,15 @@ p {
     /* 14px em rem */
 }
 
+.footer-creditos a{
+    color: var(--white);
+    text-decoration: none;
+}
+
+.footer-creditos a:hover {
+    text-decoration: underline;
+}
+
 
 /* Bloco: mobile nav */
 /*
@@ -300,3 +417,149 @@ p {
 
 }
 */
+
+
+/* ==========================
+   === MEDIA QUERIES ===
+   ========================== */
+
+/* Tablet (≥768px) */
+@media (min-width: 768px) {
+  .header {
+    padding: 1rem 2rem;
+  }
+
+  .menu-btn {
+    display: none;
+  }
+
+  /* Mostra o menu como horizontal se for necessário aqui */
+  .mobile-nav {
+    display: none !important;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.375rem;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .footer-conecta {
+    text-align: left;
+    padding: 2rem 2rem;
+  }
+
+  .footer-conecta h3 {
+    font-size: 1.25rem;
+  }
+
+  .social-icons {
+    justify-content: flex-start;
+  }
+
+  .footer-legal {
+    text-align: left;
+    padding: 2rem;
+  }
+
+  .footer-links {
+    text-align: left;
+  }
+
+  .footer-creditos {
+    text-align: left;
+  }
+}
+
+
+
+/* Menu desktop - escondido por padrão (mobile-first) */
+.desktop-nav {
+  display: none;
+}
+
+/* A partir de 768px (tablet e desktop), mostrar menu desktop */
+@media (min-width: 768px) {
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    /*height: auto; /* para evitar que fique esmagado */
+    min-height: 80px; /* garante uma altura mínima razoável */
+  }
+
+  .logo {
+  height: 3rem; /* antes: 2.5rem */
+  max-width: 100%; /* antes: 9rem */
+  margin-right: 1rem; /* novo */
+}
+
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .desktop-nav a {
+  text-decoration: none;
+  color: inherit; 
+}
+
+
+  .desktop-nav-links {
+  list-style: none; /* <--- Remove os pontos */
+  display: flex;
+      white-space: nowrap; /* evita quebra de linha */
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+  .desktop-nav-links a:hover {
+    color: var(--blue);
+  }
+
+
+  /* Botão alinhado no centro vertical */
+.desktop-nav .join-btn {
+  background-color: var(--green);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+
+  /* 🔽 Este ajuste empurra o botão ligeiramente para baixo */
+  margin-top: 1rem;
+}
+
+.desktop-nav .join-btn:hover {
+  background-color: var(--blue); /* ou qualquer outra cor */
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* leve sombra */
+  transition: all 0.3s ease;
+}
+
+
+  .menu-btn {
+    display: none; /* esconder botão hamburguer */
+  }
+}
+
+
+

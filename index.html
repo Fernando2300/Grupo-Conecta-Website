@@ -16,10 +16,11 @@
     <link rel="manifest" href="assets/icons/site.webmanifest">
 
 
-    <title>Connect Group</title>
+    <title>Grupo Conecta</title>
     <!--<link rel="stylesheet" href="style.css">-->
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/style-index.css">
+    <link rel="stylesheet" href="css/style-index.css"> 
+
 
     <!-- Google Fonts: Inter (300, 400, 500, 600, 700, 800) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -30,31 +31,57 @@
 
 <body>
 
-    <!-- ===== Header Section ===== -->
-    <header class="header">
-        <!-- Logo image -->
-        <img src="assets/icons/logo.png" alt="Grupo Conecta logo" class="logo" />
+<!-- ===== Header ===== -->
+<header class="header">
+  <!-- Logo à esquerda (visível no desktop e mobile) -->
+  <a href="index.html">
+    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+  </a>
 
-        <!-- Menu button for mobile navigation -->
-        <button class="menu-btn">
-            <img src="assets/icons/icon.png" alt="Open menu" class="menu-icon" />
-        </button>
-    </header>
+    <!-- Menu de navegação para desktop -->
+  <nav class="desktop-nav">
+    <ul class="desktop-nav-links">
+      <li><a href="/index.html">Início</a></li>
+      <li><a href="sobre.html">Quem Somos</a></li>
+      <li><a href="#courses-section">Programas</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="inscricao.html" class="join-btn">Inscrever-se</a>
+  </nav>
 
-    <!-- ===== Mobile Menu ===== -->
-    <nav class="mobile-nav">
-        <div class="mobile-nav-header">
-            <button class="close-menu">
-                <img src="assets/icons/Vector 5.png" alt="Fechar menu" />
-            </button>
-            <img src="assets/icons/logo.png" alt="Grupo Conecta logo" class="logo" />
-        </div>
-        <ul class="mobile-nav-links">
-            <li><a href="#quem-somos">Quem Somos</a></li>
-            <li><a href="#cursos">Cursos e Workshops</a></li>
-            <li><a href="#contato">Contacto</a></li>
-        </ul>
-    </nav>
+  <!-- Botão do menu mobile (hambúrguer) -->
+  <button class="menu-btn" aria-label="Abrir menu">
+    <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
+  </button>
+</header>
+
+<!-- ===== Mobile Navigation ===== -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-header">
+    <!-- Logo centralizado no menu -->
+     <a href="index.html">
+    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+      </a>
+
+    <!-- Botão para fechar o menu -->
+    <button class="close-menu" aria-label="Fechar menu">
+      <img src="assets/icons/fecharmenu.png" alt="" />
+    </button>
+  </div>
+
+  <!-- Links do menu -->
+  <ul class="mobile-nav-links">
+    <li><a href="sobre.html">Quem Somos</a></li>
+    <li><a href="#courses-section">Cursos e Workshops</a></li>
+    <li><a href="#impact-section">Impacto Social</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+
+  <!-- Botão de destaque no fim do menu -->
+  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
+</nav>
+
+
 
 
     <main>
@@ -70,7 +97,7 @@
                 </p>
                 <!-- Buttons -->
                 <div class="hero-buttons">
-                    <button class="btn btn-primary">Explorar programas</button>
+                    <a href="#courses-section" class="btn btn-primary">Explorar Programas</a>
                 </div>
             </div>
         </section>
@@ -84,7 +111,7 @@
         </section>
 
         <!-- Courses and Workshops Section -->
-        <section class="courses-section">
+        <section class="courses-section" id="courses-section">
             <h2 class="section-title-courses">Cursos e Workshops</h2>
             <p class="section-subtitle-courses">Conheça nossos programas educacionais</p>
 
@@ -93,7 +120,7 @@
             </div>
 
             <div class="see-all-wrapper">
-                <a href="#" class="see-all-button">Ver todos os programas</a>
+                <a href="#courses-section" class="see-all-button">Ver todos os programas</a>
             </div>
         </section>
 
@@ -107,7 +134,7 @@
             <!-- Impact cards will be rendered here -->
             <div id="impact-cards-container"></div>
 
-            <a href="#inscricao" class="impact-button">Faça parte desta jornada</a>
+            <a href="#courses-section" class="impact-button">Faça parte desta jornada</a>
         </section>
 
         <!-- CTA Section -->
@@ -117,7 +144,7 @@
             <p class="cta-text">
                 Inscreva-se em nossos programas e comece sua jornada de transformação pessoal e profissional
             </p>
-            <a href="#inscricao" class="cta-button">Quero me inscrever agora</a>
+            <a href="#courses-section" class="cta-button">Quero me inscrever agora</a>
         </section>
     </main>
 
@@ -133,8 +160,8 @@
                 <a href="#" aria-label="LinkedIn"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
                 <a href="#" aria-label="YouTube"><img src="assets/icons/YouTube.svg" alt="YouTube"></a>
             </div>
-            <p class="contact-email">contato@grupoconecta.org</p>
-            <p class="contact-phone">(11) 9999-9999</p>
+            <p class="contact-email">WhatsApp</p>
+            <p class="contact-phone">(+244) 935269451</p>
         </div>
 
         <!-- Bloco: Informações legais e créditos -->
@@ -146,7 +173,14 @@
                 <span class="separator">|</span>
                 <a href="#">Termos de Uso</a>
             </div>
-            <p class="footer-creditos">Desenvolvido por <strong>Contornos Designs</strong></p>
+            <p class="footer-creditos">
+  Desenvolvido por <strong>
+  <a href="https://facebook.com/ContornosDesigns" target="_blank" rel="noopener noreferrer">
+Contornos Designs
+  </a>
+  </strong>
+</p>
+
         </div>
 
         <!-- Bloco: mobile nav

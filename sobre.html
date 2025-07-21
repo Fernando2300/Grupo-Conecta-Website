@@ -15,12 +15,63 @@
     <link rel="manifest" href="assets/icons/site.webmanifest">
 
 
-  <title>Quem Somos - Grupo Conecta</title>
+  <title>Quem Somos</title>
   <!--<link rel="stylesheet" href="css/style-sobre.css">-->
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style-sobre.css">
 </head>
 <body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <!-- Logo à esquerda (visível no desktop e mobile) -->
+  <a href="index.html">
+    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+  </a>
+
+    <!-- Menu de navegação para desktop -->
+  <nav class="desktop-nav">
+    <ul class="desktop-nav-links">
+      <li><a href="/index.html">Início</a></li>
+      <li><a href="sobre.html">Quem Somos</a></li>
+      <li><a href="index.html#courses-section">Programas</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="inscricao.html" class="join-btn">Inscrever-se</a>
+  </nav>
+
+  <!-- Botão do menu mobile (hambúrguer) -->
+  <button class="menu-btn" aria-label="Abrir menu">
+    <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
+  </button>
+</header>
+
+<!-- ===== Mobile Navigation ===== -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-header">
+    <!-- Logo centralizado no menu -->
+     <a href="index.html">
+    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+      </a>
+
+    <!-- Botão para fechar o menu -->
+    <button class="close-menu" aria-label="Fechar menu">
+      <img src="assets/icons/fecharmenu.png" alt="" />
+    </button>
+  </div>
+
+  <!-- Links do menu -->
+  <ul class="mobile-nav-links">
+    <li><a href="sobre.html">Quem Somos</a></li>
+    <li><a href="index.html#courses-section">Cursos e Workshops</a></li>
+    <li><a href="/index.html#impact-section">Impacto Social</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+
+  <!-- Botão de destaque no fim do menu -->
+  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
+</nav>
+
 
   <main class="quem-somos">
     <section class="descricao">
@@ -29,7 +80,7 @@
       <p>O Grupo Conecta é uma iniciativa colaborativa que une jovens para transformar comunidades por meio do conhecimento, inovação e impacto social.</p>
     </section>
 
-    <h2 class="subtitulo-equipa">Direcção Executiva</h2>
+    <h2 class="subtitulo-equipa">Coordenação Geral</h2>
 
     <section class="membros">
       <!-- Membro 1 -->
@@ -37,9 +88,9 @@
         <img src="assets/images/Salvador_Fernando.jpg" alt="Salvador Fernando">
         <h3>Salvador Fernando</h3>
         <div class="redes">
-          <a href="#" target="_blank"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-          <a href="#" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
-          <a href="#" target="_blank"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
+          <a href="https://www.linkedin.com/in/salvadorinaciofernando/" target="_blank"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
+          <a href="https://m.facebook.com/salvador.fernando.3720/" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
+          <a href="https://x.com/salvadorfern_" target="_blank"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
         </div>
       </div>
 
@@ -89,6 +140,7 @@
     </section>
   </main>
 
-
+  <script src="js/base.js"></script>
+  <script src="js/sobre.js"></script>
 </body>
 </html>

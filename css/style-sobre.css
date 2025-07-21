@@ -6,7 +6,10 @@
 
 .quem-somos-titulo{
   margin-bottom: 1rem;
-
+  text-align: center;
+  font-size: var(--heading-2);
+  /*font-weight: 500;*/
+  /*color: var(--blue-heading);*/
 }
 
 .descricao {
@@ -37,8 +40,8 @@
 .subtitulo-equipa {
   text-align: center;
   font-size: var(--heading-2);
-  font-weight: 600;
-  color: var(--blue-heading);
+  /*font-weight: 500;*/
+  /*color: var(--blue-heading);*/
   margin-bottom: 2.5rem;
 }
 

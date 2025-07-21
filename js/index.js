@@ -58,9 +58,9 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
       title: "Desenvolvimento Web Full Stack",
       description:
         "Aprenda a criar aplicações web completas, do front-end ao back-end, com as tecnologias mais demandadas pelo mercado.",
-      image: "assets/images/course-web.png",
+      image: "assets/images/workshop.jpg",
       buttonText:
-        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+        'Inscreva-se Hoje <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
     },
     {
       title: "Liderança e Gestão de Projetos",

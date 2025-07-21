@@ -21,6 +21,56 @@
 
 <body>
 
+<!-- ===== Header ===== -->
+<header class="header">
+  <!-- Logo à esquerda (visível no desktop e mobile) -->
+  <a href="index.html">
+    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+  </a>
+
+    <!-- Menu de navegação para desktop -->
+  <nav class="desktop-nav">
+    <ul class="desktop-nav-links">
+      <li><a href="/index.html">Início</a></li>
+      <li><a href="sobre.html">Quem Somos</a></li>
+      <li><a href="index.html#courses-section">Programas</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="inscricao.html" class="join-btn">Inscrever-se</a>
+  </nav>
+
+  <!-- Botão do menu mobile (hambúrguer) -->
+  <button class="menu-btn" aria-label="Abrir menu">
+    <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
+  </button>
+</header>
+<!-- ===== Mobile Navigation ===== -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-header">
+    <!-- Logo centralizado no menu -->
+     <a href="index.html">
+    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+      </a>
+
+    <!-- Botão para fechar o menu -->
+    <button class="close-menu" aria-label="Fechar menu">
+      <img src="assets/icons/fecharmenu.png" alt="" />
+    </button>
+  </div>
+
+  <!-- Links do menu -->
+  <ul class="mobile-nav-links">
+    <li><a href="sobre.html">Quem Somos</a></li>
+    <li><a href="index.html#courses-section">Cursos e Workshops</a></li>
+    <li><a href="/index.html#impact-section">Impacto Social</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+
+  <!-- Botão de destaque no fim do menu -->
+  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
+</nav>
+
+
 <main class="contacto-container main-grid">
   <!-- COLUNA ESQUERDA: Título + formulário -->
   <div class="contacto-esquerda">
@@ -40,7 +90,7 @@
   <input type="hidden" name="_subject" value="Nova mensagem de contacto do site Grupo Conecta">
   <input type="hidden" name="_captcha" value="false">
 
-  <button type="submit" class="btn-submeter">Submeter</button>
+  <button type="submit" class="btn-submeter">Enviar</button>
 </form>
 
 <!-- Pop-up de sucesso -->
@@ -57,7 +107,7 @@
     <div class="contacto-alternativo">
       <p>Outras formas de contato</p>
       <div class="redes-sociais">
-        <a href="https://wa.me/244934672722?text=Olá%2C%20gostaria%20de%20receber%20uma%20informação" class="social-link" target="_blank">
+        <a href="https://wa.me/244935269451?text=Olá%2C%20gostaria%20de%20receber%20uma%20informação" class="social-link" target="_blank">
           <img src="assets/icons/Whatsapp-png.svg" alt="WhatsApp" />
           <span>WhatsApp</span>
         </a>
@@ -78,6 +128,7 @@
   </div>
 </main>
 
+    <script src="js/base.js"></script>
   <script src="js/contacto.js"></script>
 </body>
 </html>
