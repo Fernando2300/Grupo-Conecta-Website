@@ -147,15 +147,26 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
       card.classList.add("impact-card");
 
       card.innerHTML = `
-      <img src="${item.image}" alt="${item.altImage}" class="impact-image">
-      <div class="impact-icon">
+  <img src="${item.image}" alt="${item.altImage}" class="impact-image">
+
+  <!-- Ícone visível apenas no mobile -->
+  <div class="impact-icon impact-icon-mobile">
+    <img src="${item.icon}" alt="${item.altIcon}">
+  </div>
+
+  <div class="impact-content">
+    <!-- Título com ícone (somente desktop) -->
+    <div class="impact-heading-container">
+      <div class="impact-icon impact-icon-desktop">
         <img src="${item.icon}" alt="${item.altIcon}">
       </div>
-      <div class="impact-content">
-        <h3 class="impact-heading">${item.title}</h3>
-        <p class="impact-text">${item.description}</p>
-      </div>
-    `;
+      <h3 class="impact-heading">${item.title}</h3>
+    </div>
+
+    <p class="impact-text">${item.description}</p>
+  </div>
+`;
+
 
       container.appendChild(card);
     });
