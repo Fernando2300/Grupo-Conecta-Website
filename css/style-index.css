@@ -344,10 +344,10 @@
     display: block;
 }
 
-.impact-icon {
+/*.impact-icon {
     position: absolute;
-    top: calc(50% - 1.28rem);
-    /* 50% da altura do card menos metade do ícone */
+    top: calc(50% - 1.25rem);
+    /* 50% da altura do card menos metade do ícone 
     right: 1rem;
     border-radius: 50%;
     width: 3rem;
@@ -361,6 +361,11 @@
 .impact-icon img {
     width: 1.8rem;
     height: 1.8rem;
+}*/
+
+/*Make impact-icons desappear*/
+.impact-icon img {
+    display: none;
 }
 
 .impact-content {
@@ -442,14 +447,15 @@
 /* === imagem 3 card === */
 @media (max-width: 768px) {
   #impact-cards-container .impact-card:nth-child(3) .impact-image {
-    height: 160px; /* ajuste como quiser */
+    height: 160px; /* ajuste como quiser*/ 
     object-fit: cover;
   }
 
-   /* Move o ícone do 3º card um pouco para baixo */
+   /* Move o ícone do 3º card um pouco para baixo 
   #impact-cards-container .impact-card:nth-child(3) .impact-icon {
-    top: calc(50% - 1rem); /* Ajuste esse valor conforme necessário */
-  }
+    top: calc(50% - 1rem); /* Ajuste esse valor conforme necessário 
+  }~
+  */
 }
 
 

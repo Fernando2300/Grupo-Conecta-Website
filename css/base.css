@@ -312,14 +312,33 @@ p {
 }
 
 .social-icons img {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
 }
 
 .contact-email,
 .contact-phone {
     margin: 0.3rem 0;
 }
+
+.contact-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.3rem 0;
+  color: var(--blue-dark)
+}
+
+.contact-whatsapp span{
+    font-weight: 600;
+}
+
+.contact-whatsapp img {
+  width: 28px;
+  height: 28px;
+}
+
 
 /* Bloco: Informações legais e créditos */
 .footer-legal {

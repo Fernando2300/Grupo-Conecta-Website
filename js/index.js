@@ -95,23 +95,6 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   ];
 
   const courseContainer = document.getElementById("courses-container");
-/*
-  courses.forEach((course) => {
-    const card = document.createElement("div");
-    card.className = "course-card";
-
-    card.innerHTML = `
-    <img src="${course.image}" alt="${course.title}" class="course-image">
-    <div class="course-content">
-    <div class="card-left-line"></div>
-      <h3 class="course-title">${course.title}</h3>
-      <p class="course-description">${course.description}</p>
-      <a href="${course.link}" class="course-button">${course.buttonText}</a>
-    </div>
-  `;
-
-    courseContainer.appendChild(card);
-  });*/
 
   courses.forEach((course) => {
     const card = document.createElement("div");

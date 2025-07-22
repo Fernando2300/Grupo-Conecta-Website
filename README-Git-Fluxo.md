@@ -19,8 +19,7 @@ Este projeto é mantido por uma equipa de 2 pessoas. Para garantir organização
 1. **Atualizar o repositório local**
 
 ```bash
-git checkout dev
-git pull origin dev
+git checkout degit pull origin dev
 ```
 
 2. **Criar uma nova branch de funcionalidade**
