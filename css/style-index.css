@@ -258,6 +258,57 @@
     color: var(--white);
 }
 
+/*Sistema Aberto Fechado*/
+/*Reusing course-button*/
+
+.course-button.open {
+    background-color: var(--green);
+    color: white;
+    border: none;
+}
+
+
+.course-button.closed {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    cursor: not-allowed;
+}
+
+.aviso-fechado {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.aviso-fechado.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.aviso-temporario {
+    background-color: #666;
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    max-width: 220px;
+    pointer-events: none;
+}
+
+
+
+
 /* ===== Impact Section ===== */
 .impact-section {
     padding: 2.5rem 1rem;
@@ -268,12 +319,12 @@
     margin-bottom: 1rem;
 }
 
+
 .impact-subtitle {
-    margin-bottom: 2rem;
-    text-align: center;
     max-width: 36ch;
-    /* ~36 caracteres por linha */
-    margin-bottom: 2rem;
+    margin: 0 auto 2rem auto;
+    /* centraliza horizontalmente + margem inferior */
+    text-align: center;
 }
 
 /* ===== Impact Card ===== */
