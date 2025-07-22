@@ -60,36 +60,42 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
         "Aprenda a criar aplicações web completas, do front-end ao back-end, com as tecnologias mais demandadas pelo mercado.",
       image: "assets/images/workshop.jpg",
       buttonText:
-        'Inscreva-se Hoje <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      link: "inscricao.html",
+      status: "aberto",
     },
     {
       title: "Liderança e Gestão de Projetos",
       description:
         "Desenvolva habilidades essenciais para liderar equipes e gerenciar projetos com metodologias ágeis e tradicionais.",
       image: "assets/images/course-lead.png",
-      buttonText:
-        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      //Change ButtonText and status:aberto or fechado to update Course Status
+      buttonText: "Indisponível",
+      //'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      status: "fechado",
     },
     {
       title: "Marketing Digital para Iniciantes",
       description:
         "Domine as principais ferramentas e estratégias de marketing digital para impulsionar sua carreira ou negócio.",
       image: "assets/images/course-marketing.png",
-      buttonText:
-        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      buttonText: "Indisponível",
+      //'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      status: "fechado",
     },
     {
       title: "Empreendedorismo Social",
       description:
         "Aprenda a criar e desenvolver negócios de impacto social que geram valor para a sociedade e sustentabilidade financeira.",
       image: "assets/images/course-social.png",
-      buttonText:
-        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      buttonText: "Indisponível",
+      // 'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      status: "fechado",
     },
   ];
 
   const courseContainer = document.getElementById("courses-container");
-
+/*
   courses.forEach((course) => {
     const card = document.createElement("div");
     card.className = "course-card";
@@ -100,12 +106,40 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
     <div class="card-left-line"></div>
       <h3 class="course-title">${course.title}</h3>
       <p class="course-description">${course.description}</p>
-      <a href="#" class="course-button">${course.buttonText}</a>
+      <a href="${course.link}" class="course-button">${course.buttonText}</a>
+    </div>
+  `;
+
+    courseContainer.appendChild(card);
+  });*/
+
+  courses.forEach((course) => {
+    const card = document.createElement("div");
+    card.className = "course-card";
+
+    let buttonHTML = "";
+
+    //Open-Closed System
+    if (course.status === "aberto") {
+      buttonHTML = `<a href="${course.link}" class="course-button open">${course.buttonText}</a>`;
+    } else {
+      buttonHTML = `<button class="course-button closed" onclick="mostrarAviso(this)">${course.buttonText}</button>`;
+    }
+
+
+    card.innerHTML = `
+    <img src="${course.image}" alt="${course.title}" class="course-image">
+    <div class="course-content">
+      <div class="card-left-line"></div>
+      <h3 class="course-title">${course.title}</h3>
+      <p class="course-description">${course.description}</p>
+      ${buttonHTML}
     </div>
   `;
 
     courseContainer.appendChild(card);
   });
+
 
   //Impact Section
 
@@ -174,3 +208,29 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
 
   renderImpactCards();
 }); // 🔚 Fecha o DOMContentLoaded aqui
+
+
+
+// FORA do DOMContentLoaded
+//Open-Closed System
+function mostrarAviso(botao) {
+  // Criar o aviso dinamicamente
+  const aviso = document.createElement("div");
+  aviso.className = "aviso-temporario";
+  aviso.innerText = "Curso indisponível no momento. Novidades em breve!";
+
+  // Posiciona o aviso próximo ao botão clicado
+  const rect = botao.getBoundingClientRect();
+
+  aviso.style.position = "absolute";
+  aviso.style.left = `${rect.left + window.scrollX}px`;
+  aviso.style.top = `${rect.top + window.scrollY - 40}px`; // aparece acima do botão
+  aviso.style.zIndex = 1000;
+
+  document.body.appendChild(aviso);
+
+  // Remover o aviso após 3 segundos
+  setTimeout(() => {
+    aviso.remove();
+  }, 3000);
+}

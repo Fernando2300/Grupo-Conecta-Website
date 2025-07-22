@@ -561,8 +561,27 @@ p {
   }
 }
 
+/*--------------------------------------------------*/
+/* Desktop grande (≥1024px) */
+@media (min-width: 1024px) {
+  :root {
+    --heading-1: 2.25rem;
+    /* 36px */
+    --heading-2: 2rem;
+    /* 32px */
+    --heading-3: 1.5rem;
+    /* 24px */
+    --body-text: 1.125rem;
+    /* 18px */
+    --small-text: 1rem;
+    /* 16px */
+  }
 
+  h1 {
+    font-size: var(--heading-1);
+  }
 
+<<<<<<< HEAD
 
 /* Estilos para Desktop  footer*/
 
@@ -622,3 +641,43 @@ p {
 }
 
 
+=======
+  h2 {
+    font-size: var(--heading-2);
+  }
+
+  h3 {
+    font-size: var(--heading-3);
+  }
+
+  p {
+    font-size: var(--body-text);
+    line-height: 1.75rem;
+  }
+
+  .footer-conecta,
+  .footer-legal {
+    padding: 3rem 4rem;
+  }
+
+  .desktop-nav-links {
+    gap: 3rem;
+  }
+
+  .desktop-nav .join-btn {
+    font-size: 1.125rem;
+    padding: 0.75rem 1.5rem;
+    height: auto;
+  }
+
+  .logo {
+    height: 3.5rem;
+    max-width: 12rem;
+  }
+
+  .social-icons img {
+    width: 40px;
+    height: 40px;
+  }
+}
+>>>>>>> 9c7363fc0d6d5cfde31164bdf9f0a89b0987c651
