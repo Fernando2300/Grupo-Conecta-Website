@@ -14,21 +14,21 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
       icon: "assets/icons/education.svg",
       alt: "Education icons",
       title: "Educação",
-      text: "Programas educacionais inovadores que desenvolvem habilidades técnicas e socioemocionais.",
+      text: "Programas que abrem portas: cursos que ensinam, workshops que conectam, experiências que transformam.",
       bg: "#ffffff",
     },
     {
       icon: "assets/icons/consulting.svg",
       alt: "Consulting icons",
       title: "Consultoria",
-      text: "Orientação personalizada para desenvolvimento de carreira com mentoria especializada.",
+      text: "Fornecemos serviços de consultoria económica e financeira para impulsionar o desenvolvimento local.",
       bg: "#E6ECF0",
     },
     {
       icon: "assets/icons/impact.svg",
       alt: "impact icons",
-      title: "Impacto",
-      text: "Projetos que promovem inclusão, diversidade e transformação nas comunidades.",
+      title: "Impacto Social",
+      text: "Promovemos iniciativas que transformam comunidades através de projectos sustentáveis e inclusivos.",
       bg: "#ffffff",
     },
   ];
@@ -148,7 +148,7 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
       title: "Jovens Impactados",
       description:
         "Promovendo acesso ao conhecimento e desenvolvimento de habilidades essenciais para o futuro.",
-      image: "assets/images/impact-education.png",
+      image: "assets/images/impact-education.jpg",
       icon: "assets/icons/icon-education.svg",
       altImage: "Stack of books with an apple",
       altIcon: "Education icon",
@@ -156,8 +156,8 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
     {
       title: "Ajuda às Comunidades",
       description:
-        "Criando oportunidades e espaços inclusivos onde todos possam participar e contribuir ativamente.",
-      image: "assets/images/impact-community.png",
+        "Levamos apoio directo a quem mais precisa, através de iniciativas sociais, programas comunitários e doações que conectam pessoas e causas.",
+      image: "assets/images/impact-community.jpg",
       icon: "assets/icons/icon-community.svg",
       altImage: "People holding hands in a circle",
       altIcon: "Community icon",
@@ -165,7 +165,7 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
     {
       title: "Sustentabilidade Ambiental",
       description:
-        "Construindo um futuro onde pessoas e planeta possam prosperar em harmonia e equilíbrio.",
+        "Cultivamos a consciência ecológica através de práticas simples e eficazes, como a preservação e ampliação de espaços verdes e a substituição de plásticos por alternativas sustentáveis.",
       image: "assets/images/impact-environment.png",
       icon: "assets/icons/icon-environment.svg",
       altImage: "Hands holding a small plant",

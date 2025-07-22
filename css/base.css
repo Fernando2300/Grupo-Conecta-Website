@@ -471,7 +471,7 @@ p {
   }
 
   .footer-conecta {
-    text-align: left;
+    text-align: center;
     padding: 2rem 2rem;
   }
 
@@ -480,20 +480,21 @@ p {
   }
 
   .social-icons {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .footer-legal {
-    text-align: left;
+    text-align: center;
     padding: 2rem;
+
   }
 
   .footer-links {
-    text-align: left;
+    text-align: center;
   }
 
   .footer-creditos {
-    text-align: left;
+    text-align: center;
   }
 }
 
@@ -503,6 +504,7 @@ p {
 .desktop-nav {
   display: none;
 }
+
 
 /* A partir de 768px (tablet e desktop), mostrar menu desktop */
 @media (min-width: 768px) {
@@ -579,6 +581,11 @@ p {
     display: none; /* esconder botão hamburguer */
   }
 }
+
+
+
+
+
 
 /*--------------------------------------------------*/
 /* Desktop grande (≥1024px) */
