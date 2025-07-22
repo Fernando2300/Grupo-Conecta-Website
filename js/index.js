@@ -55,42 +55,46 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: "Desenvolvimento Web Full Stack",
+      title: "Presença Verbal - Técnicas de Oratória para Projectos com Propósito",
       description:
-        "Aprenda a criar aplicações web completas, do front-end ao back-end, com as tecnologias mais demandadas pelo mercado.",
+        "Participe deste workshop intensivo com Maria dos Santos e descubra como a oratória estratégica pode impulsionar <em>projetos com propósito</em>.",
       image: "assets/images/workshop.jpg",
       buttonText:
         'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
       link: "inscricao.html",
       status: "aberto",
+       type: "workshop", // ✅ NOVO
     },
     {
-      title: "Liderança e Gestão de Projetos",
+      title: "EViews para Análise Económica",
       description:
-        "Desenvolva habilidades essenciais para liderar equipes e gerenciar projetos com metodologias ágeis e tradicionais.",
-      image: "assets/images/course-lead.png",
+        "Domine o EViews e transforme dados económicos em insights poderosos para decisões e investigação.",
+      image: "assets/images/course-eviews.jpg",
       //Change ButtonText and status:aberto or fechado to update Course Status
       buttonText: "Indisponível",
       //'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
       status: "fechado",
+      type: "curso",
     },
     {
-      title: "Marketing Digital para Iniciantes",
+      title: "LaTeX para Documentos Académicos",
       description:
-        "Domine as principais ferramentas e estratégias de marketing digital para impulsionar sua carreira ou negócio.",
-      image: "assets/images/course-marketing.png",
+        "Aprenda a criar monografias, teses, relatórios e artigos científicos com precisão e elegância usando LaTeX.",
+      image: "assets/images/course-latex.jpg",
       buttonText: "Indisponível",
       //'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
       status: "fechado",
+      type: "curso",
     },
     {
-      title: "Empreendedorismo Social",
+      title: "Python para Economia e Finanças",
       description:
-        "Aprenda a criar e desenvolver negócios de impacto social que geram valor para a sociedade e sustentabilidade financeira.",
-      image: "assets/images/course-social.png",
+        "Introdução prática ao uso de Python para análise económica, séries temporais e visualização de dados.",
+      image: "assets/images/course-python.jpg",
       buttonText: "Indisponível",
       // 'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
       status: "fechado",
+      type: "curso",
     },
   ];
 
@@ -102,6 +106,15 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
 
     let buttonHTML = "";
 
+    //Code for Badge
+    let badgeHTML = "";
+      if (course.type === "workshop") {
+      badgeHTML = `<div class="badge badge-workshop">Workshop</div>`;
+      } else if (course.type === "curso") {
+      badgeHTML = `<div class="badge badge-curso">Curso</div>`;
+    }
+
+
     //Open-Closed System
     if (course.status === "aberto") {
       buttonHTML = `<a href="${course.link}" class="course-button open">${course.buttonText}</a>`;
@@ -110,8 +123,12 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
     }
 
 
+    //</img><img src="${course.image}" alt="${course.title}" class="course-image" loading="lazy">
+    //card.innerHTML = `
     card.innerHTML = `
-    <img src="${course.image}" alt="${course.title}" class="course-image">
+      ${badgeHTML}
+      <img src="${course.image}" alt="${course.title}" class="course-image" loading="lazy">
+
     <div class="course-content">
       <div class="card-left-line"></div>
       <h3 class="course-title">${course.title}</h3>
@@ -164,7 +181,7 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
       card.classList.add("impact-card");
 
       card.innerHTML = `
-  <img src="${item.image}" alt="${item.altImage}" class="impact-image">
+  <img src="${item.image}" alt="${item.altImage}" class="impact-image" loading="lazy">
 
   <!-- Ícone visível apenas no mobile -->
   <div class="impact-icon impact-icon-mobile">
