@@ -16,7 +16,6 @@
     overflow: hidden;
     box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.18);
     /* ← sombra inferior */
-    min-height: 80vh; /* 60% da altura da tela */
 }
 
 .hero-subtitle {
