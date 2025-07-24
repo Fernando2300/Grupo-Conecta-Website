@@ -59,11 +59,11 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
       description:
         "Participe deste workshop intensivo com Maria dos Santos e descubra como a oratória estratégica pode impulsionar <em>projetos com propósito</em>.",
       image: "assets/images/workshop.jpg",
-      buttonText:
-        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      buttonText: "Indisponível",
+        //'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
       link: "inscricao.html",
-      status: "aberto",
-       type: "workshop", // ✅ NOVO
+      status: "fechado",
+      type: "workshop", // ✅ NOVO
     },
     {
       title: "EViews para Análise Económica",
