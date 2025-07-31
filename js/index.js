@@ -55,14 +55,14 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: "Presença Verbal - Técnicas de Oratória para Projectos com Propósito",
+      title: "Empregabilidade Jovem: Oportunidades e Desafios no Mercado de Trabalho Actual",
       description:
-        "Participe deste workshop intensivo com Maria dos Santos e descubra como a oratória estratégica pode impulsionar <em>projetos com propósito</em>.",
+        "Junte-se a Estêvão César num workshop sobre os desafios e oportunidades do mercado de trabalho actual.",
       image: "assets/images/workshop.jpg",
-      buttonText: "Indisponível",
-        //'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
+      buttonText: //"Indisponível",
+        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
       link: "inscricao.html",
-      status: "fechado",
+      status: "aberto",
       type: "workshop", // ✅ NOVO
     },
     {
