@@ -55,9 +55,9 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: "Empregabilidade Jovem: Oportunidades e Desafios no Mercado de Trabalho Actual",
+      title: "Como Tirar Projetos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
       description:
-        "Junte-se a Estêvão César num workshop sobre os desafios e oportunidades do mercado de trabalho actual.",
+        "Aprenda a tirar suas ideias do papel e criar projectos de impacto que fazem a diferença.",
       image: "assets/images/workshop.jpg",
       buttonText: //"Indisponível",
         'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',

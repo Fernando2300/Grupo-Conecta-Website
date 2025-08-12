@@ -220,8 +220,8 @@ body {
 .btn-destaque {
     width: 100%;
     padding: 0.9rem;
-    /*background-color: #a0c334;*/
-        background-color: darkred; /*Inscrições Encerradas*/
+    background-color: #a0c334;
+       /* background-color: darkred; */ /* Inscrições Encerradas*/
     color: white;
     font-weight: bold;
     border: none;
@@ -232,7 +232,7 @@ body {
 }
 
 .btn-destaque:hover {
-    /*background-color: #35a277;*/ /*Inscrições Encerradas*/
+    background-color: #35a277; /*Inscrições Encerradas*/
     /*#8aa92a*/
 }
 

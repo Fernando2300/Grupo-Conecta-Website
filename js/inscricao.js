@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const valorBtns = document.querySelectorAll(".valor-btn");
   const loading = document.getElementById("loading");
 
+
   // ✅ Exibe mensagem de erro no bloco abaixo do formulário
 
   function exibirErroGlobal(mensagem) {
@@ -167,6 +168,22 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Dados enviados com sucesso.");
         pagamentoSection.classList.remove("hidden");
         pagamentoSection.scrollIntoView({ behavior: "smooth" });
+
+    // 1. Captura o botão do WhatsApp
+    const linkWhatsApp = document.getElementById("link-whatsapp");
+
+    // 2. Monta o link com os dados do formulário
+    const numeroWhatsApp = "244935269451"; // mantém o número do destino
+    const mensagem = `Olá, segue o meu comprovativo do Workshop
+
+    Nome: ${nome}
+    Número: ${telefone}`; //Termina mensagem
+
+    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+
+    // 3. Atualiza o href do botão
+    linkWhatsApp.href = urlWhatsApp;
+
       } else {
         //alert("Erro ao enviar. Tente novamente mais tarde.");
         exibirErroGlobal("Erro ao enviar. Tente novamente mais tarde.");
