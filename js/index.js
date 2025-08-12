@@ -55,7 +55,7 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: "Como Tirar Projetos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+      title: "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
       description:
         "Aprenda a tirar suas ideias do papel e criar projectos de impacto que fazem a diferença.",
       image: "assets/images/workshop.jpg",
