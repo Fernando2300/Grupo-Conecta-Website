@@ -55,9 +55,9 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+      title: " Finanças para Negócios: O que Necessito Saber Durante a Criação e Gestão do Meu Negócio?",
       description:
-        "Aprenda a tirar suas ideias do papel e criar projectos de impacto que fazem a diferença.",
+        "Descubra os conhecimentos financeiros essenciais para criar e fazer crescer o seu negócio.",
       image: "assets/images/workshop.jpg",
       buttonText: //"Indisponível",
         'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
