@@ -55,9 +55,9 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: " Finanças para Negócios: O que Necessito Saber Durante a Criação e Gestão do Meu Negócio?",
+      title: " O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
       description:
-        "Descubra os conhecimentos financeiros essenciais para criar e fazer crescer o seu negócio.",
+        "Descubra como a língua inglesa pode abrir portas para oportunidades globais e impulsionar a sua carreira profissional.",
       image: "assets/images/workshop.jpg",
       buttonText: //"Indisponível",
         'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
