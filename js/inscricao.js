@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     try {
+        /*Alt. Access - https://sheetdb.io/api/v1/muhp580eoo1cx?sheet=Sheet1 */
       const response = await fetch("https://sheetdb.io/api/v1/muhp580eoo1cx", {
         method: "POST",
         headers: {
@@ -157,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         body: JSON.stringify(payload),
       });
+
 
       //✅ Esconder spinner com fade-out
       loading.classList.remove("active");
