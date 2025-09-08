@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="assets/icons/site.webmanifest">
+
+  <title>Verificação de Certificados - Grupo Conecta</title>
+
+  <!-- ✅ Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHPQD4KRT1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHPQD4KRT1');
+  </script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/style-certificados.css" />
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <a href="index.html">
+    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+  </a>
+
+  <!-- Menu de navegação (desktop) -->
+  <nav class="desktop-nav">
+    <ul class="desktop-nav-links">
+      <li><a href="index">Início</a></li>
+      <li><a href="sobre">Quem Somos</a></li>
+      <li><a href="index.html#courses-section">Programas</a></li>
+      <li><a href="contacto">Contacto</a></li>
+    </ul>
+    <a href="inscricao" class="join-btn">Inscrever-se</a>
+  </nav>
+
+  <!-- Menu Mobile (hambúrguer) -->
+  <button class="menu-btn" aria-label="Abrir menu">
+    <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
+  </button>
+</header>
+
+<!-- ===== Navegação Mobile ===== -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-header">
+    <a href="index.html">
+      <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+    </a>
+    <button class="close-menu" aria-label="Fechar menu">
+      <img src="assets/icons/fecharmenu.png" alt="" />
+    </button>
+  </div>
+
+  <ul class="mobile-nav-links">
+    <li><a href="index">Início</a></li>
+    <li><a href="sobre">Quem Somos</a></li>
+    <li><a href="index.html#courses-section">Cursos e Workshops</a></li>
+    <li><a href="index.html#impact-section">Impacto Social</a></li>
+    <li><a href="contacto">Contacto</a></li>
+  </ul>
+
+  <a href="inscricao" class="join-btn">Inscrever-se no Workshop</a>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main class="container main-grid">
+  <div class="certificados-container">
+    <h1 class="titulo"><span class="destaque">Verifique o seu Certificado</span></h1>
+    <p class="subtitulo">Verifique a autenticidade do seu certificado inserindo o código abaixo.</p>
+
+    <div class="form-box">
+      <label for="codigo">Introduza o código do certificado:</label>
+      <input type="text" id="codigo" placeholder="Ex: CON-WS1-2025-xx-xxx">
+      <button id="verificar">Verificar</button>
+    </div>
+
+    <section id="resultado" class="resultado"></section>
+  </div>
+</main>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="footer-legal">
+    <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
+    <div class="footer-links">
+      <a href="#">Política de Privacidade</a>
+      <span class="separator">|</span>
+      <a href="#">Termos de Uso</a>
+    </div>
+    <p class="footer-creditos">
+      Desenvolvido por <strong>
+        <a href="https://facebook.com/ContornosDesigns" target="_blank" rel="noopener noreferrer">
+          Contornos Designs
+        </a>
+      </strong>
+    </p>
+  </div>
+</footer>
+
+<!-- JS -->
+<script src="js/base.js"></script>
+<script src="js/certificados.js"></script>
+</body>
+</html>

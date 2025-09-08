@@ -1,0 +1,175 @@
+   /* .container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 1rem;
+    text-align: center;
+    }
+
+    .form-box {
+    margin-bottom: 2rem;
+    }
+
+    #codigo {
+    padding: 0.6rem;
+    width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    }
+
+    button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--primary-color, #0055aa);
+    color: #fff;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    }
+
+    button:hover {
+    background-color: var(--primary-dark, #004080);
+    }
+
+    .resultado {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f9f9f9;
+    text-align: left;
+    display: none;
+    }
+
+    .resultado.sucesso {
+    border: 1px solid green;
+    }
+
+    .resultado.erro {
+    border: 1px solid red;
+    }
+
+   /* .resultado img {
+    height: 60px;   /* escolhe o tamanho que fica equilibrado 
+    width: auto;    /* mantém a proporção original 
+    margin-right: 1rem;
+    }
+
+
+.logos {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* garante alinhamento vertical central 
+  gap: 1rem;
+}
+
+
+.logos img {
+  max-height: 70px;
+  object-fit: contain;
+}
+
+.logos img.kectil {
+  min-width: 120px;  /* dá mais presença 
+  max-height: 100px;
+}
+
+*/
+
+    .container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 1rem;
+    text-align: center;
+    }
+
+    .form-box {
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+    }
+
+    #codigo {
+    padding: 0.6rem;
+    width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    }
+
+    button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--primary-color, #0055aa);
+    color: #fff;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    }
+
+    button:hover {
+    background-color: var(--primary-dark, #004080);
+    }
+
+
+    .resultado {
+    margin-top: 2rem;
+    padding: 2rem;
+    border-radius: 12px;
+    background: var(--gray-50); /* mais alinhado com tua paleta */
+    text-align: left;
+    display: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .resultado.sucesso {
+    border: 2px solid var(--green);
+    }
+
+    .resultado.erro {
+    border: 2px solid red;
+    background: #fff0f0;
+    }
+
+    .resultado h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: var(--blue-dark);
+    }
+
+    .resultado p {
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--gray-700);
+    }
+
+    .resultado .nota {
+    margin-top: 1.2rem;
+    font-style: italic;
+    font-size: 0.9rem;
+    text-align: center;
+    color: var(--blue-dark);
+    }
+
+    .logos {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    }
+
+    .logos img {
+    max-height: 70px;
+    object-fit: contain;
+    }
+
+    .logos img.kectil {
+    min-width: 130px;   /* reforça a presença */
+    max-height: 100px;
+    }
+
+
+
+
+
+
+
+
