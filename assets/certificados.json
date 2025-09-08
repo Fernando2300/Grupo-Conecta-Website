@@ -197,9 +197,9 @@
         "duracao": "2 horas",
         "plataforma": "Zoom"
     },
-    {
+        {
         "codigo": "CON-WS1-2025-08-023",
-        "nome": "Sture Paulo Miguel Pepeca",
+        "nome": "Stelvia Manuel",
         "workshop": "Empregabilidade Jovem: Oportunidades e Desafios no Mercado de Trabalho Actual",
         "orador": "Estêvão César",
         "data": "10/08/2025",
@@ -208,6 +208,15 @@
     },
     {
         "codigo": "CON-WS1-2025-08-024",
+        "nome": "Sture Paulo Miguel Pepeca",
+        "workshop": "Empregabilidade Jovem: Oportunidades e Desafios no Mercado de Trabalho Actual",
+        "orador": "Estêvão César",
+        "data": "10/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS1-2025-08-025",
         "nome": "Victorino Miapia",
         "workshop": "Empregabilidade Jovem: Oportunidades e Desafios no Mercado de Trabalho Actual",
         "orador": "Estêvão César",
