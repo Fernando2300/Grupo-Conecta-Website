@@ -223,5 +223,453 @@
         "data": "10/08/2025",
         "duracao": "2 horas",
         "plataforma": "Zoom"
+    },
+
+    {
+        "codigo": "CON-WS2-2025-08-001",
+        "nome": "Adelino Eurico",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-002",
+        "nome": "Adriano Chilundulo",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-003",
+        "nome": "Alexandre Tchacato Francisco Correia",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-004",
+        "nome": "António Veríssimo Muschilunda",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-005",
+        "nome": "Augusta Nassoma Cabeto",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-006",
+        "nome": "Bunga Pedro João",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-007",
+        "nome": "Cleommenza Guli",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-008",
+        "nome": "Edinelo dos Santos",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-009",
+        "nome": "Emília Namongue Calima",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-010",
+        "nome": "Estêvão César",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-011",
+        "nome": "Fernando Masso",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-012",
+        "nome": "Florentina Hortência Sacotingo Sachitue",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-013",
+        "nome": "Gabriel Miro Praia",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-014",
+        "nome": "Gabriel Siyovola Canhala",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-015",
+        "nome": "Géssica Andrade",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-016",
+        "nome": "Jonas Zinga",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-017",
+        "nome": "José Cachipala",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-018",
+        "nome": "Justina Mbuandua",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-019",
+        "nome": "Narciso Sacapanga",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-020",
+        "nome": "Teresa Lino Sacombelo",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-021",
+        "nome": "Vasco Caianda Chipilica",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS2-2025-08-022",
+        "nome": "Vivaldo Torres Aurélio",
+        "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+        "orador": "Feliciano Filjo Manuel",
+        "data": "17/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+
+
+
+
+        
+    {
+        "codigo": "CON-WS3-2025-08-001",
+        "nome": "Adolfo Capraia Móises Martinho",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-002",
+        "nome": "Alcino Jacinto",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-003",
+        "nome": "Bunga Pedro João",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-004",
+        "nome": "Carlos Kimbundo de Almeida Alberto",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-005",
+        "nome": "Cristina Leonardo",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-006",
+        "nome": "Edinelo Dos Santos",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-007",
+        "nome": "Inocêncio Francisco Domingos",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-008",
+        "nome": "Mário Manico",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-009",
+        "nome": "Nemesia Sebastião Macanzo Quipaca",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-010",
+        "nome": "Paulo Vinícius Agostinho Chiuca",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-011",
+        "nome": "Serafina José",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS3-2025-08-012",
+        "nome": "Stelvia Manuel",
+        "workshop": "Finanças para Negócios: O quê necessito saber durante a criação e gestão do meu negócio?",
+        "orador": "Joel João Catuca Neves",
+        "data": "24/08/2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+
+
+
+
+
+        
+    {
+        "codigo": "CON-WS4-2025-08-001",
+        "nome": "Adelino Eurico",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-002",
+        "nome": "Adriana Olívia Luísa",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-003",
+        "nome": "Albertina Joaquim",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-004",
+        "nome": "Américo Madureira Júlio Marcelino",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-005",
+        "nome": "Augusta Nassoma Cabeto",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-006",
+        "nome": "Bunga Pedro João",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-007",
+        "nome": "Edinelo Dos Santos",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-008",
+        "nome": "Eligelson José Camalata",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-009",
+        "nome": "Elizabeth Victoria Clemente Rafael",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-010",
+        "nome": "Emília Calima",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-011",
+        "nome": "Gelson Rafael (Elizabete Rafael)",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-012",
+        "nome": "Inocêncio Firmino de Almeida Dunguionga",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-013",
+        "nome": "Romilson Gouveia Sangolo Lucas",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    },
+    {
+        "codigo": "CON-WS4-2025-08-014",
+        "nome": "Stelvia Manuel",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
     }
-]
+
+    
+    ]
+
+
