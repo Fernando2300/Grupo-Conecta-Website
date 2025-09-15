@@ -55,9 +55,9 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: " O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+      title: "Novas Didácticas no Século XXI: Como Ensinar para uma Juventude em Constante Mudança",
       description:
-        "Descubra como a língua inglesa pode abrir portas para oportunidades globais e impulsionar a sua carreira profissional.",
+        "Descubra metodologias de ensino inovadoras para engajar estudantes e preparar jovens para o futuro.",
       image: "assets/images/workshop.jpg",
       buttonText: //"Indisponível",
         'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',

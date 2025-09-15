@@ -13,7 +13,7 @@ body {
     width: 90%;
     max-width: 1200px;
     margin: auto;
-    padding: 20px 0;
+    padding: 5px 0;
 } 
 
 /* Header */
@@ -220,8 +220,8 @@ body {
 .btn-destaque {
     width: 100%;
     padding: 0.9rem;
-   /* background-color: #a0c334;*/
-        background-color: darkred;  /* Inscrições Encerradas*/
+    background-color: #a0c334;
+      /*  background-color: darkred;*/  /* Inscrições Encerradas*/
     color: white;
     font-weight: bold;
     border: none;
@@ -232,7 +232,7 @@ body {
 }
 
 .btn-destaque:hover {
-    /*background-color: #35a277;*/ /*Inscrições Encerradas*/
+    background-color: #35a277; /*Inscrições Encerradas*/
     /*#8aa92a*/
 }
 
