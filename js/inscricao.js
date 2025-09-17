@@ -7,6 +7,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const valorBtns = document.querySelectorAll(".valor-btn");
   const loading = document.getElementById("loading");
 
+    // ✅ Inicializa intl-tel-input no campo telefone
+  const inputTelefone = document.getElementById("telefone");
+  const iti = window.intlTelInput(inputTelefone, {
+    initialCountry: "ao", // Angola como predefinido
+    preferredCountries: ["ao", "br", "pt"], // lista de destaque
+    separateDialCode: true, // mostra o código separado
+    utilsScript:
+      "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
+  });
+
+
 
   // ✅ Exibe mensagem de erro no bloco abaixo do formulário
 
@@ -69,7 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ Declare as variáveis logo no início
     const nome = document.getElementById("nome").value.trim();
-    const telefone = document.getElementById("telefone").value.trim();
+    //const telefone = document.getElementById("telefone").value.trim();
+    const telefone = iti.getNumber().trim(); // número completo com código do país
     const valor = parseInt(valorInput.value);
     const metodo = [...metodoRadios].find((r) => r.checked)?.value;
     const email = document.getElementById("email")?.value.trim();
@@ -107,13 +119,22 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    if (!telefone) {
+    /*if (!telefone) {
       mostrarErroInline(
         document.getElementById("telefone"),
         "Por favor, insira o número de telefone."
       );
       return;
+    }*/
+
+    if (!iti.isValidNumber()) {
+      mostrarErroInline(
+        document.getElementById("telefone"),
+        "Por favor, insira um número de telefone válido."
+      );
+      return;
     }
+
 
     if (isNaN(valor) || valor < 500) {
       mostrarErroInline(
