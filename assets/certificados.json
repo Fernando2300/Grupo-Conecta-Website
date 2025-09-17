@@ -254,7 +254,7 @@
     },
     {
         "codigo": "CON-WS2-2025-08-004",
-        "nome": "António Veríssimo Muschilunda",
+        "nome": "António Veríssimo Muachilunda",
         "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
         "orador": "Feliciano Filjo Manuel",
         "data": "17/08/2025",
@@ -380,7 +380,7 @@
     },
     {
         "codigo": "CON-WS2-2025-08-018",
-        "nome": "Justina Mbuandua",
+        "nome": "Justina Mbandua",
         "workshop": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
         "orador": "Feliciano Filjo Manuel",
         "data": "17/08/2025",
@@ -662,6 +662,16 @@
     {
         "codigo": "CON-WS4-2025-08-014",
         "nome": "Stelvia Manuel",
+        "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
+        "orador": "Mr. Chipunji Jamba",
+        "data": "31 de Agosto 2025",
+        "duracao": "2 horas",
+        "plataforma": "Zoom"
+    }
+
+        {
+        "codigo": "CON-WS4-2025-08-015",
+        "nome": "Justina Mbandua",
         "workshop": "O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens",
         "orador": "Mr. Chipunji Jamba",
         "data": "31 de Agosto 2025",
