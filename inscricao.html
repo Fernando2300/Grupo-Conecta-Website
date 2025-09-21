@@ -28,6 +28,10 @@
     </script>
     <!-- ✅ Fim Google Analytics -->
 
+    <!-- ✅ intl-tel-input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css" />
+
+
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/style-inscricao.css" />
 </head>
@@ -148,8 +152,13 @@
         <label for="nome">Nome Completo</label>
         <input type="text" id="nome" name="nome" />
 
+        <!-- <label for="telefone">Telefone (WhatsApp)</label>
+        <input type="tel" id="telefone" name="telefone"/> -->
+
         <label for="telefone">Telefone (WhatsApp)</label>
-        <input type="tel" id="telefone" name="telefone"/>
+        <input type="tel" id="telefone" name="telefone" class="telefone-input" />
+        <!-- ALTERAR AQUI: adicionada class -->
+
 
         <label>Valor a Contribuir (mínimo 500kz)</label>
         <div class="valor-botoes">
@@ -345,5 +354,8 @@ Contornos Designs
 
   <script src="js/base.js"></script>
   <script src="js/inscricao.js"></script>
+  <!-- ✅ intl-tel-input JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
+
 </body>
 </html>
