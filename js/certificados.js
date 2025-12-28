@@ -50,7 +50,7 @@ document.getElementById("verificar").addEventListener("click", async () => {
       else if (codigo.startsWith("CON-MOD")) {
         detalhes = `
           <p><strong>Função:</strong> ${certificado.funcao}</p>
-          <p><strong>Evento:</strong> ${certificado.evento}</p>
+          <p><strong>Tema:</strong> ${certificado.evento}</p>
           <p><strong>Edição:</strong> ${certificado.edicao}</p>
           <p><strong>Data:</strong> ${certificado.data}</p>
         `;
