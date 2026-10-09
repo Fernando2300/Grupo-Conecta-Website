@@ -96,44 +96,37 @@
     <section class="workshop-card">
       
 
-      <h2 class="workshop-title">Novas Didácticas no Século XXI: Como Ensinar para uma Juventude em Constante Mudança</h2>
-      <picture>
-        <source srcset="assets/images/workshop.webp" type="image/webp" />
-        <img src="assets/images/" alt="Workshop-Grupo Conecta" class="workshop-img" />
-      </picture>
-    
-      <!--<h2 class="workshop-title">O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens</h2>-->
-      <p class="workshop-descricao">
-          Participe no workshop com o <strong>Doutor Osvaldo Mame</strong> e 
-          descubra novas formas de ensinar para uma juventude em constante 
-          mudança. Uma sessão inspiradora sobre inovação pedagógica, estratégias
-          modernas e os desafios da educação no século XXI.
-      </p>
-    
+      <h2 class="workshop-title" id="ws-tema">A carregar…</h2>
+
+      <img id="ws-imagem" class="workshop-img" alt="Workshop - Grupo Conecta" hidden />
+      <div id="ws-imagem-vazia" class="workshop-img-vazia" hidden>Imagem do workshop em breve</div>
+
+      <p class="workshop-descricao" id="ws-descricao"></p>
+
       <div class="info-box">
         <div class="info-item">
           <span class="icon">📅</span>
           <div>
             <strong>Data</strong><br />
-            21 de Setembro, 2025
+            <span id="ws-data">—</span>
           </div>
         </div>
         <div class="info-item">
           <span class="icon">🕒</span>
           <div>
             <strong>Horário</strong><br />
-            16h00 - 17h45
+            <span id="ws-horario">—</span>
           </div>
         </div>
         <div class="info-item">
           <span class="icon">📍</span>
           <div>
             <strong>Local</strong><br />
-            Online – Zoom
+            <span id="ws-local">—</span>
           </div>
         </div>
       </div>
-    
+
       <div class="aprendizado-box" hidden>
         <h4>O que você vai aprender:</h4>
         <ul>
@@ -186,7 +179,7 @@
 
       <!--<button type="submit" class="btn-destaque">Confirmar Inscrição</button>-->
           
-        <button type="" class="btn-destaque">Inscrições Encerradas</button> <!--Inscrições Encerradas-->
+        <button type="submit" id="btn-inscricao" class="btn-destaque" disabled>A carregar…</button>
       </form>
 
       <div id="erro-global" class="erro-global"></div> <!-- Para mensagem de Erros-->
@@ -218,8 +211,8 @@
   <img src="assets/images/unitelmoney_logo.jpg" alt="Logo Unitel Money" class="logo-unitel" />
 
     <div class="pagamento-dados">
-      <p><strong>Entidade:</strong> 00930 <span class="copiar-texto" data-valor="00930" id="copiar-entidade">[copiar]</span></p>
-      <p><strong>Referência:</strong> 937082461 <span class="copiar-texto" data-valor="937082461" id="copiar-referencia">[copiar]</span></p>
+      <p><strong>Entidade:</strong> <span id="pg-entidade">00930</span> <span class="copiar-texto" data-valor="00930" id="copiar-entidade">[copiar]</span></p>
+      <p><strong>Referência:</strong> <span id="pg-referencia">937082461</span> <span class="copiar-texto" data-valor="937082461" id="copiar-referencia">[copiar]</span></p>
       <p class="nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
     </div>
 
@@ -353,6 +346,7 @@ Contornos Designs
     </footer>
 
   <script src="js/base.js"></script>
+  <script src="js/data.js"></script>
   <script src="js/inscricao.js"></script>
   <!-- ✅ intl-tel-input JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>

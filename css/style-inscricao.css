@@ -832,3 +832,35 @@ input[type="email"] {
         display: block !important;
     }
 }
+
+/* ===== Dados dinâmicos (data/site.json) ===== */
+
+.workshop-img-vazia {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background-color: #E6ECF0;
+    color: #005D8F;
+    font-weight: 600;
+}
+
+.workshop-img-vazia[hidden],
+.workshop-img[hidden] {
+    display: none;
+}
+
+.btn-destaque.is-open {
+    background-color: #a0c334;
+}
+
+.btn-destaque.is-open:hover {
+    background-color: #8aa92a;
+}
+
+.btn-destaque:disabled {
+    cursor: not-allowed;
+}
