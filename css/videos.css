@@ -1,0 +1,166 @@
+/* ============================================================
+   Secção "Workshops gravados"
+   Usa as variáveis de cor definidas em base.css
+   ============================================================ */
+
+.videos-section {
+    padding: 2.5rem 1rem;
+    background-color: var(--white);
+    border-top: 1px solid var(--light-gray-blue);
+}
+
+.videos-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.videos-title {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.videos-subtitle {
+    text-align: center;
+}
+
+.videos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* ----- Cartão ----- */
+.video-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.video-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 1rem 1.25rem 1.25rem;
+    border-left: 0.25rem solid var(--blue-heading);
+    flex: 1;
+}
+
+.video-card-numero {
+    font-size: var(--small-text);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green);
+}
+
+.video-card-titulo {
+    font-size: 1.0625rem;
+    line-height: 1.4;
+}
+
+.video-card-info {
+    margin-top: auto;
+    font-size: var(--small-text);
+    color: var(--gray-700);
+}
+
+/* ----- Miniatura e player ----- */
+.video-thumb,
+.video-iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+}
+
+.video-thumb {
+    position: relative;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    background-color: var(--blue-dark);
+}
+
+.video-thumb-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.video-thumb:hover .video-thumb-img {
+    transform: scale(1.04);
+}
+
+/* Botão de play desenhado em CSS (sem emojis nem imagens) */
+.video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3.5rem;
+    height: 3.5rem;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: var(--green);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+.video-play::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-30%, -50%);
+    border-style: solid;
+    border-width: 0.6rem 0 0.6rem 1rem;
+    border-color: transparent transparent transparent var(--white);
+}
+
+.video-thumb:hover .video-play {
+    background-color: #8aa92a;
+}
+
+.video-thumb:focus-visible {
+    outline: 3px solid var(--blue-heading);
+    outline-offset: -3px;
+}
+
+/* ----- Botão "Ver todos" (mesmo estilo de "Ver todos os programas") ----- */
+.videos-actions {
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.videos-ver-todos {
+    display: inline-block;
+    color: var(--blue-heading);
+    border: 2px solid var(--blue-heading);
+    background-color: transparent;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.videos-ver-todos:hover {
+    background-color: var(--blue-heading);
+    color: var(--white);
+}
+
+@media (min-width: 768px) {
+    .videos-section {
+        padding: 3rem 2rem;
+    }
+
+    .videos-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
