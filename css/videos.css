@@ -17,6 +17,9 @@
 .videos-title {
     margin-bottom: 1rem;
     text-align: center;
+    font-size: var(--heading-2);
+    font-weight: 700;
+    color: var(--blue-heading);
 }
 
 .videos-subtitle {
