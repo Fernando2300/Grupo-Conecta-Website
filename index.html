@@ -32,6 +32,9 @@
     <!--<link rel="stylesheet" href="style.css">-->
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/style-index.css"> 
+    <link rel="stylesheet" href="css/videos.css">
+    <link rel="stylesheet" href="css/sacolas.css">
+    <link rel="stylesheet" href="css/contribuir.css">
 
 
     <!-- Google Fonts: Inter (300, 400, 500, 600, 700, 800) -->
@@ -53,12 +56,12 @@
     <!-- Menu de navegação para desktop -->
   <nav class="desktop-nav">
     <ul class="desktop-nav-links">
-      <li><a href="index">Início</a></li>
-      <li><a href="sobre">Quem Somos</a></li>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="sobre.html">Quem Somos</a></li>
       <li><a href="#courses-section">Programas</a></li>
-      <li><a href="contacto">Contacto</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
     </ul>
-    <a href="inscricao" class="join-btn">Inscrever-se</a>
+    <a href="inscricao.html" class="join-btn">Inscrever-se</a>
   </nav>
 
   <!-- Botão do menu mobile (hambúrguer) -->
@@ -83,15 +86,15 @@
 
   <!-- Links do menu -->
   <ul class="mobile-nav-links">
-    <li><a href="index">Início</a></li>
-    <li><a href="sobre">Quem Somos</a></li>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
     <li><a href="#courses-section">Cursos e Workshops</a></li>
     <li><a href="#impact-section">Impacto Social</a></li>
-    <li><a href="contacto">Contacto</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
   </ul>
 
   <!-- Botão de destaque no fim do menu -->
-  <a href="inscricao" class="join-btn">Inscrever-se no Workshop</a>
+  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
 </nav>
 
 
@@ -136,6 +139,12 @@
                 <a href="#courses-section" class="see-all-button">Ver todos os programas</a>
             </div>
         </section>
+
+        <!-- Workshops gravados (dados em data/site.json) -->
+        <section class="videos-section" id="videos-section" data-videos-limite="3"></section>
+
+        <!-- Sacolas Eco Conecta (dados em data/site.json) -->
+        <section class="sacolas-section" id="sacolas-section" data-sacolas="completa"></section>
 
         <!-- Impact Section -->
         <section class="impact-section" id="impact-section">
@@ -211,6 +220,9 @@ Contornos Designs
 
 <script src="js/base.js"></script>
 <script src="js/data.js"></script>
+<script src="js/sacolas.js"></script>
+<script src="js/videos.js"></script>
+<script src="js/contribuir.js"></script>
 <script src="js/index.js"></script>
 </body>
 

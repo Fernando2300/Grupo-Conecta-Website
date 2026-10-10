@@ -1,0 +1,261 @@
+/* ============================================================
+   Secção "Sacolas Eco Conecta"
+   Usa as variáveis de cor definidas em base.css
+   ============================================================ */
+
+.sacolas-section {
+    padding: 2.5rem 1rem;
+    background-color: var(--gray-50);
+}
+
+.sacolas-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1.5rem;
+    /* telemóvel: tudo numa coluna, nesta ordem */
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "media"
+        "texto"
+        "progresso"
+        "stats"
+        "acoes";
+}
+
+/* ----- Imagem ----- */
+.sacolas-media {
+    margin: 0;
+}
+
+.sacolas-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 0.75rem;
+}
+
+/* ----- Texto ----- */
+.sacolas-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: var(--small-text);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green);
+}
+
+.sacolas-title {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.sacolas-texto p {
+    margin-bottom: 0.75rem;
+    font-size: var(--body-text);
+    line-height: 1.6;
+}
+
+.sacolas-texto .sacolas-lema {
+    font-weight: 700;
+    color: var(--blue-dark);
+}
+
+/* ----- Progresso ----- */
+.sacolas-progresso {
+    background-color: var(--white);
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--green);
+    padding: 1.25rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.sacolas-progresso .sacolas-lote {
+    margin-bottom: 0.75rem;
+    font-size: var(--body-text);
+    font-weight: 700;
+    color: var(--blue-dark);
+}
+
+.sacolas-valores {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.sacolas-valores strong {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: var(--blue-heading);
+}
+
+.sacolas-rotulo {
+    display: block;
+    font-size: var(--small-text);
+    color: var(--gray-700);
+}
+
+.sacolas-dir {
+    text-align: right;
+}
+
+.sacolas-barra {
+    height: 0.875rem;
+    border-radius: 999px;
+    background-color: var(--light-gray-blue);
+    overflow: hidden;
+}
+
+.sacolas-barra span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background-color: var(--green);
+    transition: width 0.8s ease;
+}
+
+.sacolas-progresso .sacolas-legenda {
+    margin-top: 0.625rem;
+    font-size: var(--small-text);
+}
+
+/* ----- Números de impacto ----- */
+.sacolas-stats {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* telemóvel: 2 colunas */
+    gap: 0.75rem;
+}
+
+.sacolas-stats li {
+    background-color: var(--white);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.sacolas-stats strong {
+    display: block;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    color: var(--blue-heading);
+}
+
+.sacolas-stats span {
+    font-size: var(--small-text);
+    color: var(--gray-700);
+}
+
+/* ----- Certificado, botão e transparência ----- */
+.sacolas-acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+.sacolas-confianca a {
+    color: var(--blue-heading);
+    font-weight: 600;
+    margin-left: 0.25rem;
+}
+
+.sacolas-botoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+@media (min-width: 480px) {
+    .sacolas-botoes {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+.sacolas-botao-sec {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    border: 2px solid var(--blue-heading);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--blue-heading);
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sacolas-botao-sec:hover {
+    background-color: var(--blue-heading);
+    color: var(--white);
+}
+
+.sacolas-botao {
+    display: inline-block;
+    background-color: var(--green);
+    color: var(--white);
+    padding: 0.875rem 2.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.sacolas-botao:hover {
+    background-color: #8aa92a;
+}
+
+.sacolas-acoes .sacolas-confianca {
+    max-width: 52ch;
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 768px) {
+    .sacolas-section {
+        padding: 3.5rem 2rem;
+    }
+
+    .sacolas-container {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr auto auto;
+        gap: 1.5rem 2.5rem;
+        grid-template-areas:
+            "media texto"
+            "progresso texto"
+            "stats stats"
+            "acoes acoes";
+    }
+
+    .sacolas-texto {
+        align-self: center;
+    }
+
+    .sacolas-stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ===== Versão compacta (página de inscrição) ===== */
+.sacolas-compacta .sacolas-stats strong {
+    font-size: 1.375rem;
+}
+
+@media (min-width: 768px) {
+    .sacolas-compacta {
+        grid-template-areas:
+            "media texto"
+            "progresso texto"
+            "stats stats"
+            "acoes acoes";
+    }
+}
