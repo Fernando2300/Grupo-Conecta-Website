@@ -1,7 +1,8 @@
 /* ============================================================
    videos.js — secção "Workshops gravados"
    Lê os workshops de data/site.json (campo "video") e mostra
-   miniaturas do YouTube. O player só é carregado ao clicar.
+   miniaturas do YouTube. Ao clicar, o vídeo abre no YouTube
+   (num novo separador), sem player dentro do site.
 
    Uso no HTML:
    <section class="videos-section" id="videos-section"
@@ -36,11 +37,13 @@
     return el;
   }
 
-  // Miniatura com botão de play; ao clicar, troca pelo player
+  // Miniatura com botão de play; ao clicar, abre o vídeo no YouTube
   function criarPlayer(video) {
-    const botao = criar("button", "video-thumb");
-    botao.type = "button";
-    botao.setAttribute("aria-label", "Reproduzir vídeo: " + video.tema);
+    const botao = criar("a", "video-thumb");
+    botao.href = "https://www.youtube.com/watch?v=" + video.id;
+    botao.target = "_blank";
+    botao.rel = "noopener";
+    botao.setAttribute("aria-label", "Ver no YouTube: " + video.tema);
 
     const img = criar("img", "video-thumb-img");
     img.alt = "";
@@ -64,20 +67,6 @@
     });
 
     botao.append(img, criar("span", "video-play"));
-
-    botao.addEventListener("click", () => {
-      const iframe = document.createElement("iframe");
-      iframe.className = "video-iframe";
-      iframe.src =
-        "https://www.youtube-nocookie.com/embed/" +
-        video.id +
-        "?autoplay=1&rel=0";
-      iframe.title = video.tema;
-      iframe.allow =
-        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen";
-      iframe.allowFullscreen = true;
-      botao.replaceWith(iframe);
-    });
 
     return botao;
   }
@@ -132,7 +121,11 @@
     const visiveis = todos.slice(0, limite);
 
     const recipiente = criar("div", "videos-container");
-    recipiente.appendChild(criar("h2", "videos-title", "Workshops gravados"));
+    // Na página dedicada o título é o principal (h1); na página inicial é h2
+    const tagTitulo = limiteAttr === "todos" ? "h1" : "h2";
+    recipiente.appendChild(
+      criar(tagTitulo, "videos-title", "Workshops gravados"),
+    );
     recipiente.appendChild(
       criar(
         "p",
