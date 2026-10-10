@@ -1,150 +1,197 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <!-- Apple iOS Touch Icon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <!-- Apple iOS Touch Icon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/icons/apple-touch-icon.png"
+    />
 
     <!-- Favicons padrão -->
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/icons/favicon-16x16.png"
+    />
 
     <!-- Manifest (para PWA ou atalho Android) -->
-    <link rel="manifest" href="assets/icons/site.webmanifest">
+    <link rel="manifest" href="assets/icons/site.webmanifest" />
 
-  <title>Contacto</title>
+    <title>Contacto</title>
 
-          <!-- ✅ Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHPQD4KRT1"></script>
+    <!-- ✅ Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ZHPQD4KRT1"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-ZHPQD4KRT1');
+      gtag("config", "G-ZHPQD4KRT1");
     </script>
     <!-- ✅ Fim Google Analytics -->
 
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/style-contacto.css" />
-</head>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/style-contacto.css" />
+  </head>
 
-<body>
-
-<!-- ===== Header ===== -->
-<header class="header">
-  <!-- Logo à esquerda (visível no desktop e mobile) -->
-  <a href="index.html">
-    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
-  </a>
-
-      <!-- Menu de navegação para desktop -->
-  <nav class="desktop-nav">
-    <ul class="desktop-nav-links">
-      <li><a href="index">Início</a></li>
-      <li><a href="sobre">Quem Somos</a></li>
-      <li><a href="index.html#courses-section">Programas</a></li>
-      <li><a href="contacto">Contacto</a></li>
-    </ul>
-    <a href="inscricao" class="join-btn">Inscrever-se</a>
-  </nav>
-
-  <!-- Botão do menu mobile (hambúrguer) -->
-  <button class="menu-btn" aria-label="Abrir menu">
-    <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
-  </button>
-</header>
-<!-- ===== Mobile Navigation ===== -->
-<nav class="mobile-nav">
-  <div class="mobile-nav-header">
-    <!-- Logo centralizado no menu -->
-     <a href="index.html">
-    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+  <body>
+    <!-- ===== Header ===== -->
+    <header class="header">
+      <!-- Logo à esquerda (visível no desktop e mobile) -->
+      <a href="index.html">
+        <img
+          src="assets/icons/logoblue.svg"
+          alt="Grupo Conecta logo"
+          class="logo"
+        />
       </a>
 
-    <!-- Botão para fechar o menu -->
-    <button class="close-menu" aria-label="Fechar menu">
-      <img src="assets/icons/fecharmenu.png" alt="" />
-    </button>
-  </div>
+      <!-- Menu de navegação para desktop -->
+      <nav class="desktop-nav">
+        <ul class="desktop-nav-links">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="sobre.html">Quem Somos</a></li>
+          <li><a href="index.html#courses-section">Programas</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <a href="inscricao.html" class="join-btn">Inscrever-se</a>
+      </nav>
 
-  <!-- Links do menu -->
-  <ul class="mobile-nav-links">
-    <li><a href="index">Início</a></li>
-    <li><a href="sobre">Quem Somos</a></li>
-    <li><a href="index.html#courses-section">Cursos e Workshops</a></li>
-    <li><a href="index.html#impact-section">Impacto Social</a></li>
-    <li><a href="contacto">Contacto</a></li>
-  </ul>
-
-  <!-- Botão de destaque no fim do menu -->
-  <a href="inscricao" class="join-btn">Inscrever-se no Workshop</a>
-</nav>
-
-
-<main class="contacto-container main-grid">
-  <!-- COLUNA ESQUERDA: Título + formulário -->
-  <div class="contacto-esquerda">
-    <h1 class="titulo"><span class="destaque">Fale Connosco</span></h1>
-    <p class="subtitulo">
-      Estamos disponíveis para esclarecer dúvidas ou receber sugestões!
-    </p>
-
-<form class="formulario-contacto" id="form-contato">
-  <!-- Campos do formulário -->
-  <input type="text" name="nome" placeholder="Nome completo" required />
-  <input type="email" name="email" placeholder="Email" required />
-  <input type="text" name="assunto" placeholder="Assunto" required />
-  <textarea name="mensagem" placeholder="Mensagem" rows="4" required></textarea>
-
-  <!-- Campos ocultos opcionais -->
-  <input type="hidden" name="_subject" value="Nova mensagem de contacto do site Grupo Conecta">
-  <input type="hidden" name="_captcha" value="false">
-
-  <button type="submit" class="btn-submeter">Enviar</button>
-</form>
-
-<!-- Pop-up de sucesso -->
-<div id="popup-sucesso" class="popup-sucesso hidden">
-  ✅ Mensagem enviada com sucesso!
-</div>
-
-  </div>
-
-  <!-- COLUNA DIREITA: Imagem + redes sociais -->
-  <div class="contacto-direita">
-    <img src="assets/images/imagem-contacto.jpg" alt="Pessoas reunidas em escritório" class="imagem-contacto" />
-
-    <div class="contacto-alternativo">
-      <p>Outras formas de contato</p>
-      <div class="redes-sociais">
-        <a href="https://wa.me/244935269451?text=Olá%2C%20gostaria%20de%20receber%20uma%20informação" class="social-link" target="_blank">
-          <img src="assets/icons/Whatsapp-png.svg" alt="WhatsApp" />
-          <span>WhatsApp</span>
+      <!-- Botão do menu mobile (hambúrguer) -->
+      <button class="menu-btn" aria-label="Abrir menu">
+        <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
+      </button>
+    </header>
+    <!-- ===== Mobile Navigation ===== -->
+    <nav class="mobile-nav">
+      <div class="mobile-nav-header">
+        <!-- Logo centralizado no menu -->
+        <a href="index.html">
+          <img
+            src="assets/icons/logoblue.svg"
+            alt="Grupo Conecta logo"
+            class="logo"
+          />
         </a>
-        <a href="https://www.facebook.com/profile.php?id=61565351349400" class="social-link" target="_blank">
-          <img src="assets/icons/Facebookpng.svg" alt="Facebook" />
-          <span>Facebook</span>
-        </a>
-        <a href="https://www.linkedin.com/company/grupoconecta-angola/" class="social-link" target="_blank">
-          <img src="assets/icons/LinkedInpng.svg" alt="LinkedIn" />
-          <span>LinkedIn</span>
-        </a>
-        <a href="#" class="social-link" target="_blank">
-          <img src="assets/icons/Twitterpng.svg" alt="X" />
-          <span>X</span>
-        </a>
+
+        <!-- Botão para fechar o menu -->
+        <button class="close-menu" aria-label="Fechar menu">
+          <img src="assets/icons/fecharmenu.png" alt="" />
+        </button>
       </div>
-    </div>
-  </div>
-</main>
 
+      <!-- Links do menu -->
+      <ul class="mobile-nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="sobre.html">Quem Somos</a></li>
+        <li><a href="index.html#courses-section">Cursos e Workshops</a></li>
+        <li><a href="index.html#impact-section">Impacto Social</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+
+      <!-- Botão de destaque no fim do menu -->
+      <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
+    </nav>
+
+    <main class="contacto-container main-grid">
+      <!-- COLUNA ESQUERDA: Título + formulário -->
+      <div class="contacto-esquerda">
+        <h1 class="titulo"><span class="destaque">Fale Connosco</span></h1>
+        <p class="subtitulo">
+          Estamos disponíveis para esclarecer dúvidas ou receber sugestões!
+        </p>
+
+        <form class="formulario-contacto" id="form-contato">
+          <!-- Campos do formulário -->
+          <input type="text" name="nome" placeholder="Nome completo" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="text" name="assunto" placeholder="Assunto" required />
+          <textarea
+            name="mensagem"
+            placeholder="Mensagem"
+            rows="4"
+            required
+          ></textarea>
+
+          <!-- Campos ocultos opcionais -->
+          <input
+            type="hidden"
+            name="_subject"
+            value="Nova mensagem de contacto do site Grupo Conecta"
+          />
+          <input type="hidden" name="_captcha" value="false" />
+
+          <button type="submit" class="btn-submeter">Enviar</button>
+        </form>
+
+        <!-- Pop-up de sucesso -->
+        <div id="popup-sucesso" class="popup-sucesso hidden">
+          ✅ Mensagem enviada com sucesso!
+        </div>
+      </div>
+
+      <!-- COLUNA DIREITA: Imagem + redes sociais -->
+      <div class="contacto-direita">
+        <img
+          src="assets/images/imagem-contacto.jpg"
+          alt="Pessoas reunidas em escritório"
+          class="imagem-contacto"
+        />
+
+        <div class="contacto-alternativo">
+          <p>Outras formas de contato</p>
+          <div class="redes-sociais">
+            <a
+              href="https://wa.me/244935269451?text=Olá%2C%20gostaria%20de%20receber%20uma%20informação"
+              class="social-link"
+              target="_blank"
+            >
+              <img src="assets/icons/Whatsapp-png.svg" alt="WhatsApp" />
+              <span>WhatsApp</span>
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=61565351349400"
+              class="social-link"
+              target="_blank"
+            >
+              <img src="assets/icons/Facebookpng.svg" alt="Facebook" />
+              <span>Facebook</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/company/grupoconecta-angola/"
+              class="social-link"
+              target="_blank"
+            >
+              <img src="assets/icons/LinkedInpng.svg" alt="LinkedIn" />
+              <span>LinkedIn</span>
+            </a>
+            <a href="#" class="social-link" target="_blank">
+              <img src="assets/icons/Twitterpng.svg" alt="X" />
+              <span>X</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <footer>
-
-       <!--- <div class="footer-conecta">
+      <!--- <div class="footer-conecta">
             <h2 class="conecta-title">Fique conectado</h2>
             <h3>Redes Sociais</h3>
             <div class="social-icons">
@@ -163,26 +210,31 @@
 
         </div> -->
 
-        <!-- Bloco: Informações legais e créditos -->
-        <div class="footer-legal">
-            <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
+      <!-- Bloco: Informações legais e créditos -->
+      <div class="footer-legal">
+        <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
 
-            <div class="footer-links">
-                <a href="#">Política de Privacidade</a>
-                <span class="separator">|</span>
-                <a href="#">Termos de Uso</a>
-            </div>
-            <p class="footer-creditos">
-  Desenvolvido por <strong>
-  <a href="https://facebook.com/ContornosDesigns" target="_blank" rel="noopener noreferrer">
-Contornos Designs
-  </a>
-  </strong>
-</p>
-</div>
- </footer>
+        <div class="footer-links">
+          <a href="#">Política de Privacidade</a>
+          <span class="separator">|</span>
+          <a href="#">Termos de Uso</a>
+        </div>
+        <p class="footer-creditos">
+          Desenvolvido por
+          <strong>
+            <a
+              href="https://facebook.com/ContornosDesigns"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Contornos Designs
+            </a>
+          </strong>
+        </p>
+      </div>
+    </footer>
 
     <script src="js/base.js"></script>
-  <script src="js/contacto.js"></script>
-</body>
+    <script src="js/contacto.js"></script>
+  </body>
 </html>

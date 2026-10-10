@@ -1,206 +1,323 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <!-- Apple iOS Touch Icon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <!-- Apple iOS Touch Icon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/icons/apple-touch-icon.png"
+    />
 
     <!-- Favicons padrão -->
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/icons/favicon-16x16.png"
+    />
 
     <!-- Manifest (para PWA ou atalho Android) -->
-    <link rel="manifest" href="assets/icons/site.webmanifest">
+    <link rel="manifest" href="assets/icons/site.webmanifest" />
 
+    <title>Quem Somos</title>
 
-  <title>Quem Somos</title>
-
-          <!-- ✅ Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHPQD4KRT1"></script>
+    <!-- ✅ Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ZHPQD4KRT1"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-ZHPQD4KRT1');
+      gtag("config", "G-ZHPQD4KRT1");
     </script>
     <!-- ✅ Fim Google Analytics -->
 
-  <!--<link rel="stylesheet" href="css/style-sobre.css">-->
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style-sobre.css">
-</head>
-<body>
-
-<!-- ===== Header ===== -->
-<header class="header">
-  <!-- Logo à esquerda (visível no desktop e mobile) -->
-  <a href="index.html">
-    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
-  </a>
-
-        <!-- Menu de navegação para desktop -->
-  <nav class="desktop-nav">
-    <ul class="desktop-nav-links">
-      <li><a href="index">Início</a></li>
-      <li><a href="sobre">Quem Somos</a></li>
-      <li><a href="index.html#courses-section">Programas</a></li>
-      <li><a href="contacto">Contacto</a></li>
-    </ul>
-    <a href="inscricao" class="join-btn">Inscrever-se</a>
-  </nav>
-
-
-  <!-- Botão do menu mobile (hambúrguer) -->
-  <button class="menu-btn" aria-label="Abrir menu">
-    <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
-  </button>
-</header>
-
-<!-- ===== Mobile Navigation ===== -->
-<nav class="mobile-nav">
-  <div class="mobile-nav-header">
-    <!-- Logo centralizado no menu -->
-     <a href="index.html">
-    <img src="assets/icons/logoblue.svg" alt="Grupo Conecta logo" class="logo" />
+    <!--<link rel="stylesheet" href="css/style-sobre.css">-->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/style-sobre.css" />
+  </head>
+  <body>
+    <!-- ===== Header ===== -->
+    <header class="header">
+      <!-- Logo à esquerda (visível no desktop e mobile) -->
+      <a href="index.html">
+        <img
+          src="assets/icons/logoblue.svg"
+          alt="Grupo Conecta logo"
+          class="logo"
+        />
       </a>
 
-    <!-- Botão para fechar o menu -->
-    <button class="close-menu" aria-label="Fechar menu">
-      <img src="assets/icons/fecharmenu.png" alt="" />
-    </button>
-  </div>
+      <!-- Menu de navegação para desktop -->
+      <nav class="desktop-nav">
+        <ul class="desktop-nav-links">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="sobre.html">Quem Somos</a></li>
+          <li><a href="index.html#courses-section">Programas</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <a href="inscricao.html" class="join-btn">Inscrever-se</a>
+      </nav>
 
-  <!-- Links do menu -->
-  <ul class="mobile-nav-links">
-    <li><a href="index">Início</a></li>
-    <li><a href="sobre">Quem Somos</a></li>
-    <li><a href="index.html#courses-section">Cursos e Workshops</a></li>
-    <li><a href="index.html#impact-section">Impacto Social</a></li>
-    <li><a href="contacto">Contacto</a></li>
-  </ul>
+      <!-- Botão do menu mobile (hambúrguer) -->
+      <button class="menu-btn" aria-label="Abrir menu">
+        <img src="assets/icons/menu-icon.png" alt="" class="menu-icon" />
+      </button>
+    </header>
 
-  <!-- Botão de destaque no fim do menu -->
-  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
-</nav>
+    <!-- ===== Mobile Navigation ===== -->
+    <nav class="mobile-nav">
+      <div class="mobile-nav-header">
+        <!-- Logo centralizado no menu -->
+        <a href="index.html">
+          <img
+            src="assets/icons/logoblue.svg"
+            alt="Grupo Conecta logo"
+            class="logo"
+          />
+        </a>
 
+        <!-- Botão para fechar o menu -->
+        <button class="close-menu" aria-label="Fechar menu">
+          <img src="assets/icons/fecharmenu.png" alt="" />
+        </button>
+      </div>
 
-  <main class="quem-somos">
-    <section class="descricao">
-      <h2 class="quem-somos-titulo">Quem Somos</h2>
-      <div class="linha-verde"></div>
+      <!-- Links do menu -->
+      <ul class="mobile-nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="sobre.html">Quem Somos</a></li>
+        <li><a href="index.html#courses-section">Cursos e Workshops</a></li>
+        <li><a href="index.html#impact-section">Impacto Social</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+
+      <!-- Botão de destaque no fim do menu -->
+      <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
+    </nav>
+
+    <main class="quem-somos">
+      <section class="descricao">
+        <h2 class="quem-somos-titulo">Quem Somos</h2>
+        <div class="linha-verde"></div>
         <p>
-    Fundado em 2024 por cinco estudantes de Economia, o <strong>Grupo Conecta</strong> nasceu com o propósito de conectar jovens a oportunidades de aprendizagem, a líderes e profissionais das suas áreas de formação, ampliando horizontes e preparando-os para os desafios do futuro, inicialmente com foco em Economia, Finanças e áreas afins.
-  </p>
-  <p>
-    Hoje, também actuamos como uma iniciativa educacional e de consultoria voltada para capacitar jovens e profissionais, unindo desenvolvimento técnico, orientação especializada e impacto social. Nossa missão é conectar conhecimento e propósito, formando líderes prontos para inovar e transformar a sociedade.
-  </p>
-    </section>
+          Fundado em 2024 por cinco estudantes de Economia, o
+          <strong>Grupo Conecta</strong> nasceu com o propósito de conectar
+          jovens a oportunidades de aprendizagem, a líderes e profissionais das
+          suas áreas de formação, ampliando horizontes e preparando-os para os
+          desafios do futuro, inicialmente com foco em Economia, Finanças e
+          áreas afins.
+        </p>
+        <p>
+          Hoje, também actuamos como uma iniciativa educacional e de consultoria
+          voltada para capacitar jovens e profissionais, unindo desenvolvimento
+          técnico, orientação especializada e impacto social. Nossa missão é
+          conectar conhecimento e propósito, formando líderes prontos para
+          inovar e transformar a sociedade.
+        </p>
+      </section>
 
-    <h2 class="subtitulo-equipa">Direcção Geral</h2>
+      <h2 class="subtitulo-equipa">Direcção Geral</h2>
 
-    <section class="membros">
-      <!-- Membro 1 -->
-      <div class="card">
-        <img src="assets/images/Salvador_Fernando.jpg" alt="Salvador Fernando">
-        <h3>Salvador Fernando</h3>
-        <div class="redes">
-          <a href="https://www.linkedin.com/in/salvadorinaciofernando/" target="_blank"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-          <a href="https://m.facebook.com/salvador.fernando.3720/" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
-          <a href="https://x.com/salvadorfern_" target="_blank"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
+      <section class="membros">
+        <!-- Membro 1 -->
+        <div class="card">
+          <img
+            src="assets/images/Salvador_Fernando.jpg"
+            alt="Salvador Fernando"
+          />
+          <h3>Salvador Fernando</h3>
+          <div class="redes">
+            <a
+              href="https://www.linkedin.com/in/salvadorinaciofernando/"
+              target="_blank"
+              ><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"
+            /></a>
+            <a
+              href="https://m.facebook.com/salvador.fernando.3720/"
+              target="_blank"
+              ><img src="assets/icons/Facebook.svg" alt="Facebook"
+            /></a>
+            <a href="https://x.com/salvadorfern_" target="_blank"
+              ><img src="assets/icons/Twitter.svg" alt="Twitter"
+            /></a>
+          </div>
         </div>
+
+        <!-- Membro 2 -->
+        <div class="card">
+          <img
+            src="assets/images/Felix_Junior.jpg"
+            alt="Félix Júnior"
+            loading="lazy"
+          />
+          <h3>Félix Júnior</h3>
+          <div class="redes">
+            <a
+              href="https://www.linkedin.com/in/f%C3%A9lix-j%C3%BAnior-aba790254/"
+              target="_blank"
+              ><img
+                src="assets/icons/LinkedIn.svg"
+                alt="LinkedIn"
+                target="_blank"
+            /></a>
+            <a href="https://web.facebook.com/felixjunio.felix" target="_blank"
+              ><img src="assets/icons/Facebook.svg" alt="Facebook"
+            /></a>
+            <a href="https://x.com/Felix63136"
+              ><img src="assets/icons/Twitter.svg" alt="Twitter"
+            /></a>
+          </div>
+        </div>
+
+        <!-- Membro 3 -->
+        <div class="card">
+          <img
+            src="assets/images/Febe_Jamba.jpg"
+            alt="Febe Jamba"
+            loading="lazy"
+          />
+          <h3>Febe Jamba</h3>
+          <div class="redes">
+            <a
+              href="https://www.linkedin.com/in/febe-jamba-849148265/"
+              target="_blank"
+              ><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"
+            /></a>
+            <a
+              href="https://www.instagram.com/tchissolaernesto/"
+              target="_blank"
+              ><img src="assets/icons/Instagram.svg" alt="Instagram"
+            /></a>
+            <a href="#"><img src="assets/icons/Twitter.svg" alt="Twitter" /></a>
+          </div>
+        </div>
+
+        <!-- Membro 4 -->
+        <div class="card">
+          <img
+            src="assets/images/Sednilson_Maquenha.jpg"
+            alt="Sednilson Maquenha"
+            loading="lazy"
+          />
+          <h3>Sednilson Maquenha</h3>
+          <div class="redes">
+            <a
+              href="https://www.linkedin.com/in/sednilson-maquenha-b4a76521a/"
+              target="_blank"
+              ><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"
+            /></a>
+            <a
+              href="https://web.facebook.com/pallmerano.smpallmerano"
+              target="_blank"
+              ><img src="assets/icons/Facebook.svg" alt="Facebook"
+            /></a>
+            <a href="https://x.com/SmPallmer" target="_blank"
+              ><img src="assets/icons/Twitter.svg" alt="Twitter"
+            /></a>
+          </div>
+        </div>
+
+        <!-- Membro 5 -->
+        <div class="card">
+          <img
+            src="assets/images/Ernesto_Xavier.jpg"
+            alt="Ernesto Xavier"
+            loading="lazy"
+          />
+          <h3>Ernesto Xavier</h3>
+          <div class="redes">
+            <a
+              href="https://www.linkedin.com/in/cacay-xavier-60ab19258/"
+              target="_blank"
+              ><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"
+            /></a>
+            <a
+              href="https://web.facebook.com/ernesternys.xavier"
+              target="_blank"
+              ><img src="assets/icons/Facebook.svg" alt="Facebook"
+            /></a>
+            <a href="#"><img src="assets/icons/Twitter.svg" alt="Twitter" /></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-conecta">
+        <h2 class="conecta-title">Fique conectado</h2>
+        <h3>Redes Sociais</h3>
+        <div class="social-icons">
+          <a
+            href="https://www.facebook.com/profile.php?id=61565351349400"
+            aria-label="Facebook"
+            ><img src="assets/icons/Facebook.svg" alt="Facebook"
+          /></a>
+          <a href="#" aria-label="Twitter"
+            ><img src="assets/icons/Twitter.svg" alt="Twitter"
+          /></a>
+          <!--<a href="#" aria-label="Instagram"><img src="assets/icons/Instagram.svg" alt="Instagram"></a>-->
+          <a
+            href="https://www.linkedin.com/company/grupoconecta-angola/"
+            aria-label="LinkedIn"
+            ><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"
+          /></a>
+          <a href="#" aria-label="YouTube"
+            ><img src="assets/icons/YouTube.svg" alt="YouTube"
+          /></a>
+        </div>
+
+        <!-- Novo bloco com ícone e número -->
+        <a
+          href="https://wa.me/244935269451?text=Olá%2C%20gostaria%20de%20receber%20uma%20informação"
+          class="contact-whatsapp"
+          target="_blank"
+          aria-label="Conversar no WhatsApp"
+        >
+          <img src="assets/icons/Whatsapp-png.svg" alt="WhatsApp icon" />
+          <span>(+244) 935269451</span>
+        </a>
       </div>
 
-      <!-- Membro 2 -->
-      <div class="card">
-        <img src="assets/images/Felix_Junior.jpg" alt="Félix Júnior" loading="lazy">
-        <h3>Félix Júnior</h3>
-        <div class="redes">
-          <a href="https://www.linkedin.com/in/f%C3%A9lix-j%C3%BAnior-aba790254/" target="_blank"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn" target="_blank"></a>
-          <a href="https://web.facebook.com/felixjunio.felix" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
-          <a href="https://x.com/Felix63136"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
+      <!-- Bloco: Informações legais e créditos -->
+      <div class="footer-legal">
+        <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
+
+        <div class="footer-links">
+          <a href="#">Política de Privacidade</a>
+          <span class="separator">|</span>
+          <a href="#">Termos de Uso</a>
         </div>
-      </div>
-
-      <!-- Membro 3 -->
-      <div class="card">
-        <img src="assets/images/Febe_Jamba.jpg" alt="Febe Jamba" loading="lazy">
-        <h3>Febe Jamba</h3>
-        <div class="redes">
-          <a href="https://www.linkedin.com/in/febe-jamba-849148265/" target="_blank"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-          <a href="https://www.instagram.com/tchissolaernesto/" target="_blank"><img src="assets/icons/Instagram.svg" alt="Instagram"></a>
-          <a href="#"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
-        </div>
-      </div>
-
-      <!-- Membro 4 -->
-      <div class="card">
-        <img src="assets/images/Sednilson_Maquenha.jpg" alt="Sednilson Maquenha" loading="lazy">
-        <h3>Sednilson Maquenha</h3>
-        <div class="redes">
-          <a href="https://www.linkedin.com/in/sednilson-maquenha-b4a76521a/" target="_blank"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-          <a href="https://web.facebook.com/pallmerano.smpallmerano" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
-          <a href="https://x.com/SmPallmer" target="_blank"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
-        </div>
-      </div>
-
-      <!-- Membro 5 -->
-      <div class="card">
-        <img src="assets/images/Ernesto_Xavier.jpg" alt="Ernesto Xavier" loading="lazy">
-        <h3>Ernesto Xavier</h3>
-        <div class="redes">
-          <a href="https://www.linkedin.com/in/cacay-xavier-60ab19258/" target="_blank"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-          <a href="https://web.facebook.com/ernesternys.xavier" target="_blank"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
-          <a href="#"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-      <footer>
-
-        <div class="footer-conecta">
-            <h2 class="conecta-title">Fique conectado</h2>
-            <h3>Redes Sociais</h3>
-            <div class="social-icons">
-                <a href="https://www.facebook.com/profile.php?id=61565351349400" aria-label="Facebook"><img src="assets/icons/Facebook.svg" alt="Facebook"></a>
-                <a href="#" aria-label="Twitter"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
-                <!--<a href="#" aria-label="Instagram"><img src="assets/icons/Instagram.svg" alt="Instagram"></a>-->
-                <a href="https://www.linkedin.com/company/grupoconecta-angola/" aria-label="LinkedIn"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-                <a href="#" aria-label="YouTube"><img src="assets/icons/YouTube.svg" alt="YouTube"></a>
-            </div>
-
-            <!-- Novo bloco com ícone e número -->
-            <a href="https://wa.me/244935269451?text=Olá%2C%20gostaria%20de%20receber%20uma%20informação" 
-                class="contact-whatsapp" target="_blank" aria-label="Conversar no WhatsApp">
-                <img src="assets/icons/Whatsapp-png.svg" alt="WhatsApp icon">
-                <span>(+244) 935269451</span>
+        <p class="footer-creditos">
+          Desenvolvido por
+          <strong>
+            <a
+              href="https://facebook.com/ContornosDesigns"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Contornos Designs
             </a>
-
-        </div>
-
-        <!-- Bloco: Informações legais e créditos -->
-        <div class="footer-legal">
-            <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
-
-            <div class="footer-links">
-                <a href="#">Política de Privacidade</a>
-                <span class="separator">|</span>
-                <a href="#">Termos de Uso</a>
-            </div>
-            <p class="footer-creditos">
-  Desenvolvido por <strong>
-  <a href="https://facebook.com/ContornosDesigns" target="_blank" rel="noopener noreferrer">
-Contornos Designs
-  </a>
-  </strong>
-</p>
-</div>
+          </strong>
+        </p>
+      </div>
     </footer>
 
-  <script src="js/base.js"></script>
-  <script src="js/sobre.js"></script>
-</body>
+    <script src="js/base.js"></script>
+    <script src="js/sobre.js"></script>
+  </body>
 </html>
