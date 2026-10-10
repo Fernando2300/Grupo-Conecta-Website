@@ -16,14 +16,8 @@
       <div class="contribuir-janela" role="dialog" aria-modal="true" aria-labelledby="contribuir-titulo">
         <button type="button" class="contribuir-fechar" aria-label="Fechar">&times;</button>
         <h3 id="contribuir-titulo">Contribuir para as sacolas</h3>
-        <p class="contribuir-intro">Use os dados abaixo para realizar o <strong>pagamento por referência</strong>:</p>
-        <img src="assets/images/unitelmoney_logo.jpg" alt="Logo Unitel Money" class="contribuir-logo" />
-        <div class="contribuir-dados">
-          <p><strong>Entidade:</strong> <span id="contribuir-entidade"></span>
-             <span class="contribuir-copiar" role="button" tabindex="0" data-alvo="contribuir-entidade">[copiar]</span></p>
-          <p><strong>Referência:</strong> <span id="contribuir-referencia"></span>
-             <span class="contribuir-copiar" role="button" tabindex="0" data-alvo="contribuir-referencia">[copiar]</span></p>
-        </div>
+        <p class="contribuir-intro">Escolha a forma de pagamento que preferir:</p>
+        <div id="contribuir-metodos"></div>
         <p class="contribuir-nota" id="contribuir-nota"></p>
         <div class="contribuir-envio">
           <a id="contribuir-whatsapp" class="contribuir-wa" target="_blank" rel="noopener" href="#">Enviar via WhatsApp</a>
@@ -38,27 +32,6 @@
       .addEventListener("click", fechar);
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) fechar();
-    });
-
-    // Copiar entidade / referência
-    overlay.querySelectorAll(".contribuir-copiar").forEach((el) => {
-      const copiar = async () => {
-        const texto = document.getElementById(el.dataset.alvo).textContent;
-        try {
-          await navigator.clipboard.writeText(texto);
-          el.textContent = "[copiado]";
-          setTimeout(() => (el.textContent = "[copiar]"), 1500);
-        } catch (err) {
-          console.error("Erro ao copiar:", err);
-        }
-      };
-      el.addEventListener("click", copiar);
-      el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          copiar();
-        }
-      });
     });
 
     // Teclado: Esc fecha, Tab fica dentro da janela
@@ -86,15 +59,21 @@
   }
 
   function preencher(p) {
-    document.getElementById("contribuir-entidade").textContent = p.entidade;
-    document.getElementById("contribuir-referencia").textContent = p.referencia;
+    const mensagemBase =
+      "Olá, segue o meu comprovativo da contribuição para a Sacolas Eco Conecta";
+    const whatsapp = document.getElementById("contribuir-whatsapp");
+    const actualizarWhatsapp = (metodo) => {
+      const mensagem = metodo
+        ? `${mensagemBase}, pago via ${metodo.titulo || metodo.nome}.`
+        : mensagemBase + ".";
+      whatsapp.href = `https://wa.me/${p.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+    };
+
+    const zona = document.getElementById("contribuir-metodos");
+    zona.replaceChildren(Pagamento.criar(p.metodos, actualizarWhatsapp));
+
     document.getElementById("contribuir-nota").textContent =
       `A contribuição mínima é de ${p.valorMinimo} Kz. Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo.`;
-
-    const mensagem =
-      "Olá, segue o meu comprovativo da contribuição para a Sacolas Eco Conecta.";
-    document.getElementById("contribuir-whatsapp").href =
-      `https://wa.me/${p.whatsapp}?text=${encodeURIComponent(mensagem)}`;
 
     const email = document.getElementById("contribuir-email");
     const assunto = "Comprovativo%20de%20Pagamento";

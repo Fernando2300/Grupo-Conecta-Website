@@ -77,12 +77,30 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  // ✅ Preenche os dados de pagamento e os links de contacto
+  // ✅ Preenche as formas de pagamento e os links de contacto
+  let metodoActual = null;
+  let dadosFormulario = null;
+
+  function actualizarWhatsapp() {
+    let mensagem = "Olá, segue o meu comprovativo do Workshop";
+    if (dadosFormulario) {
+      mensagem += `\n\nNome: ${dadosFormulario.nome}\nNúmero: ${dadosFormulario.telefone}`;
+    }
+    if (metodoActual) {
+      mensagem += `\nPago via: ${metodoActual.titulo || metodoActual.nome}`;
+    }
+    document.getElementById("link-whatsapp").href =
+      `https://wa.me/${pagamento.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+  }
+
   function mostrarPagamento(p) {
-    document.getElementById("pg-entidade").textContent = p.entidade;
-    document.getElementById("pg-referencia").textContent = p.referencia;
-    document.getElementById("copiar-entidade").dataset.valor = p.entidade;
-    document.getElementById("copiar-referencia").dataset.valor = p.referencia;
+    const zona = document.getElementById("pg-metodos");
+    zona.replaceChildren(
+      Pagamento.criar(p.metodos, (metodo) => {
+        metodoActual = metodo;
+        actualizarWhatsapp();
+      }),
+    );
 
     const emailLink = document.getElementById("link-email");
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -98,10 +116,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // ✅ Abre a secção de pagamento depois de uma inscrição
   function abrirPagamento(formulario) {
-    const mensagem = `Olá, segue o meu comprovativo do Workshop\n\nNome: ${formulario.nome}\nNúmero: ${formulario.telefone}`;
-
-    document.getElementById("link-whatsapp").href =
-      `https://wa.me/${pagamento.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+    dadosFormulario = formulario;
+    actualizarWhatsapp();
 
     pagamentoSection.classList.remove("hidden");
     pagamentoSection.scrollIntoView({ behavior: "smooth" });
@@ -239,22 +255,5 @@ document.addEventListener("DOMContentLoaded", async function () {
       loading.classList.add("hidden");
       exibirErroGlobal("Erro na conexão. Verifique sua internet.");
     }
-  });
-
-  // ✅ Copiar entidade / referência
-  document.querySelectorAll(".copiar-texto").forEach((item) => {
-    item.addEventListener("click", async function () {
-      const valor = this.dataset.valor;
-      try {
-        await navigator.clipboard.writeText(valor);
-        const original = this.textContent;
-        this.textContent = "[copiado]";
-        setTimeout(() => {
-          this.textContent = original;
-        }, 1500);
-      } catch (err) {
-        console.error("Erro ao copiar:", err);
-      }
-    });
   });
 });

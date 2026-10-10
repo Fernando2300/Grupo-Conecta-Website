@@ -1,8 +1,44 @@
 {
   "workshopActivo": "ws5",
   "pagamento": {
-    "entidade": "00930",
-    "referencia": "937082461",
+    "metodos": [
+      {
+        "id": "kwik",
+        "nome": "Kwik",
+        "titulo": "Kwik",
+        "logo": "assets/images/pagamento-kwik.webp",
+        "activo": true,
+        "titular": "",
+        "instrucao": "Abra a app do seu banco ou carteira móvel, escolha Kwik e envie para o número ou o IBAN abaixo.",
+        "campos": [
+          { "rotulo": "Número Kwik", "valor": "937082461" },
+          { "rotulo": "IBAN", "valor": "AO06041700000093065163247" }
+        ]
+      },
+      {
+        "id": "express",
+        "nome": "Express",
+        "titulo": "Transferência Express",
+        "logo": "assets/images/pagamento-express.webp",
+        "activo": true,
+        "titular": "",
+        "instrucao": "Na app Multicaixa Express, aceda a Transferências, depois a Transferências Express, e envie para o número abaixo.",
+        "campos": [{ "rotulo": "Número", "valor": "937082461" }]
+      },
+      {
+        "id": "unitel",
+        "nome": "Unitel Money",
+        "titulo": "Unitel Money (por referência)",
+        "logo": "assets/images/unitelmoney_logo.jpg",
+        "activo": true,
+        "titular": "",
+        "instrucao": "Use os dados abaixo para realizar o pagamento por referência.",
+        "campos": [
+          { "rotulo": "Entidade", "valor": "00930" },
+          { "rotulo": "Referência", "valor": "937082461" }
+        ]
+      }
+    ],
     "whatsapp": "244935269451",
     "email": "gconecta05angola@gmail.com",
     "valorMinimo": 500

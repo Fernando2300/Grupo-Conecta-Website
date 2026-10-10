@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/style-inscricao.css" />
   <link rel="stylesheet" href="css/sacolas.css" />
+  <link rel="stylesheet" href="css/pagamento.css">
   <link rel="stylesheet" href="css/contribuir.css">
 </head>
 <body>
@@ -203,23 +204,11 @@
 
 <section id="pagamento-section" class="pagamento-section hidden"> <!--hidden-->
   <h3 id="pg-titulo">Obrigado por se inscrever!</h3>
-  <p class="descricao-pagamento">Use os dados abaixo para realizar o <strong>pagamento por referência</strong>:</p>
-
-  <!--
-  <div class="pagamento-dados-wrapper">
-    <div class="logo-topo">
-      <img src="assets/unitelmoney_logo.jfif" alt="Unitel Money" class="logo-unitel" />
-    </div>
-    -->
-
-     <!-- ✅ Posicione o logo aqui, antes da div de dados -->
-  <img src="assets/images/unitelmoney_logo.jpg" alt="Logo Unitel Money" class="logo-unitel" />
-
-    <div class="pagamento-dados">
-      <p><strong>Entidade:</strong> <span id="pg-entidade">00930</span> <span class="copiar-texto" data-valor="00930" id="copiar-entidade">[copiar]</span></p>
-      <p><strong>Referência:</strong> <span id="pg-referencia">937082461</span> <span class="copiar-texto" data-valor="937082461" id="copiar-referencia">[copiar]</span></p>
-      <p class="nota" id="pg-nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
-    </div>
+   <p class="descricao-pagamento">Escolha a forma de pagamento que preferir:</p>
+   <div id="pg-metodos"></div>
+   <div class="pagamento-dados">
+     <p class="nota" id="pg-nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
+   </div>
 
   <div class="envio-comprovativo">
     <a id="link-whatsapp" class="btn-wa" href="https://wa.me/244935269451?text=Olá%2C%20segue%20meu%20comprovativo%20do%20workshop" target="_blank">
@@ -353,6 +342,7 @@ Contornos Designs
   <script src="js/base.js"></script>
   <script src="js/data.js"></script>
   <script src="js/sacolas.js"></script>
+  <script src="js/pagamento.js"></script>
   <script src="js/contribuir.js"></script>
   <script src="js/inscricao.js"></script>
   <!-- ✅ intl-tel-input JS -->
