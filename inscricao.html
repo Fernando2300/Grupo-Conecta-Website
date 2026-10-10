@@ -156,13 +156,13 @@
         <!-- ALTERAR AQUI: adicionada class -->
 
 
-        <label>Valor a Contribuir (mínimo 500kz)</label>
+        <label id="valor-rotulo">Valor a Contribuir (mínimo 500 Kz)</label>
         <div class="valor-botoes">
           <button type="button" class="valor-btn" data-value="500">500 kz</button>
           <button type="button" class="valor-btn" data-value="1000">1000 kz</button>
           <button type="button" class="valor-btn" data-value="2000">2000 kz</button>
         </div>
-        <input type="number" id="valor" name="valor" placeholder="Quanto deseja contribuir?" min="500"/>
+        <input type="number" id="valor" name="valor" placeholder="Quanto deseja contribuir?" min="1"/>
 
         <label>Como deseja receber o link?</label>
         <div class="metodo-opcoes">
@@ -199,6 +199,18 @@
 </div> -->
 
 
+<!-- Confirmação (workshop gratuito, sem contribuição) -->
+<section id="confirmacao-section" class="pagamento-section hidden">
+  <h3>Inscrição confirmada!</h3>
+  <p class="descricao-pagamento">Este workshop é gratuito e não precisa de efectuar nenhum pagamento.</p>
+  <p class="descricao-pagamento">Para receber o link e as informações do workshop, envie-nos a sua inscrição clicando no botão abaixo:</p>
+  <div class="envio-comprovativo">
+    <a id="conf-whatsapp" class="btn-wa" href="#" target="_blank" rel="noopener">Enviar via WhatsApp</a>
+    <a id="conf-email" class="link-email" href="#">Enviar por E-mail</a>
+  </div>
+  <p class="descricao-pagamento">Se quiser, também pode contribuir para as sacolas reutilizáveis:</p>
+  <a class="sacolas-botao" href="inscricao.html?contribuir=1" data-contribuir>Contribuir</a>
+</section>
 
 <!--Pagamento Section Novo3-->
 

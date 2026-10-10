@@ -18,7 +18,6 @@
         <h3 id="contribuir-titulo">Contribuir para as sacolas</h3>
         <p class="contribuir-intro">Escolha a forma de pagamento que preferir:</p>
         <div id="contribuir-metodos"></div>
-        <p class="contribuir-nota" id="contribuir-nota"></p>
         <div class="contribuir-envio">
           <a id="contribuir-whatsapp" class="contribuir-wa" target="_blank" rel="noopener" href="#">Enviar via WhatsApp</a>
           <a id="contribuir-email" class="contribuir-email" href="#">Enviar por E-mail</a>
@@ -71,9 +70,6 @@
 
     const zona = document.getElementById("contribuir-metodos");
     zona.replaceChildren(Pagamento.criar(p.metodos, actualizarWhatsapp));
-
-    document.getElementById("contribuir-nota").textContent =
-      `A contribuição mínima é de ${p.valorMinimo} Kz. Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo.`;
 
     const email = document.getElementById("contribuir-email");
     const assunto = "Comprovativo%20de%20Pagamento";

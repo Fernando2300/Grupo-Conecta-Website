@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     valorMinimo: 500,
   };
   let workshop = null;
+  let valorMinimo = 500; // 0 = workshop gratuito (contribuição opcional)
 
   // ✅ Inicializa intl-tel-input no campo telefone
   const inputTelefone = document.getElementById("telefone");
@@ -77,20 +78,84 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+  // ✅ Adapta o campo do valor: workshop pago (mínimo obrigatório) ou gratuito (opcional)
+  function configurarValor() {
+    const gratuito = valorMinimo === 0;
+    document.getElementById("valor-rotulo").textContent = gratuito
+      ? "Quer contribuir? (opcional)"
+      : `Valor a Contribuir (mínimo ${SiteData.formatarNumero(valorMinimo)} Kz)`;
+    valorInput.placeholder = gratuito
+      ? "Indique um valor, se desejar contribuir"
+      : "Quanto deseja contribuir?";
+    valorInput.min = gratuito ? 1 : valorMinimo;
+    // Esconde os atalhos de valor que ficam abaixo do mínimo
+    valorBtns.forEach((btn) => {
+      btn.classList.toggle("hidden", Number(btn.dataset.value) < valorMinimo);
+    });
+  }
+
   // ✅ Preenche as formas de pagamento e os links de contacto
   let metodoActual = null;
   let dadosFormulario = null;
 
+  // Texto da mensagem para a equipa (nome, número, workshop, valor, como receber o link)
+  function textoMensagem(comprovativo) {
+    const f = dadosFormulario || {};
+    const linhas = [
+      comprovativo
+        ? "Olá, segue o meu comprovativo do Workshop."
+        : "Olá, acabei de me inscrever no Workshop.",
+    ];
+    if (workshop)
+      linhas.push("", `Workshop ${workshop.numero}: ${workshop.tema}`);
+    if (f.nome) linhas.push(`Nome: ${f.nome}`);
+    if (f.telefone) linhas.push(`Número: ${f.telefone}`);
+    if (f.metodo === "email" && f.email) {
+      linhas.push(`Receber o link por e-mail: ${f.email}`);
+    } else if (f.metodo) {
+      linhas.push("Receber o link por WhatsApp");
+    }
+    if (f.valor > 0) {
+      linhas.push(`Contribuição: ${SiteData.formatarKz(f.valor)}`);
+    } else if (valorMinimo === 0) {
+      linhas.push("Contribuição: nenhuma (workshop gratuito)");
+    }
+    if (comprovativo && metodoActual) {
+      linhas.push(`Pago via: ${metodoActual.titulo || metodoActual.nome}`);
+    }
+    return linhas.join("\n");
+  }
+
+  function linkWhatsapp(mensagem) {
+    return `https://wa.me/${pagamento.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+  }
+
+  function linkEmail(assunto, mensagem) {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const a = encodeURIComponent(assunto);
+    const m = encodeURIComponent(mensagem);
+    return isMobile
+      ? `mailto:${pagamento.email}?subject=${a}&body=${m}`
+      : `https://mail.google.com/mail/?view=cm&fs=1&to=${pagamento.email}&su=${a}&body=${m}`;
+  }
+
   function actualizarWhatsapp() {
-    let mensagem = "Olá, segue o meu comprovativo do Workshop";
-    if (dadosFormulario) {
-      mensagem += `\n\nNome: ${dadosFormulario.nome}\nNúmero: ${dadosFormulario.telefone}`;
+    // Secção de pagamento: comprovativo
+    document.getElementById("link-whatsapp").href = linkWhatsapp(
+      textoMensagem(true),
+    );
+    // Confirmação (sem pagamento): só os dados da inscrição
+    const confWa = document.getElementById("conf-whatsapp");
+    const confEmail = document.getElementById("conf-email");
+    const msg = textoMensagem(false);
+    if (confWa) confWa.href = linkWhatsapp(msg);
+    if (confEmail) {
+      confEmail.href = linkEmail("Inscrição no Workshop", msg);
+      if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        confEmail.target = "_blank";
+        confEmail.rel = "noopener";
+      }
     }
-    if (metodoActual) {
-      mensagem += `\nPago via: ${metodoActual.titulo || metodoActual.nome}`;
-    }
-    document.getElementById("link-whatsapp").href =
-      `https://wa.me/${pagamento.whatsapp}?text=${encodeURIComponent(mensagem)}`;
   }
 
   function mostrarPagamento(p) {
@@ -119,6 +184,24 @@ document.addEventListener("DOMContentLoaded", async function () {
     dadosFormulario = formulario;
     actualizarWhatsapp();
 
+    const gratuito = valorMinimo === 0;
+
+    // Workshop gratuito e sem contribuição: só confirma a inscrição
+    if (gratuito && !formulario.valor) {
+      const confirmacao = document.getElementById("confirmacao-section");
+      confirmacao.classList.remove("hidden");
+      confirmacao.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    // Com pagamento: o texto muda conforme seja obrigatório ou voluntário
+    document.getElementById("pg-titulo").textContent = gratuito
+      ? "Inscrição confirmada. Obrigado por contribuir!"
+      : "Obrigado por se inscrever!";
+    document.getElementById("pg-nota").textContent = gratuito
+      ? "A sua contribuição é voluntária. Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo."
+      : "Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.";
+
     pagamentoSection.classList.remove("hidden");
     pagamentoSection.scrollIntoView({ behavior: "smooth" });
   }
@@ -129,7 +212,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     pagamento = dados.pagamento;
     workshop = SiteData.workshopPorId(dados, dados.workshopActivo);
     if (!workshop) throw new Error("Workshop activo não encontrado");
+    valorMinimo = SiteData.valorMinimo(dados, workshop);
     mostrarWorkshop(workshop);
+    configurarValor();
     mostrarPagamento(pagamento);
   } catch (err) {
     console.error(err);
@@ -161,7 +246,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const nome = document.getElementById("nome").value.trim();
     const telefone = iti.getNumber().trim(); // número completo com código do país
-    const valor = parseInt(valorInput.value);
+    const textoValor = valorInput.value.trim();
+    const valor = textoValor === "" ? 0 : parseInt(textoValor, 10);
     const metodo = [...metodoRadios].find((r) => r.checked)?.value;
     const email = document.getElementById("email")?.value.trim();
 
@@ -199,10 +285,19 @@ document.addEventListener("DOMContentLoaded", async function () {
       return;
     }
 
-    if (isNaN(valor) || valor < pagamento.valorMinimo) {
+    if (valorMinimo === 0) {
+      // Gratuito: pode ficar em branco, mas se escrever tem de ser válido
+      if (textoValor !== "" && (isNaN(valor) || valor < 1)) {
+        mostrarErroInline(
+          document.getElementById("valor"),
+          "Indique um valor válido, ou deixe o campo vazio para se inscrever sem contribuir.",
+        );
+        return;
+      }
+    } else if (isNaN(valor) || valor < valorMinimo) {
       mostrarErroInline(
         document.getElementById("valor"),
-        `A contribuição mínima é de ${pagamento.valorMinimo}kz.`,
+        `A contribuição mínima é de ${SiteData.formatarNumero(valorMinimo)} Kz.`,
       );
       return;
     }
@@ -245,7 +340,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       }, 300);
 
       if (response.ok) {
-        abrirPagamento({ nome, telefone });
+        abrirPagamento({ nome, telefone, valor, metodo, email });
       } else {
         exibirErroGlobal("Erro ao enviar. Tente novamente mais tarde.");
       }

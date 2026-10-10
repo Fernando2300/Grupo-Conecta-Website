@@ -60,6 +60,19 @@ const SiteData = (() => {
     return formatarNumero(n) + " Kz";
   }
 
+  // Valor mínimo de contribuição de um workshop.
+  // 0 = workshop gratuito (contribuição opcional).
+  // Se o workshop não tiver "valorMinimo", usa o valor global de "pagamento".
+  function valorMinimo(dados, w) {
+    const proprio = w ? w.valorMinimo : undefined;
+    if (proprio !== undefined && proprio !== null && proprio !== "") {
+      const n = Number(proprio);
+      if (!isNaN(n)) return Math.max(n, 0);
+    }
+    const global = Number((dados.pagamento || {}).valorMinimo);
+    return isNaN(global) ? 500 : Math.max(global, 0);
+  }
+
   // Calcula os totais da campanha e as estatísticas a partir dos workshops
   function resumo(dados) {
     const campanha = dados.campanha || {};
@@ -99,6 +112,7 @@ const SiteData = (() => {
     workshopPorId,
     formatarNumero,
     formatarKz,
+    valorMinimo,
     resumo,
   };
 })();
