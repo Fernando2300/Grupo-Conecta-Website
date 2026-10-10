@@ -34,6 +34,8 @@
 
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/style-inscricao.css" />
+  <link rel="stylesheet" href="css/sacolas.css" />
+  <link rel="stylesheet" href="css/contribuir.css">
 </head>
 <body>
  
@@ -77,15 +79,15 @@
 
   <!-- Links do menu -->
   <ul class="mobile-nav-links">
-    <li><a href="index">Início</a></li>
-    <li><a href="sobre">Quem Somos</a></li>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
     <li><a href="#courses-section">Cursos e Workshops</a></li>
     <li><a href="#impact-section">Impacto Social</a></li>
-    <li><a href="contacto">Contacto</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
   </ul>
 
   <!-- Botão de destaque no fim do menu -->
-  <a href="inscricao" class="join-btn">Inscrever-se no Workshop</a>
+  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
 </nav>
 
 
@@ -188,6 +190,9 @@
     </section>
   </div> <!--Wrapper-->
 
+  <!-- Sacolas Eco Conecta, versão compacta (dados em data/site.json) -->
+  <section class="sacolas-section" id="sacolas-section" data-sacolas="compacta"></section>
+
    <!-- <div id="loading" class="hidden" aria-label="Carregando">
   <div class="spinner"></div>
 </div> -->
@@ -197,7 +202,7 @@
 <!--Pagamento Section Novo3-->
 
 <section id="pagamento-section" class="pagamento-section hidden"> <!--hidden-->
-  <h3>Obrigado por se inscrever!</h3>
+  <h3 id="pg-titulo">Obrigado por se inscrever!</h3>
   <p class="descricao-pagamento">Use os dados abaixo para realizar o <strong>pagamento por referência</strong>:</p>
 
   <!--
@@ -213,7 +218,7 @@
     <div class="pagamento-dados">
       <p><strong>Entidade:</strong> <span id="pg-entidade">00930</span> <span class="copiar-texto" data-valor="00930" id="copiar-entidade">[copiar]</span></p>
       <p><strong>Referência:</strong> <span id="pg-referencia">937082461</span> <span class="copiar-texto" data-valor="937082461" id="copiar-referencia">[copiar]</span></p>
-      <p class="nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
+      <p class="nota" id="pg-nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
     </div>
 
   <div class="envio-comprovativo">
@@ -347,6 +352,8 @@ Contornos Designs
 
   <script src="js/base.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/sacolas.js"></script>
+  <script src="js/contribuir.js"></script>
   <script src="js/inscricao.js"></script>
   <!-- ✅ intl-tel-input JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>

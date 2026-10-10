@@ -96,6 +96,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+  // ✅ Abre a secção de pagamento depois de uma inscrição
+  function abrirPagamento(formulario) {
+    const mensagem = `Olá, segue o meu comprovativo do Workshop\n\nNome: ${formulario.nome}\nNúmero: ${formulario.telefone}`;
+
+    document.getElementById("link-whatsapp").href =
+      `https://wa.me/${pagamento.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+
+    pagamentoSection.classList.remove("hidden");
+    pagamentoSection.scrollIntoView({ behavior: "smooth" });
+  }
+
   // ✅ Carrega os dados
   try {
     const dados = await SiteData.carregar();
@@ -218,17 +229,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       }, 300);
 
       if (response.ok) {
-        pagamentoSection.classList.remove("hidden");
-        pagamentoSection.scrollIntoView({ behavior: "smooth" });
-
-        // Link do WhatsApp com os dados do formulário
-        const mensagem = `Olá, segue o meu comprovativo do Workshop
-
-    Nome: ${nome}
-    Número: ${telefone}`;
-
-        document.getElementById("link-whatsapp").href =
-          `https://wa.me/${pagamento.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+        abrirPagamento({ nome, telefone });
       } else {
         exibirErroGlobal("Erro ao enviar. Tente novamente mais tarde.");
       }

@@ -864,3 +864,16 @@ input[type="email"] {
 .btn-destaque:disabled {
     cursor: not-allowed;
 }
+
+/* ===== Secção Sacolas dentro da página de inscrição ===== */
+.container .sacolas-section {
+    border-radius: 12px;
+    padding: 2rem 1.25rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .container .sacolas-section {
+        padding: 2.5rem 2rem;
+    }
+}

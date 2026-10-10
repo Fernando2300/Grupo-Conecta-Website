@@ -50,5 +50,55 @@ const SiteData = (() => {
     return dados.workshops.find((w) => w.id === id);
   }
 
-  return { carregar, formatarData, formatarHorario, workshopPorId };
+  // 73500 -> "73.500"
+  function formatarNumero(n) {
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  // 73500 -> "73.500 Kz"
+  function formatarKz(n) {
+    return formatarNumero(n) + " Kz";
+  }
+
+  // Calcula os totais da campanha e as estatísticas a partir dos workshops
+  function resumo(dados) {
+    const campanha = dados.campanha || {};
+    const ws = dados.workshops || [];
+    const mulheres =
+      Number((dados.estatisticas || {}).percentagemMulheres) || 0;
+
+    // Só conta o dinheiro dos workshops do lote activo, mais outros valores avulsos
+    const arrecadado =
+      ws
+        .filter((w) => w.lote === campanha.loteActivo)
+        .reduce((soma, w) => soma + (Number(w.arrecadado) || 0), 0) +
+      (Number(campanha.outrosValores) || 0);
+
+    const meta = Number(campanha.meta) || 0;
+    const percentagem = meta > 0 ? Math.min((arrecadado / meta) * 100, 100) : 0;
+
+    return {
+      arrecadado,
+      meta,
+      percentagem,
+      faltam: Math.max(meta - arrecadado, 0),
+      participacoes: ws.reduce(
+        (soma, w) => soma + (Number(w.participantes) || 0),
+        0,
+      ),
+      workshopsRealizados: ws.filter((w) => Number(w.participantes) > 0).length,
+      mulheres,
+      homens: 100 - mulheres,
+    };
+  }
+
+  return {
+    carregar,
+    formatarData,
+    formatarHorario,
+    workshopPorId,
+    formatarNumero,
+    formatarKz,
+    resumo,
+  };
 })();

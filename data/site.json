@@ -7,6 +7,17 @@
     "email": "gconecta05angola@gmail.com",
     "valorMinimo": 500
   },
+  "campanha": {
+    "loteActivo": 1,
+    "titulo": "1.º Lote de Sacolas Reutilizáveis",
+    "meta": 300000,
+    "outrosValores": 0,
+    "imagem": "assets/images/campanha-sacolas.webp",
+    "linkPrestacaoContas": ""
+  },
+  "estatisticas": {
+    "percentagemMulheres": 41
+  },
   "workshops": [
     {
       "id": "ws1",
@@ -20,7 +31,10 @@
       "local": "Online – Zoom",
       "imagem": "",
       "inscricoes": "encerradas",
-      "video": "https://youtu.be/r3dZWuPqQXs"
+      "video": "https://youtu.be/r3dZWuPqQXs",
+      "lote": 1,
+      "participantes": 25,
+      "arrecadado": 16500
     },
     {
       "id": "ws2",
@@ -34,7 +48,10 @@
       "local": "Online – Zoom",
       "imagem": "",
       "inscricoes": "encerradas",
-      "video": "https://youtu.be/g1o7I-DQLUY"
+      "video": "https://youtu.be/g1o7I-DQLUY",
+      "lote": 1,
+      "participantes": 22,
+      "arrecadado": 15000
     },
     {
       "id": "ws3",
@@ -48,7 +65,10 @@
       "local": "Online – Zoom",
       "imagem": "",
       "inscricoes": "encerradas",
-      "video": "https://youtu.be/RXU6rVCzpKY"
+      "video": "https://youtu.be/RXU6rVCzpKY",
+      "lote": 1,
+      "participantes": 12,
+      "arrecadado": 11500
     },
     {
       "id": "ws4",
@@ -62,7 +82,10 @@
       "local": "Online – Zoom",
       "imagem": "",
       "inscricoes": "encerradas",
-      "video": "https://youtu.be/L_pAT2R1-2U"
+      "video": "https://youtu.be/L_pAT2R1-2U",
+      "lote": 1,
+      "participantes": 15,
+      "arrecadado": 7500
     },
     {
       "id": "ws5",
@@ -77,7 +100,10 @@
       "local": "Online – Zoom",
       "imagem": "assets/images/workshop.webp",
       "inscricoes": "abertas",
-      "video": "https://youtu.be/7i4zRxHrn5I"
+      "video": "https://youtu.be/7i4zRxHrn5I",
+      "lote": 1,
+      "participantes": 34,
+      "arrecadado": 23000
     }
   ]
 }
