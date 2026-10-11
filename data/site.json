@@ -1,6 +1,10 @@
 {
   "workshopActivo": "ws5",
-  "videosDestaque": ["ws5", "ws4", "ws3"],
+  "videosDestaque": [
+    "ws5",
+    "ws4",
+    "ws3"
+  ],
   "pagamento": {
     "metodos": [
       {
@@ -12,8 +16,14 @@
         "titular": "",
         "instrucao": "Abra a app do seu banco ou carteira móvel, escolha Kwik e envie para o número ou o IBAN abaixo.",
         "campos": [
-          { "rotulo": "Número Kwik", "valor": "937082461" },
-          { "rotulo": "IBAN", "valor": "AO06041700000093065163247" }
+          {
+            "rotulo": "Número Kwik",
+            "valor": "937082461"
+          },
+          {
+            "rotulo": "IBAN",
+            "valor": "AO06041700000093065163247"
+          }
         ]
       },
       {
@@ -24,7 +34,12 @@
         "activo": true,
         "titular": "",
         "instrucao": "Na app Multicaixa Express, aceda a Transferências, depois a Transferências Express, e envie para o número abaixo.",
-        "campos": [{ "rotulo": "Número", "valor": "937082461" }]
+        "campos": [
+          {
+            "rotulo": "Número",
+            "valor": "937082461"
+          }
+        ]
       },
       {
         "id": "unitel",
@@ -35,8 +50,14 @@
         "titular": "",
         "instrucao": "Use os dados abaixo para realizar o pagamento por referência.",
         "campos": [
-          { "rotulo": "Entidade", "valor": "00930" },
-          { "rotulo": "Referência", "valor": "937082461" }
+          {
+            "rotulo": "Entidade",
+            "valor": "00930"
+          },
+          {
+            "rotulo": "Referência",
+            "valor": "937082461"
+          }
         ]
       }
     ],
@@ -52,7 +73,7 @@
     "imagem": "assets/images/campanha-sacolas.webp",
     "linkPrestacaoContas": ""
   },
-    "estatisticas": {
+  "estatisticas": {
     "baseParticipacoes": 108,
     "baseMulheres": 44,
     "percentagemMulheres": 41
@@ -61,7 +82,7 @@
     "email": "gconecta05angola@gmail.com",
     "whatsapp": "244935269451",
     "whatsappTexto": "(+244) 935269451",
-    "local": "Huambo, Angola"
+    "local": "HuamboBenfica, Angola"
   },
   "workshops": [
     {
