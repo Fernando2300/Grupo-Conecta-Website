@@ -1,8 +1,9 @@
 /* ============================================================
-   admin.js — painel de administração (admin.html), Passo 9, etapa 2.
-   Núcleo: carregar o site.json, formulários para tudo, validação,
-   pré-visualização dos números calculados e "Descarregar JSON".
-   Ainda NÃO tem entrada com senha nem "Publicar" (etapa 3).
+   admin.js — painel de administração (admin.html), Passo 9, etapas 2 e 3.
+   Núcleo: formulários para tudo, validação, pré-visualização dos números
+   calculados e "Descarregar JSON". Etapa 3: entrada com senha, leitura e
+   publicação pelo Worker (Cloudflare), histórico e restaurar. O token do
+   GitHub nunca chega aqui; a sessão do Worker vive só em memória.
    Todo o texto é escrito com textContent (nunca innerHTML com dados).
    ============================================================ */
 (function () {
@@ -540,15 +541,74 @@
   var alterado = false;
   var tempoRascunho = null;
 
-  // Fonte dos dados. Na etapa 3 passa a ler da branch "content" pela API do GitHub.
+  // Endereço do Worker (sem "/" no fim). Substitua pelo endereço real.
+  var WORKER_URL = "https://conecta-painel.contornosdesigns.workers.dev";
+  var MEMBROS = [
+    "Salvador Fernando",
+    "Félix Júnior",
+    "Febe Jamba",
+    "Sednilson Maquenha",
+    "Ernesto Xavier",
+  ];
+  var INACTIVIDADE_MS = 30 * 60 * 1000; // igual à do Worker
+
+  // Sessão: só em memória (nunca localStorage).
+  var Sessao = { token: null, nome: "", sha: null };
+  var tempoInactividade = null;
+  var aOcupado = false;
+
+  function erroRede() {
+    var e = new Error(
+      "Sem ligação ao servidor do painel. Verifique a internet e tente de novo.",
+    );
+    e.status = 0;
+    return e;
+  }
+
+  // Pedido ao Worker. Renova o token de sessão a cada resposta (X-Sessao).
+  function api(rota, op) {
+    op = op || {};
+    var cab = {};
+    if (op.corpo !== undefined) cab["Content-Type"] = "application/json";
+    if (Sessao.token) cab.Authorization = "Bearer " + Sessao.token;
+    return fetch(WORKER_URL + rota, {
+      method: op.metodo || "GET",
+      headers: cab,
+      body: op.corpo !== undefined ? JSON.stringify(op.corpo) : undefined,
+      cache: "no-store",
+    }).then(
+      function (r) {
+        var novo = r.headers.get("X-Sessao");
+        if (novo) Sessao.token = novo;
+        return r.text().then(function (t) {
+          var j = {};
+          try {
+            j = t ? JSON.parse(t) : {};
+          } catch (e) {
+            j = {};
+          }
+          if (!r.ok) {
+            var e = new Error(j.erro || "Erro do servidor (" + r.status + ").");
+            e.status = r.status;
+            e.dados = j;
+            if (r.status === 401 && j.sessao === false) e.sessaoInvalida = true;
+            throw e;
+          }
+          return j;
+        });
+      },
+      function () {
+        throw erroRede();
+      },
+    );
+  }
+
+  // Fonte dos dados: lê a branch "content" pelo Worker.
   var Fonte = {
     carregar: function () {
-      return fetch("data/site.json?v=" + Date.now()).then(function (r) {
-        if (!r.ok)
-          throw new Error(
-            "Não foi possível carregar data/site.json (" + r.status + ").",
-          );
-        return r.json();
+      return api("/site").then(function (r) {
+        Sessao.sha = r.sha;
+        return r.dados;
       });
     },
   };
@@ -1839,12 +1899,14 @@
     return r;
   }
 
-  function descarregar() {
+  // Valida, mostra avisos e confirma alterações ao pagamento.
+  // Devolve uma Promise com os dados limpos, ou null se o membro desistir.
+  function prepararEnvio() {
     var r = Nucleo.validar(dados);
     marcarInvalidos(r.erros);
     if (r.erros.length) {
       verificar();
-      return;
+      return Promise.resolve(null);
     }
     var limpo = Nucleo.limparParaGravar(dados);
 
@@ -1894,30 +1956,360 @@
       );
     }
 
-    passoAvisos()
+    return passoAvisos()
       .then(function (ok) {
         return ok ? passoPagamento() : false;
       })
       .then(function (ok) {
-        if (!ok) return;
-        var blob = new Blob([JSON.stringify(limpo, null, 2) + "\n"], {
-          type: "application/json",
+        return ok ? limpo : null;
+      });
+  }
+
+  function descarregar() {
+    prepararEnvio().then(function (limpo) {
+      if (!limpo) return;
+      var blob = new Blob([JSON.stringify(limpo, null, 2) + "\n"], {
+        type: "application/json",
+      });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "site.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+      }, 1000);
+      dizer(
+        "Ficheiro site.json descarregado. É uma cópia de segurança: ainda não foi publicado.",
+        "ok",
+      );
+    });
+  }
+
+  /* ==========================================================
+     7b. SESSÃO, PUBLICAR, HISTÓRICO
+     ========================================================== */
+  function ocupar(sim) {
+    aOcupado = sim;
+    [
+      "ad-btn-validar",
+      "ad-btn-descarregar",
+      "ad-btn-publicar",
+      "ad-btn-historico",
+    ].forEach(function (id) {
+      $(id).disabled = sim;
+    });
+  }
+
+  function mostrarLogin(aviso) {
+    clearTimeout(tempoInactividade);
+    Sessao.token = null;
+    Sessao.sha = null;
+    $("ad-sessao").hidden = true;
+    $("ad-app").hidden = true;
+    $("ad-barra").hidden = true;
+    $("ad-carregando").hidden = true;
+    $("ad-erro-carga").hidden = true;
+    $("ad-aviso-rascunho").hidden = true;
+    $("ad-estado").textContent = "";
+    var av = $("ad-login-aviso");
+    av.textContent = aviso || "";
+    av.hidden = !aviso;
+    $("ad-login-erro").hidden = true;
+    $("ad-login-senha").value = "";
+    $("ad-login").hidden = false;
+    $("ad-login-senha").focus();
+  }
+
+  // Termina a sessão neste browser. Guarda o rascunho para não perder trabalho.
+  function terminarSessao(aviso) {
+    if (alterado) guardarRascunho();
+    alterado = false;
+    mostrarLogin(aviso);
+  }
+
+  function tocar() {
+    if (!Sessao.token) return;
+    clearTimeout(tempoInactividade);
+    tempoInactividade = setTimeout(function () {
+      terminarSessao(
+        "A sessão terminou por inactividade." +
+          " O que escreveu ficou como rascunho neste browser.",
+      );
+    }, INACTIVIDADE_MS);
+  }
+
+  // Trata um erro de pedido autenticado. Devolve true se já o tratou.
+  function tratarErroSessao(e) {
+    if (e && e.sessaoInvalida) {
+      terminarSessao(
+        e.message + " O que escreveu ficou como rascunho neste browser.",
+      );
+      return true;
+    }
+    return false;
+  }
+
+  function entrar(ev) {
+    ev.preventDefault();
+    var nome = $("ad-login-nome").value;
+    var senha = $("ad-login-senha").value;
+    var erro = $("ad-login-erro");
+    erro.hidden = true;
+    if (/SEU-SUBDOMINIO/.test(WORKER_URL)) {
+      erro.textContent =
+        "Falta pôr o endereço do Worker na constante WORKER_URL de js/admin.js.";
+      erro.hidden = false;
+      return;
+    }
+    if (!senha) {
+      erro.textContent = "Escreva a sua senha.";
+      erro.hidden = false;
+      return;
+    }
+    var btn = $("ad-login-btn");
+    btn.disabled = true;
+    api("/login", { metodo: "POST", corpo: { nome: nome, senha: senha } })
+      .then(function (r) {
+        Sessao.token = r.token;
+        Sessao.nome = r.nome;
+        $("ad-login-senha").value = "";
+        $("ad-login").hidden = true;
+        $("ad-sessao-nome").textContent = r.nome;
+        $("ad-sessao").hidden = false;
+        $("ad-carregando").hidden = false;
+        tocar();
+        return carregarSite();
+      })
+      .catch(function (e) {
+        $("ad-carregando").hidden = true;
+        if (Sessao.token) {
+          // Entrou, mas a leitura falhou
+          mostrarErroCarga(e);
+          return;
+        }
+        erro.textContent = e.message;
+        erro.hidden = false;
+      })
+      .then(function () {
+        btn.disabled = false;
+      });
+  }
+
+  function mostrarErroCarga(e) {
+    if (tratarErroSessao(e)) return;
+    var b = $("ad-erro-carga");
+    b.hidden = false;
+    b.textContent = "Não foi possível carregar os dados do site. " + e.message;
+  }
+
+  function carregarSite() {
+    return Fonte.carregar().then(function (json) {
+      try {
+        iniciar(json);
+      } catch (err) {
+        console.error(err);
+        var b = $("ad-erro-carga");
+        b.hidden = false;
+        b.textContent =
+          "Erro ao desenhar o painel: " +
+          (err && err.message ? err.message : err);
+      }
+    });
+  }
+
+  function sair() {
+    function fazer() {
+      api("/logout", { metodo: "POST" }).catch(function () {});
+      terminarSessao("Saiu do painel.");
+    }
+    if (!alterado) return fazer();
+    confirmar(
+      "Sair do painel?",
+      el("p", {
+        text: "Tem alterações por publicar. Ficam como rascunho neste browser, mas não no site.",
+      }),
+      "Sair",
+    ).then(function (ok) {
+      if (ok) fazer();
+    });
+  }
+
+  function publicar() {
+    if (aOcupado) return;
+    prepararEnvio().then(function (limpo) {
+      if (!limpo) return;
+      confirmar(
+        "Publicar no site",
+        el("p", {
+          text: "As alterações ficam no site dentro de cerca de 1 a 2 minutos.",
+        }),
+        "Publicar",
+      ).then(function (ok) {
+        if (ok) enviar(limpo);
+      });
+    });
+  }
+
+  function enviar(limpo) {
+    ocupar(true);
+    dizer("A publicar…", "");
+    api("/site", { metodo: "PUT", corpo: { dados: limpo, sha: Sessao.sha } })
+      .then(function (r) {
+        Sessao.sha = r.sha;
+        original = clonar(limpo);
+        dados = clonar(limpo);
+        alterado = false;
+        clearTimeout(tempoRascunho);
+        apagarRascunho();
+        pintarEstado();
+        pintarNumeros();
+        mostrarTab(tabActual);
+        if (r.semAlteracoes) {
+          dizer("Não há alterações para publicar.", "ok");
+        } else {
+          dizer(
+            "Publicado. O site actualiza em cerca de 1 a 2 minutos." +
+              (r.aviso ? " " + r.aviso : ""),
+            r.aviso ? "" : "ok",
+          );
+        }
+      })
+      .catch(function (e) {
+        if (tratarErroSessao(e)) return;
+        if (e.status === 409) return conflito();
+        dizer(e.message, "erro");
+      })
+      .then(function () {
+        ocupar(false);
+      });
+  }
+
+  // Alguém publicou entretanto: guarda o rascunho e carrega a versão nova.
+  function conflito() {
+    guardarRascunho();
+    return confirmar(
+      "Alguém alterou os dados entretanto",
+      el("p", {
+        text:
+          "As suas alterações ficaram como rascunho. Vamos carregar a versão mais recente;" +
+          " depois use «Restaurar» no aviso do rascunho e reveja tudo antes de publicar.",
+      }),
+      "Carregar a versão nova",
+      false,
+    ).then(function () {
+      alterado = false;
+      return carregarSite().catch(mostrarErroCarga);
+    });
+  }
+
+  function abrirHistorico() {
+    if (aOcupado) return;
+    ocupar(true);
+    dizer("A ler o histórico…", "");
+    api("/historico")
+      .then(function (r) {
+        dizer("", "");
+        var itens = r.itens || [];
+        var escolhido = null;
+        var corpo = el("div");
+        if (!itens.length) {
+          corpo.appendChild(
+            el("p", { text: "Ainda não há versões gravadas." }),
+          );
+        } else {
+          corpo.appendChild(
+            el("p", {
+              text: "Últimas versões do site. Restaurar volta a publicar essa versão.",
+            }),
+          );
+          var ul = el("ul", { class: "ad-hist" });
+          itens.forEach(function (it, i) {
+            var quando = it.data
+              ? new Date(it.data).toLocaleString("pt-PT")
+              : "";
+            ul.appendChild(
+              el(
+                "li",
+                {},
+                el(
+                  "div",
+                  {},
+                  el("strong", { text: quando }),
+                  el("small", {
+                    text:
+                      (it.autor ? it.autor + " · " : "") + (it.mensagem || ""),
+                  }),
+                ),
+                i === 0
+                  ? el("span", {
+                      class: "ad-hist-actual",
+                      text: "Versão actual",
+                    })
+                  : botao("Restaurar", "ad-btn-sec ad-btn-pq", function () {
+                      escolhido = it;
+                      $("ad-modal-sim").click();
+                    }),
+              ),
+            );
+          });
+          corpo.appendChild(ul);
+        }
+        return confirmar(
+          "Histórico de alterações",
+          corpo,
+          "Fechar",
+          false,
+        ).then(function () {
+          if (!escolhido) return;
+          return restaurar(escolhido);
         });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url;
-        a.download = "site.json";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(function () {
-          URL.revokeObjectURL(url);
-        }, 1000);
+      })
+      .catch(function (e) {
+        if (tratarErroSessao(e)) return;
+        dizer(e.message, "erro");
+      })
+      .then(function () {
+        ocupar(false);
+      });
+  }
+
+  function restaurar(it) {
+    var quando = it.data ? new Date(it.data).toLocaleString("pt-PT") : "";
+    var texto =
+      "Vai voltar à versão de " +
+      quando +
+      (it.autor ? " (" + it.autor + ")" : "") +
+      " e publicá-la. " +
+      (alterado ? "As alterações que tem por publicar perdem-se. " : "") +
+      "O site actualiza em cerca de 1 a 2 minutos.";
+    return confirmar(
+      "Restaurar esta versão?",
+      el("p", { text: texto }),
+      "Restaurar",
+    ).then(function (ok) {
+      if (!ok) return;
+      dizer("A restaurar…", "");
+      return api("/restaurar", {
+        metodo: "POST",
+        corpo: { commit: it.sha },
+      }).then(function (r) {
+        Sessao.sha = r.sha;
+        alterado = false;
+        clearTimeout(tempoRascunho);
+        apagarRascunho();
+        if (r.dados) iniciar(r.dados);
         dizer(
-          "Ficheiro site.json descarregado. É uma cópia de segurança: ainda não foi publicado.",
-          "ok",
+          r.semAlteracoes
+            ? "Essa versão já é a que está no site."
+            : "Versão restaurada. O site actualiza em cerca de 1 a 2 minutos." +
+                (r.aviso ? " " + r.aviso : ""),
+          r.semAlteracoes || r.aviso ? "" : "ok",
         );
       });
+    });
   }
 
   /* ==========================================================
@@ -1927,6 +2319,7 @@
     original = clonar(json);
     dados = clonar(json);
     if (!Array.isArray(dados.workshops)) dados.workshops = [];
+    $("ad-aviso-rascunho").hidden = true;
     $("ad-carregando").hidden = true;
     $("ad-app").hidden = false;
     $("ad-barra").hidden = false;
@@ -1971,37 +2364,26 @@
   }
 
   function arrancar() {
+    var sel = $("ad-login-nome");
+    MEMBROS.forEach(function (n) {
+      sel.appendChild(el("option", { value: n, text: n }));
+    });
+    $("ad-login-form").addEventListener("submit", entrar);
+    $("ad-btn-sair").addEventListener("click", sair);
     $("ad-btn-validar").addEventListener("click", verificar);
     $("ad-btn-descarregar").addEventListener("click", descarregar);
+    $("ad-btn-publicar").addEventListener("click", publicar);
+    $("ad-btn-historico").addEventListener("click", abrirHistorico);
+    ["click", "keydown", "input", "touchstart"].forEach(function (ev) {
+      document.addEventListener(ev, tocar, true);
+    });
     window.addEventListener("beforeunload", function (ev) {
       if (alterado) {
         ev.preventDefault();
         ev.returnValue = "";
       }
     });
-    Fonte.carregar().then(
-      function (json) {
-        try {
-          iniciar(json);
-        } catch (err) {
-          console.error(err);
-          var b2 = $("ad-erro-carga");
-          b2.hidden = false;
-          b2.textContent =
-            "Erro ao desenhar o painel: " +
-            (err && err.message ? err.message : err);
-        }
-      },
-      function (err) {
-        $("ad-carregando").hidden = true;
-        var b = $("ad-erro-carga");
-        b.hidden = false;
-        b.textContent =
-          "Não foi possível carregar os dados do site. " +
-          (err && err.message ? err.message : "") +
-          " Abra esta página pelo Live Server ou pelo site publicado.";
-      },
-    );
+    mostrarLogin("");
   }
 
   // Exposto para testes e para as etapas seguintes
@@ -2016,6 +2398,8 @@
     iniciar: iniciar,
     verificar: verificar,
     Fonte: Fonte,
+    Sessao: Sessao,
+    api: api,
   };
 
   if (document.readyState === "loading")

@@ -23,12 +23,42 @@
         <img src="assets/icons/logowhite.png" alt="Grupo Conecta" class="ad-logo" />
         <span class="ad-topo-titulo">Painel de administração</span>
         <span class="ad-topo-estado" id="ad-estado" aria-live="polite"></span>
+        <span class="ad-sessao" id="ad-sessao" hidden>
+          <span class="ad-sessao-nome" id="ad-sessao-nome"></span>
+          <button type="button" class="ad-btn ad-btn-sec ad-btn-pq" id="ad-btn-sair">
+            <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Sair
+          </button>
+        </span>
       </div>
     </header>
 
     <main class="ad-main">
       <div id="ad-aviso-rascunho" class="ad-banner" hidden></div>
-      <div id="ad-carregando" class="ad-vazio">A carregar os dados do site…</div>
+      <section id="ad-login" class="ad-login" hidden aria-labelledby="ad-login-t">
+        <h2 id="ad-login-t">Entrar no painel</h2>
+        <p class="ad-ajuda">Escolha o seu nome e escreva a sua senha pessoal.</p>
+        <div id="ad-login-aviso" class="ad-banner" hidden></div>
+        <form id="ad-login-form" autocomplete="off" novalidate>
+          <div class="ad-campo">
+            <label for="ad-login-nome">Nome</label>
+            <select id="ad-login-nome"></select>
+          </div>
+          <div class="ad-campo">
+            <label for="ad-login-senha">Senha</label>
+            <input
+              type="password"
+              id="ad-login-senha"
+              autocomplete="current-password"
+              spellcheck="false"
+            />
+          </div>
+          <p class="ad-login-erro" id="ad-login-erro" role="alert" hidden></p>
+          <button type="submit" class="ad-btn ad-btn-prim" id="ad-login-btn">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i> Entrar
+          </button>
+        </form>
+      </section>
+      <div id="ad-carregando" class="ad-vazio" hidden>A carregar os dados do site…</div>
       <div id="ad-erro-carga" class="ad-banner ad-banner-erro" hidden></div>
 
       <div id="ad-app" hidden>
@@ -53,13 +83,10 @@
         <button type="button" class="ad-btn ad-btn-sec" id="ad-btn-descarregar">
           <i class="fa-solid fa-download" aria-hidden="true"></i> Descarregar JSON
         </button>
-        <button
-          type="button"
-          class="ad-btn ad-btn-prim"
-          id="ad-btn-publicar"
-          disabled
-          title="Fica activo depois da configuração única (Passo 10)"
-        >
+        <button type="button" class="ad-btn ad-btn-sec" id="ad-btn-historico">
+          <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Histórico
+        </button>
+        <button type="button" class="ad-btn ad-btn-prim" id="ad-btn-publicar">
           <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Publicar
         </button>
       </div>

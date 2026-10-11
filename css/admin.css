@@ -559,3 +559,74 @@ body {
     flex: 1 1 calc(100% - 60px);
   }
 }
+
+/* ---- Etapa 3: entrada, sessão, histórico ---- */
+.ad-sessao {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  color: #fff;
+  font-size: 0.85rem;
+}
+.ad-sessao:not([hidden]) {
+  display: inline-flex;
+}
+.ad-sessao-nome {
+  font-weight: 600;
+}
+.ad-login {
+  max-width: 420px;
+  margin: 32px auto;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px 20px;
+}
+.ad-login[hidden] {
+  display: none;
+}
+.ad-login h2 {
+  color: var(--blue-dark);
+  margin-bottom: 4px;
+}
+.ad-login form {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+.ad-login-erro {
+  color: var(--red);
+  font-size: 0.88rem;
+  margin: 0;
+}
+.ad-login .ad-btn {
+  justify-self: stretch;
+  justify-content: center;
+}
+.ad-hist {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  max-height: 55vh;
+  overflow: auto;
+}
+.ad-hist li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+.ad-hist small {
+  display: block;
+  color: var(--gray-500);
+  word-break: break-word;
+}
+.ad-hist-actual {
+  color: var(--blue-dark);
+  font-weight: 600;
+  white-space: nowrap;
+}
