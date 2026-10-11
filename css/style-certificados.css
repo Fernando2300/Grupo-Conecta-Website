@@ -166,6 +166,10 @@
     max-height: 100px;
     }
 
+    /* Ícones Font Awesome (substituem os emojis) */
+    .resultado.sucesso h3 i { color: #6f8f1c; }
+    .resultado.erro h3 i,
+    .resultado.erro p i { color: #c0392b; }
 
 
 

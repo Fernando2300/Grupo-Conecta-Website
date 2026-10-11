@@ -5,22 +5,23 @@ document.getElementById("verificar").addEventListener("click", async () => {
   if (!codigo) {
     resultado.style.display = "block";
     resultado.className = "resultado erro";
-    resultado.innerHTML = "<p>⚠️ Por favor, insira um código válido.</p>";
+    resultado.innerHTML =
+        "<p><i class='fa-solid fa-triangle-exclamation' aria-hidden='true'></i> Por favor, insira um código válido.</p>";
     return;
   }
 
   try {
-    // 🔹 Carregar todos os certificados
+    // Carregar todos os certificados
     const [participantes, oradores, moderadores] = await Promise.all([
       fetch("assets/certificados-participantes.json").then(r => r.json()),
       fetch("assets/certificados-oradores.json").then(r => r.json()),
       fetch("assets/certificados-moderadores.json").then(r => r.json())
     ]);
 
-    // 🔹 Junta tudo numa única lista
+    // Junta tudo numa única lista
     const certificados = [...participantes, ...oradores, ...moderadores];
 
-    // 🔹 Procura pelo código
+    // Procura pelo código
     const certificado = certificados.find(c => c.codigo === codigo);
 
     if (certificado) {
@@ -59,7 +60,7 @@ document.getElementById("verificar").addEventListener("click", async () => {
       resultado.style.display = "block";
       resultado.className = "resultado sucesso";
       resultado.innerHTML = `
-        <h3>✅ Certificado Válido</h3>
+          <h3><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Certificado Válido</h3>
 
         <p><strong>Nome:</strong> ${certificado.nome}</p>
 
@@ -80,7 +81,7 @@ document.getElementById("verificar").addEventListener("click", async () => {
       resultado.style.display = "block";
       resultado.className = "resultado erro";
       resultado.innerHTML = `
-        <h3>❌ Certificado não encontrado</h3>
+        <h3><i class="fa-solid fa-circle-xmark" aria-hidden="true"></i> Certificado não encontrado</h3>
         <p>O código <strong>${codigo}</strong> não consta na nossa base de dados.</p>
       `;
     }
@@ -88,6 +89,7 @@ document.getElementById("verificar").addEventListener("click", async () => {
     console.error(error);
     resultado.style.display = "block";
     resultado.className = "resultado erro";
-    resultado.innerHTML = "<p>⚠️ Erro ao verificar. Tente novamente mais tarde.</p>";
+    resultado.innerHTML =
+        "<p><i class='fa-solid fa-triangle-exclamation' aria-hidden='true'></i> Erro ao verificar. Tente novamente mais tarde.</p>";
   }
 });
