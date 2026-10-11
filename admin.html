@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel · Grupo Conecta</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+
+  <body>
+    <header class="ad-topo">
+      <div class="ad-topo-in">
+        <img src="assets/icons/logowhite.png" alt="Grupo Conecta" class="ad-logo" />
+        <span class="ad-topo-titulo">Painel de administração</span>
+        <span class="ad-topo-estado" id="ad-estado" aria-live="polite"></span>
+      </div>
+    </header>
+
+    <main class="ad-main">
+      <div id="ad-aviso-rascunho" class="ad-banner" hidden></div>
+      <div id="ad-carregando" class="ad-vazio">A carregar os dados do site…</div>
+      <div id="ad-erro-carga" class="ad-banner ad-banner-erro" hidden></div>
+
+      <div id="ad-app" hidden>
+        <section class="ad-resumo" aria-labelledby="ad-resumo-t">
+          <h2 id="ad-resumo-t">Como o site vai ficar</h2>
+          <p class="ad-ajuda">Números calculados a partir do que preencheu. Não se escrevem à mão.</p>
+          <div class="ad-numeros" id="ad-numeros"></div>
+        </section>
+
+        <nav class="ad-tabs" id="ad-tabs" role="tablist" aria-label="Secções do painel"></nav>
+
+        <div id="ad-paineis"></div>
+      </div>
+    </main>
+
+    <div class="ad-barra" id="ad-barra" hidden>
+      <div class="ad-barra-in">
+        <div class="ad-barra-msg" id="ad-barra-msg" aria-live="polite"></div>
+        <button type="button" class="ad-btn ad-btn-sec" id="ad-btn-validar">
+          <i class="fa-solid fa-list-check" aria-hidden="true"></i> Verificar
+        </button>
+        <button type="button" class="ad-btn ad-btn-sec" id="ad-btn-descarregar">
+          <i class="fa-solid fa-download" aria-hidden="true"></i> Descarregar JSON
+        </button>
+        <button
+          type="button"
+          class="ad-btn ad-btn-prim"
+          id="ad-btn-publicar"
+          disabled
+          title="Fica activo depois da configuração única (Passo 10)"
+        >
+          <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Publicar
+        </button>
+      </div>
+    </div>
+
+    <div class="ad-modal" id="ad-modal" hidden>
+      <div class="ad-modal-caixa" role="dialog" aria-modal="true" aria-labelledby="ad-modal-t">
+        <h3 id="ad-modal-t"></h3>
+        <div id="ad-modal-corpo"></div>
+        <div class="ad-modal-acoes">
+          <button type="button" class="ad-btn ad-btn-sec" id="ad-modal-nao">Cancelar</button>
+          <button type="button" class="ad-btn ad-btn-prim" id="ad-modal-sim">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
