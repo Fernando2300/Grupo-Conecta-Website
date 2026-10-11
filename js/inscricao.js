@@ -130,6 +130,28 @@ document.addEventListener("DOMContentLoaded", async function () {
       vazia.hidden = false;
     }
 
+    // "O que você vai aprender": só aparece se o workshop tiver tópicos
+    const boxAprender = document.getElementById("ws-aprenderao-box");
+    const listaAprender = document.getElementById("ws-aprenderao");
+    listaAprender.innerHTML = "";
+    const topicos = Array.isArray(w.aprenderao)
+      ? w.aprenderao.filter((t) => String(t).trim())
+      : [];
+    topicos.forEach((t) => {
+      const li = document.createElement("li");
+      const ic = document.createElement("i");
+      ic.className = "fa-solid fa-circle-check";
+      ic.setAttribute("aria-hidden", "true");
+      li.appendChild(ic);
+      li.appendChild(document.createTextNode(" " + t));
+      listaAprender.appendChild(li);
+    });
+    boxAprender.hidden = topicos.length === 0;
+
+    // Botão "Fazer inscrição" (junto aos detalhes): só com inscrições abertas
+    document.getElementById("ws-btn-inscrever").hidden =
+      w.inscricoes !== "abertas";
+
     // Botão de inscrição: aberto ou encerrado
     if (w.inscricoes === "abertas") {
       btnInscricao.disabled = false;

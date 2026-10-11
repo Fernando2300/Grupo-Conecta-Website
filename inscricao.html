@@ -31,7 +31,7 @@
     <!-- ✅ intl-tel-input CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css" />
 
-
+  <link rel="stylesheet" href="assets/fontawesome/css/all.min.css" />  
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/style-inscricao.css" />
   <link rel="stylesheet" href="css/sacolas.css" />
@@ -108,41 +108,46 @@
 
       <div class="info-box">
         <div class="info-item">
-          <span class="icon">📅</span>
+          <span class="icon"><i class="fa-regular fa-calendar" aria-hidden="true"></i></span>
           <div>
             <strong>Data</strong><br />
             <span id="ws-data">—</span>
           </div>
         </div>
         <div class="info-item">
-          <span class="icon">🕒</span>
+          <span class="icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></span>
           <div>
             <strong>Horário</strong><br />
             <span id="ws-horario">—</span>
           </div>
         </div>
         <div class="info-item">
-          <span class="icon">📍</span>
+          <span class="icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>
           <div>
             <strong>Local</strong><br />
             <span id="ws-local">—</span>
           </div>
+
+        <div class="info-item info-item-certificado">
+          <span class="icon"><i class="fa-solid fa-certificate" aria-hidden="true"></i></span>
+          <div>
+            <strong>Certificado</strong><br />
+            Certificado digital de participação
+          </div>
+        </div>
         </div>
       </div>
 
-      <div class="aprendizado-box" hidden>
-        <h4>O que você vai aprender:</h4>
-        <ul>
-            <li>✅ Como adaptar métodos de ensino às novas realidades dos estudantes</li>
-            <li>✅ Estratégias pedagógicas inovadoras aplicáveis no século XXI</li>
-            <li>✅ A importância da criatividade e flexibilidade na prática docente</li>
-            <li>✅ Inspirações para transformar a sala de aula em um espaço de inovação</li>
-        </ul>
-      </div>
+      <div class="aprendizado-box" id="ws-aprenderao-box" hidden>
+       <h4>O que você vai aprender:</h4>
+       <ul id="ws-aprenderao"></ul>
+     </div>
+
+     <a href="#garanta-vaga" class="ws-btn-inscrever" id="ws-btn-inscrever" hidden>Fazer inscrição</a>
     </section>
     
 
-    <section class="form-section">
+    <section class="form-section" id="garanta-vaga">
       <h3>Garanta sua vaga</h3>
       <form id="inscricao-form">
         <label for="nome">Nome Completo (Para certificado)</label>

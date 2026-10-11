@@ -895,3 +895,27 @@ input[type="email"] {
   outline: none;
   border-color: var(--blue);
 }
+
+   /* ===== Passo 8: ícones, certificado, lista dinâmica e botão Fazer inscrição ===== */
+   .info-box { flex-wrap: wrap; }
+   .info-item-certificado { flex: 1 1 100%; }
+   .aprendizado-box[hidden],
+   .ws-btn-inscrever[hidden] { display: none !important; }
+   .aprendizado-box { display: block; margin-bottom: 1.25rem; }
+   .aprendizado-box li i { color: #A0C334; margin-right: 0.35rem; }
+   .ws-btn-inscrever {
+       display: block;
+       text-align: center;
+       background: #A0C334;
+       color: #1F1F1F;
+       font-weight: 700;
+       padding: 0.85rem 1.25rem;
+       border-radius: 8px;
+       text-decoration: none;
+       transition: background 0.2s ease;
+   }
+   .ws-btn-inscrever:hover { background: #8aa92a; }
+   #garanta-vaga { scroll-margin-top: 90px; }
+   @media (min-width: 992px) {
+       .ws-btn-inscrever { display: none !important; }
+   }
