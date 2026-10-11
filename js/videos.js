@@ -6,7 +6,7 @@
 
    Uso no HTML:
    <section class="videos-section" id="videos-section"
-            data-videos-limite="3"></section>      (página inicial: 3 mais recentes)
+            data-videos-limite="3"></section>      (página inicial: os de "videosDestaque" ou, sem lista, os 3 mais recentes)
    <section class="videos-section" id="videos-section"
             data-videos-limite="todos"></section>  (página workshops-gravados.html)
    ============================================================ */
@@ -106,7 +106,7 @@
 
     // Só entram workshops com vídeo válido; mais recentes primeiro
     const todos = (dados.workshops || [])
-      .map((w) => ({ ...w, id: extrairId(w.video) }))
+      .map((w) => ({ ...w, wsId: w.id, id: extrairId(w.video) }))
       .filter((w) => w.id)
       .sort((a, b) => (b.data || "").localeCompare(a.data || ""));
 
@@ -118,7 +118,18 @@
     const limiteAttr = secao.dataset.videosLimite;
     const limite =
       limiteAttr && limiteAttr !== "todos" ? Number(limiteAttr) : todos.length;
-    const visiveis = todos.slice(0, limite);
+    let visiveis = todos.slice(0, limite);
+
+    // Página inicial: se "videosDestaque" (lista ordenada de ids de workshops)
+    // existir em site.json, mostra esses, pela ordem escolhida (máx. "limite").
+    // Sem lista, ou sem vídeos válidos nela, mostra os mais recentes.
+    if (limiteAttr !== "todos" && Array.isArray(dados.videosDestaque)) {
+      const escolhidos = dados.videosDestaque
+        .map((id) => todos.find((v) => v.wsId === id))
+        .filter(Boolean)
+        .slice(0, limite);
+      if (escolhidos.length) visiveis = escolhidos;
+    }
 
     const recipiente = criar("div", "videos-container");
     // Na página dedicada o título é o principal (h1); na página inicial é h2
