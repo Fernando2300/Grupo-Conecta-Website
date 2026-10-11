@@ -551,6 +551,10 @@
     "Ernesto Xavier",
   ];
   var INACTIVIDADE_MS = 30 * 60 * 1000; // igual à do Worker
+  var CLOUDINARY = { nome: "y1pydrcc", preset: "conecta_workshops" };
+  var IMG_TIPOS = ["image/jpeg", "image/png", "image/webp"];
+  var IMG_MAX_ORIGINAL = 12 * 1024 * 1024; // ficheiro escolhido
+  var IMG_LADO_MAX = 1600; // px do lado maior depois de reduzir
 
   // Sessão: só em memória (nunca localStorage).
   var Sessao = { token: null, nome: "", sha: null };
@@ -733,6 +737,173 @@
       entrada,
       op.ajuda ? el("small", { text: op.ajuda }) : null,
     );
+  }
+
+  /* ----------------------------------------------------------
+     Envio de imagens (Cloudinary, preset sem assinatura)
+     ---------------------------------------------------------- */
+  // Reduz a imagem no browser e devolve um Blob (webp, ou jpeg se o browser não suportar).
+  function reduzirImagem(ficheiro) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(ficheiro);
+      var img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var w = img.naturalWidth;
+        var h = img.naturalHeight;
+        if (!w || !h) return reject(new Error("Não consegui ler a imagem."));
+        var k = Math.min(1, IMG_LADO_MAX / Math.max(w, h));
+        var cv = document.createElement("canvas");
+        cv.width = Math.round(w * k);
+        cv.height = Math.round(h * k);
+        var cx = cv.getContext("2d");
+        cx.drawImage(img, 0, 0, cv.width, cv.height);
+        cv.toBlob(
+          function (b) {
+            if (b && b.type === "image/webp") return resolve(b);
+            cv.toBlob(
+              function (j) {
+                if (j) resolve(j);
+                else reject(new Error("Não consegui preparar a imagem."));
+              },
+              "image/jpeg",
+              0.88,
+            );
+          },
+          "image/webp",
+          0.88,
+        );
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        reject(new Error("O ficheiro não é uma imagem válida."));
+      };
+      img.src = url;
+    });
+  }
+
+  function enviarCloudinary(blob) {
+    var fd = new FormData();
+    fd.append(
+      "file",
+      blob,
+      blob.type === "image/webp" ? "imagem.webp" : "imagem.jpg",
+    );
+    fd.append("upload_preset", CLOUDINARY.preset);
+    var ctl =
+      typeof AbortController === "function" ? new AbortController() : null;
+    var t = setTimeout(function () {
+      if (ctl) ctl.abort();
+    }, 60000);
+    return fetch(
+      "https://api.cloudinary.com/v1_1/" + CLOUDINARY.nome + "/image/upload",
+      { method: "POST", body: fd, signal: ctl ? ctl.signal : undefined },
+    ).then(
+      function (r) {
+        clearTimeout(t);
+        return r.json().then(
+          function (j) {
+            if (!r.ok || !j.secure_url) {
+              throw new Error(
+                (j && j.error && j.error.message) ||
+                  "O envio da imagem falhou (" + r.status + ").",
+              );
+            }
+            return j.secure_url;
+          },
+          function () {
+            throw new Error("Resposta inesperada do servidor de imagens.");
+          },
+        );
+      },
+      function () {
+        clearTimeout(t);
+        throw new Error(
+          "Não foi possível enviar a imagem. Verifique a internet e tente de novo.",
+        );
+      },
+    );
+  }
+
+  // Campo "link da imagem" com botão para carregar um ficheiro e pré-visualização.
+  function campoImagem(op) {
+    var base = campo(op);
+    var entrada = base.querySelector("[data-path]");
+    var ficheiro = el("input", {
+      type: "file",
+      accept: "image/jpeg,image/png,image/webp",
+      class: "ad-ficheiro",
+      hidden: true,
+    });
+    var estado = el("small", { class: "ad-img-estado", "aria-live": "polite" });
+    var mini = el("img", {
+      class: "ad-img-mini",
+      alt: "Pré-visualização",
+      hidden: true,
+    });
+    var btn = botao(
+      "Carregar imagem",
+      "ad-btn-sec ad-btn-pq",
+      function () {
+        ficheiro.click();
+      },
+      "fa-solid fa-image",
+    );
+
+    function pintarMini() {
+      var v = (entrada.value || "").trim();
+      if (v && /^(https?:\/\/|assets\/)/i.test(v)) {
+        mini.src = v;
+        mini.hidden = false;
+      } else {
+        mini.hidden = true;
+      }
+    }
+    mini.addEventListener("error", function () {
+      mini.hidden = true;
+    });
+    entrada.addEventListener("input", pintarMini);
+    pintarMini();
+
+    ficheiro.addEventListener("change", function () {
+      var f = ficheiro.files && ficheiro.files[0];
+      ficheiro.value = "";
+      if (!f) return;
+      estado.className = "ad-img-estado";
+      if (IMG_TIPOS.indexOf(f.type) === -1) {
+        estado.textContent = "Use uma imagem JPG, PNG ou WebP.";
+        estado.className = "ad-img-estado erro";
+        return;
+      }
+      if (f.size > IMG_MAX_ORIGINAL) {
+        estado.textContent = "A imagem é demasiado grande (máximo 12 MB).";
+        estado.className = "ad-img-estado erro";
+        return;
+      }
+      btn.disabled = true;
+      estado.textContent = "A preparar e enviar a imagem…";
+      reduzirImagem(f)
+        .then(enviarCloudinary)
+        .then(function (urlFinal) {
+          entrada.value = urlFinal;
+          entrada.dispatchEvent(new Event("input", { bubbles: true }));
+          estado.textContent = "Imagem enviada. Lembre-se de publicar.";
+          estado.className = "ad-img-estado ok";
+        })
+        .catch(function (e) {
+          estado.textContent = e.message;
+          estado.className = "ad-img-estado erro";
+        })
+        .then(function () {
+          btn.disabled = false;
+        });
+    });
+
+    base.appendChild(
+      el("div", { class: "ad-img-acoes" }, btn, ficheiro, estado),
+    );
+    base.appendChild(mini);
+    return base;
   }
 
   function fmtPct(n) {
@@ -1162,11 +1333,11 @@
       el(
         "div",
         { class: "ad-grelha c2" },
-        campo({
-          rotulo: "Imagem (link)",
+        campoImagem({
+          rotulo: "Imagem",
           path: P("imagem"),
           ajuda:
-            "Link https://… ou caminho em assets/. O envio de imagens pelo painel chega numa etapa seguinte.",
+            "Carregue uma imagem (JPG, PNG ou WebP) ou cole um link https://…",
           placeholder: "assets/images/workshop.webp",
         }),
         campo({
@@ -1429,9 +1600,10 @@
             "Opcional. Se preenchido, aparece o link 'Ver prestação de contas'.",
           placeholder: "https://…",
         }),
-        campo({
-          rotulo: "Imagem da campanha (link)",
+        campoImagem({
+          rotulo: "Imagem da campanha",
           path: P("imagem"),
+          ajuda: "Carregue uma imagem ou cole um link.",
           placeholder: "assets/images/campanha-sacolas.webp",
         }),
       ),
