@@ -4,12 +4,42 @@
 (function () {
   "use strict";
 
-  var CONTACTO = {
+  // Valores por omissão: usados se o site.json não carregar ou não tiver "contactos".
+  var CONTACTO_BASE = {
     whatsapp: "244935269451",
     whatsappTexto: "(+244) 935269451",
     email: "gconecta05angola@gmail.com",
     local: "Huambo, Angola",
   };
+  var CONTACTO = {
+    whatsapp: CONTACTO_BASE.whatsapp,
+    whatsappTexto: CONTACTO_BASE.whatsappTexto,
+    email: CONTACTO_BASE.email,
+    local: CONTACTO_BASE.local,
+  };
+
+  // Escapa texto vindo do JSON antes de o pôr no HTML
+  function esc(t) {
+    return String(t)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // Lê o bloco "contactos" do site.json; campos em falta mantêm o valor por omissão
+  function aplicarContactos(c) {
+    if (!c || typeof c !== "object") return false;
+    var mudou = false;
+    ["email", "whatsapp", "whatsappTexto", "local"].forEach(function (k) {
+      if (typeof c[k] === "string" && c[k].trim() !== "") {
+        CONTACTO[k] = c[k].trim();
+        mudou = true;
+      }
+    });
+    CONTACTO.whatsapp = CONTACTO.whatsapp.replace(/\D/g, "");
+    return mudou;
+  }
 
   var EXPLORAR = [
     ["Início", "index.html"],
@@ -37,7 +67,7 @@
     var ano = new Date().getFullYear();
     var wa =
       "https://wa.me/" +
-      CONTACTO.whatsapp +
+      encodeURIComponent(CONTACTO.whatsapp) +
       "?text=" +
       encodeURIComponent("Olá, gostaria de receber uma informação");
 
@@ -63,15 +93,15 @@
       '<li><a href="' +
       wa +
       '" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span>' +
-      CONTACTO.whatsappTexto +
+      esc(CONTACTO.whatsappTexto) +
       "</span></a></li>" +
       '<li><a href="mailto:' +
-      CONTACTO.email +
+      esc(CONTACTO.email) +
       '"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>' +
-      CONTACTO.email +
+      esc(CONTACTO.email) +
       "</span></a></li>" +
       '<li class="sf-local"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>' +
-      CONTACTO.local +
+      esc(CONTACTO.local) +
       "</span></li>" +
       "</ul></div>" +
       "</div>" +
@@ -93,6 +123,23 @@
     if (!alvo) return;
     alvo.className = "site-footer";
     alvo.innerHTML = html();
+
+    // Depois de mostrar o rodapé com os valores por omissão, vai buscar os contactos
+    // ao site.json e, se forem diferentes, volta a desenhar.
+    if (typeof fetch !== "function") return;
+    fetch("data/site.json?v=" + Date.now())
+      .then(function (r) {
+        if (!r.ok) throw new Error("site.json indisponível");
+        return r.json();
+      })
+      .then(function (dados) {
+        if (aplicarContactos(dados && dados.contactos)) {
+          alvo.innerHTML = html();
+        }
+      })
+      .catch(function () {
+        /* mantém os valores por omissão */
+      });
   }
 
   if (document.readyState === "loading") {

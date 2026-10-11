@@ -52,8 +52,16 @@
     "imagem": "assets/images/campanha-sacolas.webp",
     "linkPrestacaoContas": ""
   },
-  "estatisticas": {
+    "estatisticas": {
+    "baseParticipacoes": 108,
+    "baseMulheres": 44,
     "percentagemMulheres": 41
+  },
+  "contactos": {
+    "email": "gconecta05angola@gmail.com",
+    "whatsapp": "244935269451",
+    "whatsappTexto": "(+244) 935269451",
+    "local": "Huambo, Angola"
   },
   "workshops": [
     {

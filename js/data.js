@@ -73,12 +73,54 @@ const SiteData = (() => {
     return isNaN(global) ? 500 : Math.max(global, 0);
   }
 
+  // Estatísticas de género acumuladas (Passo 9).
+  // Parte da base de 2025 (estatisticas.baseParticipacoes / baseMulheres) e soma
+  // os workshops novos que tenham "mulheres" e "homens" preenchidos.
+  // A percentagem global nunca é escrita à mão: calcula-se aqui.
+  // Sem base no JSON, usa "percentagemMulheres" como alternativa.
+  function numeroValido(v) {
+    if (v === undefined || v === null || v === "") return null;
+    const n = Number(v);
+    return isNaN(n) || n < 0 ? null : n;
+  }
+
+  function generoGlobal(dados) {
+    const est = dados.estatisticas || {};
+    const base = numeroValido(est.baseParticipacoes);
+    const baseM = numeroValido(est.baseMulheres);
+
+    // Alternativa: modelo antigo (percentagem fixa)
+    if (base === null || baseM === null || base <= 0) {
+      const m = Number(est.percentagemMulheres) || 0;
+      return { mulheres: m, homens: 100 - m, totalBase: 0, totalNovos: 0 };
+    }
+
+    let totalM = baseM;
+    let total = base;
+    let novos = 0;
+    (dados.workshops || []).forEach((w) => {
+      const m = numeroValido(w.mulheres);
+      const h = numeroValido(w.homens);
+      if (m === null || h === null) return; // só conta se ambos estiverem preenchidos
+      totalM += m;
+      total += m + h;
+      novos += m + h;
+    });
+
+    const pctM = total > 0 ? Math.round((totalM / total) * 100) : 0;
+    return {
+      mulheres: pctM,
+      homens: 100 - pctM,
+      totalBase: base,
+      totalNovos: novos,
+    };
+  }
+
   // Calcula os totais da campanha e as estatísticas a partir dos workshops
   function resumo(dados) {
     const campanha = dados.campanha || {};
     const ws = dados.workshops || [];
-    const mulheres =
-      Number((dados.estatisticas || {}).percentagemMulheres) || 0;
+    const genero = generoGlobal(dados);
 
     // Só conta o dinheiro dos workshops do lote activo, mais outros valores avulsos
     const arrecadado =
@@ -100,8 +142,8 @@ const SiteData = (() => {
         0,
       ),
       workshopsRealizados: ws.filter((w) => Number(w.participantes) > 0).length,
-      mulheres,
-      homens: 100 - mulheres,
+      mulheres: genero.mulheres,
+      homens: genero.homens,
     };
   }
 
@@ -114,5 +156,6 @@ const SiteData = (() => {
     formatarKz,
     valorMinimo,
     resumo,
+    generoGlobal,
   };
 })();
