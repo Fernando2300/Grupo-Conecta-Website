@@ -1,0 +1,147 @@
+/* Rodapé partilhado. Os ícones usam Font Awesome (local). */
+@import url("../assets/fontawesome/css/all.min.css");
+
+.site-footer {
+    background: var(--blue-dark, #005D8F);
+    color: #ffffff;
+    text-align: left;
+    width: 100%;
+}
+
+.site-footer .sf-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.site-footer h3 {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #A0C334;
+    margin: 0 0 1rem;
+}
+
+.site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.site-footer li + li {
+    margin-top: 0.6rem;
+}
+
+.site-footer a {
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+    color: #A0C334;
+}
+
+.site-footer .sf-brand p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 1rem 0 0;
+    max-width: 34ch;
+}
+
+.site-footer .sf-brand .sf-programa {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.site-footer .sf-logo {
+    height: 2.75rem;
+    width: auto;
+    display: block;
+}
+
+.site-footer .sf-col li {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.site-footer .sf-contactos li a,
+.site-footer .sf-contactos .sf-local {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    color: rgba(255, 255, 255, 0.88);
+    overflow-wrap: anywhere;
+}
+
+.site-footer .sf-contactos i {
+    width: 1.1rem;
+    margin-top: 0.2rem;
+    text-align: center;
+    color: #A0C334;
+    flex-shrink: 0;
+}
+
+/* Barra inferior */
+.site-footer .sf-bottom {
+    background: rgba(0, 0, 0, 0.22);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    text-align: center;
+}
+
+.site-footer .sf-bottom p,
+.site-footer .sf-legal a {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.site-footer .sf-legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.25rem;
+}
+
+.site-footer .sf-legal li + li { margin-top: 0; }
+
+.site-footer .sf-bottom a:hover { text-decoration: underline; }
+
+.site-footer .sf-creditos a { font-weight: 600; color: #ffffff; }
+
+/* Tablet */
+@media (min-width: 640px) {
+    .site-footer .sf-main {
+        grid-template-columns: 1fr 1fr;
+        padding: 3.5rem 2rem 2.5rem;
+        gap: 2.5rem 2rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+    .site-footer .sf-main {
+        grid-template-columns: 1.5fr 1fr 1fr 1.4fr;
+        gap: 3rem;
+        padding: 4rem 2rem 3rem;
+    }
+
+    .site-footer .sf-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1.25rem max(2rem, calc((100% - 1200px) / 2 + 2rem));
+    }
+
+    .site-footer .sf-bottom { text-align: left; }
+}
