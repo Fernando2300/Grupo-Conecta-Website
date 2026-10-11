@@ -29,6 +29,70 @@ document.addEventListener("DOMContentLoaded", async function () {
       "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
   });
 
+  // ✅ Localização: "Reside em Angola?" -> província, ou país se viver fora
+  const resideRadios = document.getElementsByName("reside");
+  const selectProvincia = document.getElementById("provincia");
+  const provinciaField = document.getElementById("provincia-field");
+  const paisField = document.getElementById("pais-field");
+  const inputPais = document.getElementById("pais");
+  let paisEditado = false; // a pessoa escreveu o país à mão
+  let foraAutomatico = false; // "Não" escolhido pelo código do telefone
+
+  function resideEmAngola() {
+    return [...resideRadios].find((r) => r.checked)?.value !== "nao";
+  }
+
+  function definirReside(emAngola) {
+    resideRadios.forEach((r) => {
+      r.checked = r.value === (emAngola ? "sim" : "nao");
+    });
+  }
+
+  function nomeDoPais(dados) {
+    try {
+      return new Intl.DisplayNames(["pt"], { type: "region" }).of(
+        dados.iso2.toUpperCase(),
+      );
+    } catch (e) {
+      return (dados.name || "").replace(/\s*\(.*\)$/, "");
+    }
+  }
+
+  function sincronizarLocalizacao() {
+    const fora = !resideEmAngola();
+    provinciaField.classList.toggle("hidden", fora);
+    paisField.classList.toggle("hidden", !fora);
+    if (fora && !paisEditado) {
+      const dados = iti.getSelectedCountryData();
+      inputPais.value =
+        dados && dados.iso2 && dados.iso2 !== "ao" ? nomeDoPais(dados) : "";
+    }
+  }
+
+  resideRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      foraAutomatico = false;
+      sincronizarLocalizacao();
+    });
+  });
+  inputPais.addEventListener("input", () => {
+    paisEditado = true;
+  });
+  // Ao mudar o código do telefone, sugere a localização (a pessoa pode alterar)
+  inputTelefone.addEventListener("countrychange", () => {
+    const dados = iti.getSelectedCountryData();
+    const iso = dados && dados.iso2;
+    if (!iso) return;
+    if (iso !== "ao" && resideEmAngola() && !selectProvincia.value) {
+      definirReside(false);
+      foraAutomatico = true;
+    } else if (iso === "ao" && foraAutomatico && !paisEditado) {
+      definirReside(true);
+      foraAutomatico = false;
+    }
+    sincronizarLocalizacao();
+  });
+
   // ✅ Exibe mensagem de erro no bloco abaixo do formulário
   function exibirErroGlobal(mensagem) {
     const erroGlobal = document.getElementById("erro-global");
@@ -110,6 +174,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       linhas.push("", `Workshop ${workshop.numero}: ${workshop.tema}`);
     if (f.nome) linhas.push(`Nome: ${f.nome}`);
     if (f.telefone) linhas.push(`Número: ${f.telefone}`);
+    if (f.provincia) linhas.push(`Localização: ${f.provincia}, Angola`);
+    else if (f.pais) linhas.push(`Localização: ${f.pais}`);
     if (f.metodo === "email" && f.email) {
       linhas.push(`Receber o link por e-mail: ${f.email}`);
     } else if (f.metodo) {
@@ -246,6 +312,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const nome = document.getElementById("nome").value.trim();
     const telefone = iti.getNumber().trim(); // número completo com código do país
+    const foraDeAngola = !resideEmAngola();
+    const provincia = foraDeAngola ? "" : selectProvincia.value;
+    const pais = foraDeAngola ? inputPais.value.trim() : "Angola";
     const textoValor = valorInput.value.trim();
     const valor = textoValor === "" ? 0 : parseInt(textoValor, 10);
     const metodo = [...metodoRadios].find((r) => r.checked)?.value;
@@ -285,6 +354,16 @@ document.addEventListener("DOMContentLoaded", async function () {
       return;
     }
 
+    if (!foraDeAngola && !provincia) {
+      mostrarErroInline(selectProvincia, "Indique a província onde reside.");
+      return;
+    }
+
+    if (foraDeAngola && !pais) {
+      mostrarErroInline(inputPais, "Indique o país onde reside.");
+      return;
+    }
+
     if (valorMinimo === 0) {
       // Gratuito: pode ficar em branco, mas se escrever tem de ser válido
       if (textoValor !== "" && (isNaN(valor) || valor < 1)) {
@@ -318,6 +397,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       data: {
         nome,
         telefone,
+        provincia,
+        pais,
         valor,
         metodo,
         email,
@@ -340,7 +421,15 @@ document.addEventListener("DOMContentLoaded", async function () {
       }, 300);
 
       if (response.ok) {
-        abrirPagamento({ nome, telefone, valor, metodo, email });
+        abrirPagamento({
+          nome,
+          telefone,
+          provincia,
+          pais,
+          valor,
+          metodo,
+          email,
+        });
       } else {
         exibirErroGlobal("Erro ao enviar. Tente novamente mais tarde.");
       }

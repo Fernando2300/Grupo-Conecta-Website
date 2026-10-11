@@ -145,7 +145,7 @@
     <section class="form-section">
       <h3>Garanta sua vaga</h3>
       <form id="inscricao-form">
-        <label for="nome">Nome Completo</label>
+        <label for="nome">Nome Completo (Para certificado)</label>
         <input type="text" id="nome" name="nome" />
 
         <!-- <label for="telefone">Telefone (WhatsApp)</label>
@@ -154,6 +154,45 @@
         <label for="telefone">Telefone (WhatsApp)</label>
         <input type="tel" id="telefone" name="telefone" class="telefone-input" />
         <!-- ALTERAR AQUI: adicionada class -->
+
+        <label>Reside em Angola?</label>
+<div class="metodo-opcoes">
+  <label><input type="radio" name="reside" value="sim" checked /> Sim</label>
+  <label><input type="radio" name="reside" value="nao" /> Não</label>
+</div>
+
+<div id="provincia-field">
+  <label for="provincia">Província</label>
+  <select id="provincia" name="provincia">
+    <option value="">Selecione a província</option>
+    <option value="Bengo">Bengo</option>
+    <option value="Benguela">Benguela</option>
+    <option value="Bié">Bié</option>
+    <option value="Cabinda">Cabinda</option>
+    <option value="Cuando">Cuando</option>
+    <option value="Cuanza Norte">Cuanza Norte</option>
+    <option value="Cuanza Sul">Cuanza Sul</option>
+    <option value="Cubango">Cubango</option>
+    <option value="Cunene">Cunene</option>
+    <option value="Huambo">Huambo</option>
+    <option value="Huíla">Huíla</option>
+    <option value="Icolo e Bengo">Icolo e Bengo</option>
+    <option value="Luanda">Luanda</option>
+    <option value="Lunda Norte">Lunda Norte</option>
+    <option value="Lunda Sul">Lunda Sul</option>
+    <option value="Malanje">Malanje</option>
+    <option value="Moxico">Moxico</option>
+    <option value="Moxico Leste">Moxico Leste</option>
+    <option value="Namibe">Namibe</option>
+    <option value="Uíge">Uíge</option>
+    <option value="Zaire">Zaire</option>
+  </select>
+</div>
+
+<div id="pais-field" class="hidden">
+  <label for="pais">País onde reside</label>
+  <input type="text" id="pais" name="pais" placeholder="Ex.: Portugal" />
+</div>
 
 
         <label id="valor-rotulo">Valor a Contribuir (mínimo 500 Kz)</label>

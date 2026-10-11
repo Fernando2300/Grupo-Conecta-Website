@@ -877,3 +877,21 @@ input[type="email"] {
         padding: 2.5rem 2rem;
     }
 }
+
+/* Campo "Onde reside?" (lista de províncias) */
+#inscricao-form select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+#inscricao-form select:focus {
+  outline: none;
+  border-color: var(--blue);
+}
