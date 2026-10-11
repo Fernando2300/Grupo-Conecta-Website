@@ -31,9 +31,13 @@
     <!-- ✅ intl-tel-input CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css" />
 
-
+  <link rel="stylesheet" href="assets/fontawesome/css/all.min.css" />  
   <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/footer.css" />
   <link rel="stylesheet" href="css/style-inscricao.css" />
+  <link rel="stylesheet" href="css/sacolas.css" />
+  <link rel="stylesheet" href="css/pagamento.css">
+  <link rel="stylesheet" href="css/contribuir.css">
 </head>
 <body>
  
@@ -77,15 +81,15 @@
 
   <!-- Links do menu -->
   <ul class="mobile-nav-links">
-    <li><a href="index">Início</a></li>
-    <li><a href="sobre">Quem Somos</a></li>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
     <li><a href="#courses-section">Cursos e Workshops</a></li>
     <li><a href="#impact-section">Impacto Social</a></li>
-    <li><a href="contacto">Contacto</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
   </ul>
 
   <!-- Botão de destaque no fim do menu -->
-  <a href="inscricao" class="join-btn">Inscrever-se no Workshop</a>
+  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
 </nav>
 
 
@@ -96,60 +100,58 @@
     <section class="workshop-card">
       
 
-      <h2 class="workshop-title">Novas Didácticas no Século XXI: Como Ensinar para uma Juventude em Constante Mudança</h2>
-      <picture>
-        <source srcset="assets/images/workshop.webp" type="image/webp" />
-        <img src="assets/images/" alt="Workshop-Grupo Conecta" class="workshop-img" />
-      </picture>
-    
-      <!--<h2 class="workshop-title">O papel da língua inglesa no acesso a oportunidades globais e no desenvolvimento profissional dos jovens</h2>-->
-      <p class="workshop-descricao">
-          Participe no workshop com o <strong>Doutor Osvaldo Mame</strong> e 
-          descubra novas formas de ensinar para uma juventude em constante 
-          mudança. Uma sessão inspiradora sobre inovação pedagógica, estratégias
-          modernas e os desafios da educação no século XXI.
-      </p>
-    
+      <h2 class="workshop-title" id="ws-tema">A carregar…</h2>
+
+      <img id="ws-imagem" class="workshop-img" alt="Workshop - Grupo Conecta" hidden />
+      <div id="ws-imagem-vazia" class="workshop-img-vazia" hidden>Imagem do workshop em breve</div>
+
+      <p class="workshop-descricao" id="ws-descricao"></p>
+
       <div class="info-box">
         <div class="info-item">
-          <span class="icon">📅</span>
+          <span class="icon"><i class="fa-regular fa-calendar" aria-hidden="true"></i></span>
           <div>
             <strong>Data</strong><br />
-            21 de Setembro, 2025
+            <span id="ws-data">—</span>
           </div>
         </div>
         <div class="info-item">
-          <span class="icon">🕒</span>
+          <span class="icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></span>
           <div>
             <strong>Horário</strong><br />
-            16h00 - 17h45
+            <span id="ws-horario">—</span>
           </div>
         </div>
         <div class="info-item">
-          <span class="icon">📍</span>
+          <span class="icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>
           <div>
             <strong>Local</strong><br />
-            Online – Zoom
+            <span id="ws-local">—</span>
+          </div>
+
+        <div class="info-item info-item-certificado">
+          <span class="icon"><i class="fa-solid fa-certificate" aria-hidden="true"></i></span>
+          <div>
+            <strong>Certificado</strong><br />
+            Certificado digital de participação
           </div>
         </div>
+        </div>
       </div>
-    
-      <div class="aprendizado-box" hidden>
-        <h4>O que você vai aprender:</h4>
-        <ul>
-            <li>✅ Como adaptar métodos de ensino às novas realidades dos estudantes</li>
-            <li>✅ Estratégias pedagógicas inovadoras aplicáveis no século XXI</li>
-            <li>✅ A importância da criatividade e flexibilidade na prática docente</li>
-            <li>✅ Inspirações para transformar a sala de aula em um espaço de inovação</li>
-        </ul>
-      </div>
+
+      <div class="aprendizado-box" id="ws-aprenderao-box" hidden>
+       <h4>O que você vai aprender:</h4>
+       <ul id="ws-aprenderao"></ul>
+     </div>
+
+     <a href="#garanta-vaga" class="ws-btn-inscrever" id="ws-btn-inscrever" hidden>Fazer inscrição</a>
     </section>
     
 
-    <section class="form-section">
+    <section class="form-section" id="garanta-vaga">
       <h3>Garanta sua vaga</h3>
       <form id="inscricao-form">
-        <label for="nome">Nome Completo</label>
+        <label for="nome">Nome Completo (Para certificado)</label>
         <input type="text" id="nome" name="nome" />
 
         <!-- <label for="telefone">Telefone (WhatsApp)</label>
@@ -159,14 +161,53 @@
         <input type="tel" id="telefone" name="telefone" class="telefone-input" />
         <!-- ALTERAR AQUI: adicionada class -->
 
+        <label>Reside em Angola?</label>
+<div class="metodo-opcoes">
+  <label><input type="radio" name="reside" value="sim" checked /> Sim</label>
+  <label><input type="radio" name="reside" value="nao" /> Não</label>
+</div>
 
-        <label>Valor a Contribuir (mínimo 500kz)</label>
+<div id="provincia-field">
+  <label for="provincia">Província</label>
+  <select id="provincia" name="provincia">
+    <option value="">Selecione a província</option>
+    <option value="Bengo">Bengo</option>
+    <option value="Benguela">Benguela</option>
+    <option value="Bié">Bié</option>
+    <option value="Cabinda">Cabinda</option>
+    <option value="Cuando">Cuando</option>
+    <option value="Cuanza Norte">Cuanza Norte</option>
+    <option value="Cuanza Sul">Cuanza Sul</option>
+    <option value="Cubango">Cubango</option>
+    <option value="Cunene">Cunene</option>
+    <option value="Huambo">Huambo</option>
+    <option value="Huíla">Huíla</option>
+    <option value="Icolo e Bengo">Icolo e Bengo</option>
+    <option value="Luanda">Luanda</option>
+    <option value="Lunda Norte">Lunda Norte</option>
+    <option value="Lunda Sul">Lunda Sul</option>
+    <option value="Malanje">Malanje</option>
+    <option value="Moxico">Moxico</option>
+    <option value="Moxico Leste">Moxico Leste</option>
+    <option value="Namibe">Namibe</option>
+    <option value="Uíge">Uíge</option>
+    <option value="Zaire">Zaire</option>
+  </select>
+</div>
+
+<div id="pais-field" class="hidden">
+  <label for="pais">País onde reside</label>
+  <input type="text" id="pais" name="pais" placeholder="Ex.: Portugal" />
+</div>
+
+
+        <label id="valor-rotulo">Valor a Contribuir (mínimo 500 Kz)</label>
         <div class="valor-botoes">
           <button type="button" class="valor-btn" data-value="500">500 kz</button>
           <button type="button" class="valor-btn" data-value="1000">1000 kz</button>
           <button type="button" class="valor-btn" data-value="2000">2000 kz</button>
         </div>
-        <input type="number" id="valor" name="valor" placeholder="Quanto deseja contribuir?" min="500"/>
+        <input type="number" id="valor" name="valor" placeholder="Quanto deseja contribuir?" min="1"/>
 
         <label>Como deseja receber o link?</label>
         <div class="metodo-opcoes">
@@ -186,7 +227,7 @@
 
       <!--<button type="submit" class="btn-destaque">Confirmar Inscrição</button>-->
           
-        <button type="" class="btn-destaque">Inscrições Encerradas</button> <!--Inscrições Encerradas-->
+        <button type="submit" id="btn-inscricao" class="btn-destaque" disabled>A carregar…</button>
       </form>
 
       <div id="erro-global" class="erro-global"></div> <!-- Para mensagem de Erros-->
@@ -195,33 +236,36 @@
     </section>
   </div> <!--Wrapper-->
 
+  <!-- Sacolas Eco Conecta, versão compacta (dados em data/site.json) -->
+  <section class="sacolas-section" id="sacolas-section" data-sacolas="compacta"></section>
+
    <!-- <div id="loading" class="hidden" aria-label="Carregando">
   <div class="spinner"></div>
 </div> -->
 
 
+<!-- Confirmação (workshop gratuito, sem contribuição) -->
+<section id="confirmacao-section" class="pagamento-section hidden">
+  <h3>Inscrição confirmada!</h3>
+  <p class="descricao-pagamento">Este workshop é gratuito e não precisa de efectuar nenhum pagamento.</p>
+  <p class="descricao-pagamento">Para receber o link e as informações do workshop, envie-nos a sua inscrição clicando no botão abaixo:</p>
+  <div class="envio-comprovativo">
+    <a id="conf-whatsapp" class="btn-wa" href="#" target="_blank" rel="noopener">Enviar via WhatsApp</a>
+    <a id="conf-email" class="link-email" href="#">Enviar por E-mail</a>
+  </div>
+  <p class="descricao-pagamento">Se quiser, também pode contribuir para as sacolas reutilizáveis:</p>
+  <a class="sacolas-botao" href="inscricao.html?contribuir=1" data-contribuir>Contribuir</a>
+</section>
 
 <!--Pagamento Section Novo3-->
 
 <section id="pagamento-section" class="pagamento-section hidden"> <!--hidden-->
-  <h3>Obrigado por se inscrever!</h3>
-  <p class="descricao-pagamento">Use os dados abaixo para realizar o <strong>pagamento por referência</strong>:</p>
-
-  <!--
-  <div class="pagamento-dados-wrapper">
-    <div class="logo-topo">
-      <img src="assets/unitelmoney_logo.jfif" alt="Unitel Money" class="logo-unitel" />
-    </div>
-    -->
-
-     <!-- ✅ Posicione o logo aqui, antes da div de dados -->
-  <img src="assets/images/unitelmoney_logo.jpg" alt="Logo Unitel Money" class="logo-unitel" />
-
-    <div class="pagamento-dados">
-      <p><strong>Entidade:</strong> 00930 <span class="copiar-texto" data-valor="00930" id="copiar-entidade">[copiar]</span></p>
-      <p><strong>Referência:</strong> 937082461 <span class="copiar-texto" data-valor="937082461" id="copiar-referencia">[copiar]</span></p>
-      <p class="nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
-    </div>
+  <h3 id="pg-titulo">Obrigado por se inscrever!</h3>
+   <p class="descricao-pagamento">Escolha a forma de pagamento que preferir:</p>
+   <div id="pg-metodos"></div>
+   <div class="pagamento-dados">
+     <p class="nota" id="pg-nota">Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.</p>
+   </div>
 
   <div class="envio-comprovativo">
     <a id="link-whatsapp" class="btn-wa" href="https://wa.me/244935269451?text=Olá%2C%20segue%20meu%20comprovativo%20do%20workshop" target="_blank">
@@ -321,7 +365,7 @@
                 <a href="#" aria-label="Twitter"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
                 <!--<a href="#" aria-label="Instagram"><img src="assets/icons/Instagram.svg" alt="Instagram"></a>-->
                 <a href="https://www.linkedin.com/company/grupoconecta-angola/" aria-label="LinkedIn"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-                <a href="#" aria-label="YouTube"><img src="assets/icons/YouTube.svg" alt="YouTube"></a>
+                <a href="https://youtube.com/@grupoconecta-n4t" aria-label="YouTube"><img src="assets/icons/YouTube.svg" alt="YouTube"></a>
             </div>
 
             <!-- Novo bloco com ícone e número -->
@@ -334,25 +378,15 @@
         </div>
 
         <!-- Bloco: Informações legais e créditos -->
-        <div class="footer-legal">
-            <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
-
-            <div class="footer-links">
-                <a href="#">Política de Privacidade</a>
-                <span class="separator">|</span>
-                <a href="#">Termos de Uso</a>
-            </div>
-            <p class="footer-creditos">
-  Desenvolvido por <strong>
-  <a href="https://facebook.com/ContornosDesigns" target="_blank" rel="noopener noreferrer">
-Contornos Designs
-  </a>
-  </strong>
-</p>
-</div>
+        <div id="site-footer"></div>
     </footer>
 
   <script src="js/base.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/sacolas.js"></script>
+  <script src="js/pagamento.js"></script>
+  <script src="js/contribuir.js"></script>
   <script src="js/inscricao.js"></script>
   <!-- ✅ intl-tel-input JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>

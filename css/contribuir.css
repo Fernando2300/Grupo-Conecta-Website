@@ -1,0 +1,144 @@
+/* ============================================================
+   Janela (pop-up) "Contribuir para as sacolas"
+   ============================================================ */
+
+body.contribuir-aberto {
+    overflow: hidden;
+}
+
+.contribuir-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.contribuir-overlay[hidden] {
+    display: none;
+}
+
+.contribuir-janela {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem 1.5rem 1.75rem 2rem;
+    background-color: var(--white, #fff);
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    text-align: left;
+}
+
+/* Barra lateral, igual à da secção de pagamento */
+.contribuir-janela::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to bottom, #006494, #00aaff);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.contribuir-fechar {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    background: transparent;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: #555;
+    cursor: pointer;
+}
+
+.contribuir-fechar:hover {
+    color: #006494;
+}
+
+.contribuir-janela h3 {
+    margin-bottom: 1rem;
+    padding-right: 2rem;
+    font-size: 1.2rem;
+    color: #006494;
+}
+
+.contribuir-intro {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.contribuir-logo {
+    float: right;
+    width: 50px;
+    margin: 0 0 0.5rem 1rem;
+    border-radius: 20%;
+}
+
+.contribuir-dados p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.6rem 0;
+    font-size: 1rem;
+}
+
+.contribuir-copiar {
+    font-size: 0.9rem;
+    color: #006494;
+    cursor: pointer;
+}
+
+.contribuir-copiar:hover {
+    color: #00486d;
+    text-decoration: underline;
+}
+
+.contribuir-nota {
+    clear: both;
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.contribuir-envio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.contribuir-wa {
+    width: 100%;
+    max-width: 320px;
+    padding: 0.9rem 1.4rem;
+    border-radius: 8px;
+    background-color: #a0c334;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.contribuir-wa:hover {
+    background-color: #8aa92a;
+}
+
+.contribuir-email {
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
+    color: #006494;
+    text-decoration: underline;
+    text-align: center;
+}

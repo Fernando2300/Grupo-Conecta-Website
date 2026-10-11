@@ -1,0 +1,110 @@
+/* ============================================================
+   Formas de pagamento (separadores) — usado no pop-up Contribuir
+   e na secção de pagamento da página de inscrição
+   ============================================================ */
+
+.pg-metodos {
+    margin: 1rem 0 0;
+    text-align: left;
+}
+
+.pg-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.pg-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1 1 auto;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.75rem;
+    border: 2px solid var(--light-gray-blue, #e6ecf0);
+    border-radius: 0.5rem;
+    background-color: var(--white, #fff);
+    color: var(--gray-700, #374151);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.pg-tab:hover {
+    border-color: var(--blue-heading, #0077b6);
+}
+
+.pg-tab.activo {
+    border-color: var(--blue-heading, #0077b6);
+    background-color: #eef6fb;
+    color: var(--blue-dark, #005d8f);
+}
+
+.pg-tab:focus-visible {
+    outline: 3px solid var(--blue-heading, #0077b6);
+    outline-offset: 2px;
+}
+
+.pg-tab-logo {
+    display: block;
+    height: 1.5rem;
+    width: auto;
+    border-radius: 0.25rem;
+}
+
+.pg-painel {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--gray-50, #f8f9fa);
+}
+
+.pg-painel[hidden] {
+    display: none;
+}
+
+.pg-titulo {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: var(--blue-dark, #005d8f);
+}
+
+.pg-instrucao {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--gray-700, #374151);
+}
+
+.pg-campo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.5rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.pg-valor {
+    overflow-wrap: anywhere;
+    letter-spacing: 0.02em;
+}
+
+.pg-copiar {
+    font-size: 0.9rem;
+    color: #006494;
+    cursor: pointer;
+}
+
+.pg-copiar:hover {
+    color: #00486d;
+    text-decoration: underline;
+}
+
+.pg-copiar:focus-visible {
+    outline: 2px solid var(--blue-heading, #0077b6);
+    outline-offset: 2px;
+}

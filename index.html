@@ -31,7 +31,12 @@
 
     <!--<link rel="stylesheet" href="style.css">-->
     <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/footer.css" />
     <link rel="stylesheet" href="css/style-index.css"> 
+    <link rel="stylesheet" href="css/videos.css">
+    <link rel="stylesheet" href="css/sacolas.css">
+    <link rel="stylesheet" href="css/pagamento.css">
+    <link rel="stylesheet" href="css/contribuir.css">
 
 
     <!-- Google Fonts: Inter (300, 400, 500, 600, 700, 800) -->
@@ -53,12 +58,12 @@
     <!-- Menu de navegação para desktop -->
   <nav class="desktop-nav">
     <ul class="desktop-nav-links">
-      <li><a href="index">Início</a></li>
-      <li><a href="sobre">Quem Somos</a></li>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="sobre.html">Quem Somos</a></li>
       <li><a href="#courses-section">Programas</a></li>
-      <li><a href="contacto">Contacto</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
     </ul>
-    <a href="inscricao" class="join-btn">Inscrever-se</a>
+    <a href="inscricao.html" class="join-btn">Inscrever-se</a>
   </nav>
 
   <!-- Botão do menu mobile (hambúrguer) -->
@@ -83,15 +88,15 @@
 
   <!-- Links do menu -->
   <ul class="mobile-nav-links">
-    <li><a href="index">Início</a></li>
-    <li><a href="sobre">Quem Somos</a></li>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="sobre.html">Quem Somos</a></li>
     <li><a href="#courses-section">Cursos e Workshops</a></li>
     <li><a href="#impact-section">Impacto Social</a></li>
-    <li><a href="contacto">Contacto</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
   </ul>
 
   <!-- Botão de destaque no fim do menu -->
-  <a href="inscricao" class="join-btn">Inscrever-se no Workshop</a>
+  <a href="inscricao.html" class="join-btn">Inscrever-se no Workshop</a>
 </nav>
 
 
@@ -137,6 +142,12 @@
             </div>
         </section>
 
+        <!-- Workshops gravados (dados em data/site.json) -->
+        <section class="videos-section" id="videos-section" data-videos-limite="3"></section>
+
+        <!-- Sacolas Eco Conecta (dados em data/site.json) -->
+        <section class="sacolas-section" id="sacolas-section" data-sacolas="completa"></section>
+
         <!-- Impact Section -->
         <section class="impact-section" id="impact-section">
             <h2 class="impact-title">Nosso Compromisso com o Impacto Social</h2>
@@ -171,7 +182,7 @@
                 <a href="#" aria-label="Twitter"><img src="assets/icons/Twitter.svg" alt="Twitter"></a>
                 <!--<a href="#" aria-label="Instagram"><img src="assets/icons/Instagram.svg" alt="Instagram"></a>-->
                 <a href="https://www.linkedin.com/company/grupoconecta-angola/" aria-label="LinkedIn"><img src="assets/icons/LinkedIn.svg" alt="LinkedIn"></a>
-                <a href="#" aria-label="YouTube"><img src="assets/icons/YouTube.svg" alt="YouTube"></a>
+                <a href="https://youtube.com/@grupoconecta-n4t" aria-label="YouTube"><img src="assets/icons/YouTube.svg" alt="YouTube"></a>
             </div>
 
             <!-- Novo bloco com ícone e número -->
@@ -185,22 +196,7 @@
         </div>
 
         <!-- Bloco: Informações legais e créditos -->
-        <div class="footer-legal">
-            <p>© 2025 Grupo Conecta. Todos os direitos reservados.</p>
-
-            <div class="footer-links">
-                <a href="#">Política de Privacidade</a>
-                <span class="separator">|</span>
-                <a href="#">Termos de Uso</a>
-            </div>
-            <p class="footer-creditos">
-  Desenvolvido por <strong>
-  <a href="https://facebook.com/ContornosDesigns" target="_blank" rel="noopener noreferrer">
-Contornos Designs
-  </a>
-  </strong>
-</p>
-</div>
+        <div id="site-footer"></div>
     </footer>
 
     <!--Open-Closed System
@@ -209,8 +205,14 @@ Contornos Designs
 </div>-->
 
 
-    <script src="js/base.js"></script>
-    <script src="js/index.js"></script>
+<script src="js/base.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/data.js"></script>
+<script src="js/sacolas.js"></script>
+<script src="js/videos.js"></script>
+<script src="js/pagamento.js"></script>
+<script src="js/contribuir.js"></script>
+<script src="js/index.js"></script>
 </body>
 
 </html>

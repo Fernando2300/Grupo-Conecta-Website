@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   const form = document.getElementById("inscricao-form");
   const metodoRadios = document.getElementsByName("metodo");
   const emailField = document.getElementById("email-field");
@@ -6,59 +6,310 @@ document.addEventListener("DOMContentLoaded", function () {
   const pagamentoSection = document.getElementById("pagamento-section");
   const valorBtns = document.querySelectorAll(".valor-btn");
   const loading = document.getElementById("loading");
+  const btnInscricao = document.getElementById("btn-inscricao");
 
-    // ✅ Inicializa intl-tel-input no campo telefone
+  // Dados vindos de data/site.json
+  let pagamento = {
+    entidade: "",
+    referencia: "",
+    whatsapp: "",
+    email: "",
+    valorMinimo: 500,
+  };
+  let workshop = null;
+  let valorMinimo = 500; // 0 = workshop gratuito (contribuição opcional)
+
+  // ✅ Inicializa intl-tel-input no campo telefone
   const inputTelefone = document.getElementById("telefone");
   const iti = window.intlTelInput(inputTelefone, {
-    initialCountry: "ao", // Angola como predefinido
-    preferredCountries: ["ao", "br", "pt"], // lista de destaque
-    separateDialCode: true, // mostra o código separado
+    initialCountry: "ao",
+    preferredCountries: ["ao", "br", "pt"],
+    separateDialCode: true,
     utilsScript:
       "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
   });
 
+  // ✅ Localização: "Reside em Angola?" -> província, ou país se viver fora
+  const resideRadios = document.getElementsByName("reside");
+  const selectProvincia = document.getElementById("provincia");
+  const provinciaField = document.getElementById("provincia-field");
+  const paisField = document.getElementById("pais-field");
+  const inputPais = document.getElementById("pais");
+  let paisEditado = false; // a pessoa escreveu o país à mão
+  let foraAutomatico = false; // "Não" escolhido pelo código do telefone
 
+  function resideEmAngola() {
+    return [...resideRadios].find((r) => r.checked)?.value !== "nao";
+  }
+
+  function definirReside(emAngola) {
+    resideRadios.forEach((r) => {
+      r.checked = r.value === (emAngola ? "sim" : "nao");
+    });
+  }
+
+  function nomeDoPais(dados) {
+    try {
+      return new Intl.DisplayNames(["pt"], { type: "region" }).of(
+        dados.iso2.toUpperCase(),
+      );
+    } catch (e) {
+      return (dados.name || "").replace(/\s*\(.*\)$/, "");
+    }
+  }
+
+  function sincronizarLocalizacao() {
+    const fora = !resideEmAngola();
+    provinciaField.classList.toggle("hidden", fora);
+    paisField.classList.toggle("hidden", !fora);
+    if (fora && !paisEditado) {
+      const dados = iti.getSelectedCountryData();
+      inputPais.value =
+        dados && dados.iso2 && dados.iso2 !== "ao" ? nomeDoPais(dados) : "";
+    }
+  }
+
+  resideRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      foraAutomatico = false;
+      sincronizarLocalizacao();
+    });
+  });
+  inputPais.addEventListener("input", () => {
+    paisEditado = true;
+  });
+  // Ao mudar o código do telefone, sugere a localização (a pessoa pode alterar)
+  inputTelefone.addEventListener("countrychange", () => {
+    const dados = iti.getSelectedCountryData();
+    const iso = dados && dados.iso2;
+    if (!iso) return;
+    if (iso !== "ao" && resideEmAngola() && !selectProvincia.value) {
+      definirReside(false);
+      foraAutomatico = true;
+    } else if (iso === "ao" && foraAutomatico && !paisEditado) {
+      definirReside(true);
+      foraAutomatico = false;
+    }
+    sincronizarLocalizacao();
+  });
 
   // ✅ Exibe mensagem de erro no bloco abaixo do formulário
-
-  function exibirErroGlobal(mensagem) {
-  const erroGlobal = document.getElementById("erro-global");
-  if (erroGlobal) {
-    erroGlobal.textContent = mensagem;
-    erroGlobal.classList.remove("hidden");
-    erroGlobal.classList.add("visivel");
-    setTimeout(() => {
-      erroGlobal.classList.remove("visivel");
-      erroGlobal.classList.add("hidden");
-    }, 6000);
-  }
-}
-
-  /*
   function exibirErroGlobal(mensagem) {
     const erroGlobal = document.getElementById("erro-global");
     if (erroGlobal) {
       erroGlobal.textContent = mensagem;
+      erroGlobal.classList.remove("hidden");
       erroGlobal.classList.add("visivel");
       setTimeout(() => {
         erroGlobal.classList.remove("visivel");
-      }, 6000); // esconde após 6s
+        erroGlobal.classList.add("hidden");
+      }, 6000);
     }
-  }*/
+  }
 
-  // ✅ Detectar dispositivo e ajustar link do email
-  const emailLink = document.getElementById("link-email");
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  // ✅ Preenche a página com os dados do workshop activo
+  function mostrarWorkshop(w) {
+    document.getElementById("ws-tema").textContent = w.tema;
+    document.title = "Inscrições – " + w.tema;
+    document.getElementById("ws-descricao").innerHTML = w.descricao || "";
+    document.getElementById("ws-data").textContent =
+      SiteData.formatarData(w.data) || "—";
+    document.getElementById("ws-horario").textContent =
+      SiteData.formatarHorario(w.horaInicio, w.horaFim) || "—";
+    document.getElementById("ws-local").textContent = w.local || "—";
 
-  if (emailLink) {
-    if (isMobile) {
-      emailLink.href =
-        "mailto:gconecta05angola@gmail.com?subject=Comprovativo%20de%20Pagamento";
+    // Imagem (se não houver, mostra um espaço reservado)
+    const img = document.getElementById("ws-imagem");
+    const vazia = document.getElementById("ws-imagem-vazia");
+    if (w.imagem) {
+      img.src = w.imagem;
+      img.hidden = false;
+      vazia.hidden = true;
     } else {
-      emailLink.href =
-        "https://mail.google.com/mail/?view=cm&fs=1&to=gconecta05angola@gmail.com&su=Comprovativo%20de%20Pagamento";
-      emailLink.target = "_blank";
+      img.hidden = true;
+      vazia.hidden = false;
     }
+
+    // "O que você vai aprender": só aparece se o workshop tiver tópicos
+    const boxAprender = document.getElementById("ws-aprenderao-box");
+    const listaAprender = document.getElementById("ws-aprenderao");
+    listaAprender.innerHTML = "";
+    const topicos = Array.isArray(w.aprenderao)
+      ? w.aprenderao.filter((t) => String(t).trim())
+      : [];
+    topicos.forEach((t) => {
+      const li = document.createElement("li");
+      const ic = document.createElement("i");
+      ic.className = "fa-solid fa-circle-check";
+      ic.setAttribute("aria-hidden", "true");
+      li.appendChild(ic);
+      li.appendChild(document.createTextNode(" " + t));
+      listaAprender.appendChild(li);
+    });
+    boxAprender.hidden = topicos.length === 0;
+
+    // Botão "Fazer inscrição" (junto aos detalhes): só com inscrições abertas
+    document.getElementById("ws-btn-inscrever").hidden =
+      w.inscricoes !== "abertas";
+
+    // Botão de inscrição: aberto ou encerrado
+    if (w.inscricoes === "abertas") {
+      btnInscricao.disabled = false;
+      btnInscricao.textContent = "Confirmar Inscrição";
+      btnInscricao.classList.add("is-open");
+    } else {
+      btnInscricao.disabled = true;
+      btnInscricao.textContent = "Inscrições Encerradas";
+      btnInscricao.classList.remove("is-open");
+    }
+  }
+
+  // ✅ Adapta o campo do valor: workshop pago (mínimo obrigatório) ou gratuito (opcional)
+  function configurarValor() {
+    const gratuito = valorMinimo === 0;
+    document.getElementById("valor-rotulo").textContent = gratuito
+      ? "Quer contribuir? (opcional)"
+      : `Valor a Contribuir (mínimo ${SiteData.formatarNumero(valorMinimo)} Kz)`;
+    valorInput.placeholder = gratuito
+      ? "Indique um valor, se desejar contribuir"
+      : "Quanto deseja contribuir?";
+    valorInput.min = gratuito ? 1 : valorMinimo;
+    // Esconde os atalhos de valor que ficam abaixo do mínimo
+    valorBtns.forEach((btn) => {
+      btn.classList.toggle("hidden", Number(btn.dataset.value) < valorMinimo);
+    });
+  }
+
+  // ✅ Preenche as formas de pagamento e os links de contacto
+  let metodoActual = null;
+  let dadosFormulario = null;
+
+  // Texto da mensagem para a equipa (nome, número, workshop, valor, como receber o link)
+  function textoMensagem(comprovativo) {
+    const f = dadosFormulario || {};
+    const linhas = [
+      comprovativo
+        ? "Olá, segue o meu comprovativo do Workshop."
+        : "Olá, acabei de me inscrever no Workshop.",
+    ];
+    if (workshop)
+      linhas.push("", `Workshop ${workshop.numero}: ${workshop.tema}`);
+    if (f.nome) linhas.push(`Nome: ${f.nome}`);
+    if (f.telefone) linhas.push(`Número: ${f.telefone}`);
+    if (f.provincia) linhas.push(`Localização: ${f.provincia}, Angola`);
+    else if (f.pais) linhas.push(`Localização: ${f.pais}`);
+    if (f.metodo === "email" && f.email) {
+      linhas.push(`Receber o link por e-mail: ${f.email}`);
+    } else if (f.metodo) {
+      linhas.push("Receber o link por WhatsApp");
+    }
+    if (f.valor > 0) {
+      linhas.push(`Contribuição: ${SiteData.formatarKz(f.valor)}`);
+    } else if (valorMinimo === 0) {
+      linhas.push("Contribuição: nenhuma (workshop gratuito)");
+    }
+    if (comprovativo && metodoActual) {
+      linhas.push(`Pago via: ${metodoActual.titulo || metodoActual.nome}`);
+    }
+    return linhas.join("\n");
+  }
+
+  function linkWhatsapp(mensagem) {
+    return `https://wa.me/${pagamento.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+  }
+
+  function linkEmail(assunto, mensagem) {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const a = encodeURIComponent(assunto);
+    const m = encodeURIComponent(mensagem);
+    return isMobile
+      ? `mailto:${pagamento.email}?subject=${a}&body=${m}`
+      : `https://mail.google.com/mail/?view=cm&fs=1&to=${pagamento.email}&su=${a}&body=${m}`;
+  }
+
+  function actualizarWhatsapp() {
+    // Secção de pagamento: comprovativo
+    document.getElementById("link-whatsapp").href = linkWhatsapp(
+      textoMensagem(true),
+    );
+    // Confirmação (sem pagamento): só os dados da inscrição
+    const confWa = document.getElementById("conf-whatsapp");
+    const confEmail = document.getElementById("conf-email");
+    const msg = textoMensagem(false);
+    if (confWa) confWa.href = linkWhatsapp(msg);
+    if (confEmail) {
+      confEmail.href = linkEmail("Inscrição no Workshop", msg);
+      if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        confEmail.target = "_blank";
+        confEmail.rel = "noopener";
+      }
+    }
+  }
+
+  function mostrarPagamento(p) {
+    const zona = document.getElementById("pg-metodos");
+    zona.replaceChildren(
+      Pagamento.criar(p.metodos, (metodo) => {
+        metodoActual = metodo;
+        actualizarWhatsapp();
+      }),
+    );
+
+    const emailLink = document.getElementById("link-email");
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (emailLink) {
+      if (isMobile) {
+        emailLink.href = `mailto:${p.email}?subject=Comprovativo%20de%20Pagamento`;
+      } else {
+        emailLink.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${p.email}&su=Comprovativo%20de%20Pagamento`;
+        emailLink.target = "_blank";
+      }
+    }
+  }
+
+  // ✅ Abre a secção de pagamento depois de uma inscrição
+  function abrirPagamento(formulario) {
+    dadosFormulario = formulario;
+    actualizarWhatsapp();
+
+    const gratuito = valorMinimo === 0;
+
+    // Workshop gratuito e sem contribuição: só confirma a inscrição
+    if (gratuito && !formulario.valor) {
+      const confirmacao = document.getElementById("confirmacao-section");
+      confirmacao.classList.remove("hidden");
+      confirmacao.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    // Com pagamento: o texto muda conforme seja obrigatório ou voluntário
+    document.getElementById("pg-titulo").textContent = gratuito
+      ? "Inscrição confirmada. Obrigado por contribuir!"
+      : "Obrigado por se inscrever!";
+    document.getElementById("pg-nota").textContent = gratuito
+      ? "A sua contribuição é voluntária. Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo."
+      : "Após efectuar o pagamento, envie o seu comprovativo clicando no botão abaixo para confirmar a inscrição.";
+
+    pagamentoSection.classList.remove("hidden");
+    pagamentoSection.scrollIntoView({ behavior: "smooth" });
+  }
+
+  // ✅ Carrega os dados
+  try {
+    const dados = await SiteData.carregar();
+    pagamento = dados.pagamento;
+    workshop = SiteData.workshopPorId(dados, dados.workshopActivo);
+    if (!workshop) throw new Error("Workshop activo não encontrado");
+    valorMinimo = SiteData.valorMinimo(dados, workshop);
+    mostrarWorkshop(workshop);
+    configurarValor();
+    mostrarPagamento(pagamento);
+  } catch (err) {
+    console.error(err);
+    document.getElementById("ws-tema").textContent =
+      "Não foi possível carregar o workshop";
+    btnInscricao.textContent = "Indisponível";
+    exibirErroGlobal("Erro ao carregar os dados. Recarregue a página.");
   }
 
   metodoRadios.forEach((radio) => {
@@ -78,68 +329,76 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    // ✅ Declare as variáveis logo no início
+    // Segurança: não envia nada se as inscrições estiverem encerradas
+    if (!workshop || workshop.inscricoes !== "abertas") return;
+
     const nome = document.getElementById("nome").value.trim();
-    //const telefone = document.getElementById("telefone").value.trim();
     const telefone = iti.getNumber().trim(); // número completo com código do país
-    const valor = parseInt(valorInput.value);
+    const foraDeAngola = !resideEmAngola();
+    const provincia = foraDeAngola ? "" : selectProvincia.value;
+    const pais = foraDeAngola ? inputPais.value.trim() : "Angola";
+    const textoValor = valorInput.value.trim();
+    const valor = textoValor === "" ? 0 : parseInt(textoValor, 10);
     const metodo = [...metodoRadios].find((r) => r.checked)?.value;
     const email = document.getElementById("email")?.value.trim();
 
-    //Função Utilitária para Mensagem de erros
-
+    // Mensagem de erro junto ao campo
     function mostrarErroInline(input, mensagem) {
-      // Remove erro anterior (se houver)
       const erroExistente = input.parentElement.querySelector(".mensagem-erro");
       if (erroExistente) erroExistente.remove();
 
-      // Cria e insere a mensagem
       const erro = document.createElement("small");
       erro.classList.add("mensagem-erro");
       erro.textContent = mensagem;
       input.insertAdjacentElement("afterend", erro);
-
-      // Adiciona a borda vermelha
       input.classList.add("input-erro");
 
-      // Remove erro e borda após 4 segundos
       setTimeout(() => {
         erro.remove();
         input.classList.remove("input-erro");
       }, 4000);
     }
 
-    // ✅ NOVO BLOCO: Validação personalizada em português
-
+    // ✅ Validação em português
     if (!nome) {
       mostrarErroInline(
         document.getElementById("nome"),
-        "Por favor, preencha o nome completo."
+        "Por favor, preencha o nome completo.",
       );
       return;
     }
-
-    /*if (!telefone) {
-      mostrarErroInline(
-        document.getElementById("telefone"),
-        "Por favor, insira o número de telefone."
-      );
-      return;
-    }*/
 
     if (!iti.isValidNumber()) {
       mostrarErroInline(
         document.getElementById("telefone"),
-        "Por favor, insira um número de telefone válido."
+        "Por favor, insira um número de telefone válido.",
       );
       return;
     }
 
+    if (!foraDeAngola && !provincia) {
+      mostrarErroInline(selectProvincia, "Indique a província onde reside.");
+      return;
+    }
 
-    if (isNaN(valor) || valor < 500) {
+    if (foraDeAngola && !pais) {
+      mostrarErroInline(inputPais, "Indique o país onde reside.");
+      return;
+    }
+
+    if (valorMinimo === 0) {
+      // Gratuito: pode ficar em branco, mas se escrever tem de ser válido
+      if (textoValor !== "" && (isNaN(valor) || valor < 1)) {
+        mostrarErroInline(
+          document.getElementById("valor"),
+          "Indique um valor válido, ou deixe o campo vazio para se inscrever sem contribuir.",
+        );
+        return;
+      }
+    } else if (isNaN(valor) || valor < valorMinimo) {
       mostrarErroInline(
         document.getElementById("valor"),
-        "A contribuição mínima é de 500kz."
+        `A contribuição mínima é de ${SiteData.formatarNumero(valorMinimo)} Kz.`,
       );
       return;
     }
@@ -147,13 +406,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (metodo === "email" && (!email || !email.includes("@"))) {
       mostrarErroInline(
         document.getElementById("email"),
-        "Por favor, insira um e-mail válido."
+        "Por favor, insira um e-mail válido.",
       );
       return;
     }
-
-    // ✅ Se passou nas validações, mostrar spinner
-    //loading.classList.remove("hidden");
 
     // ✅ Mostrar spinner com fade-in
     loading.classList.add("active");
@@ -163,90 +419,47 @@ document.addEventListener("DOMContentLoaded", function () {
       data: {
         nome,
         telefone,
+        provincia,
+        pais,
         valor,
         metodo,
         email,
-        data_envio: new Date().toLocaleString("pt-BR"), // ou "pt-BR" se preferir
+        workshop: workshop.id,
+        data_envio: new Date().toLocaleString("pt-BR"),
       },
     };
 
     try {
-        /*Alt. Access - https://sheetdb.io/api/v1/muhp580eoo1cx?sheet=Sheet1 */
       const response = await fetch("https://sheetdb.io/api/v1/muhp580eoo1cx", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-
-      //✅ Esconder spinner com fade-out
+      // ✅ Esconder spinner com fade-out
       loading.classList.remove("active");
       setTimeout(() => {
         loading.classList.add("hidden");
       }, 300);
 
       if (response.ok) {
-        console.log("Dados enviados com sucesso.");
-        pagamentoSection.classList.remove("hidden");
-        pagamentoSection.scrollIntoView({ behavior: "smooth" });
-
-    // 1. Captura o botão do WhatsApp
-    const linkWhatsApp = document.getElementById("link-whatsapp");
-
-    // 2. Monta o link com os dados do formulário
-    const numeroWhatsApp = "244935269451"; // mantém o número do destino
-    const mensagem = `Olá, segue o meu comprovativo do Workshop
-
-    Nome: ${nome}
-    Número: ${telefone}`; //Termina mensagem
-
-    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-
-    // 3. Atualiza o href do botão
-    linkWhatsApp.href = urlWhatsApp;
-
+        abrirPagamento({
+          nome,
+          telefone,
+          provincia,
+          pais,
+          valor,
+          metodo,
+          email,
+        });
       } else {
-        //alert("Erro ao enviar. Tente novamente mais tarde.");
         exibirErroGlobal("Erro ao enviar. Tente novamente mais tarde.");
       }
     } catch (err) {
       console.error("Erro na requisição:", err);
-      //alert("Erro na conexão. Verifique sua internet.");
+      loading.classList.remove("active");
+      loading.classList.add("hidden");
       exibirErroGlobal("Erro na conexão. Verifique sua internet.");
     }
-    /*
-      // ✅ NOVO: Esconder o spinner após resposta
-      loading.classList.add("hidden");
-
-      if (response.ok) {
-        console.log("Dados enviados com sucesso.");
-        pagamentoSection.classList.remove("hidden");
-        pagamentoSection.scrollIntoView({ behavior: "smooth" });
-      } else {
-        alert("Erro ao enviar. Tente novamente mais tarde.");
-      }
-    } catch (err) {
-      console.error("Erro na requisição:", err);
-      alert("Erro na conexão. Verifique sua internet.");
-    }*/
-  });
-
-  // ✅ NOVO: Lida com todos os elementos com classe 'copiar-texto'
-  document.querySelectorAll(".copiar-texto").forEach((item) => {
-    item.addEventListener("click", async function () {
-      const valor = this.dataset.valor;
-      try {
-        await navigator.clipboard.writeText(valor);
-        const original = this.textContent;
-        this.textContent = "[copiado]";
-        setTimeout(() => {
-          this.textContent = original;
-        }, 1500); // volta para [copiar] depois de 1.5 segundos
-      } catch (err) {
-        console.error("Erro ao copiar:", err);
-      }
-    });
   });
 });

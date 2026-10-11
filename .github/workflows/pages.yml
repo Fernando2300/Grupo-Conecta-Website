@@ -1,0 +1,53 @@
+# Publica o site no GitHub Pages: código da "main" + data/site.json da "content".
+# Corre quando há push na main e quando o painel (via Worker) o dispara.
+name: Publicar site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Código da main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Dados da content
+        uses: actions/checkout@v4
+        with:
+          ref: content
+          path: _content
+          sparse-checkout: data/site.json
+          sparse-checkout-cone-mode: false
+
+      - name: Juntar os dados e retirar o que não vai para o site
+        run: |
+          test -f _content/data/site.json
+          python3 -c "import json; json.load(open('_content/data/site.json', encoding='utf-8'))"
+          cp _content/data/site.json data/site.json
+          rm -rf _content worker .github README.md README-Git-Fluxo.md
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

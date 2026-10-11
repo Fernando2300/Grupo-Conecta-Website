@@ -832,3 +832,90 @@ input[type="email"] {
         display: block !important;
     }
 }
+
+/* ===== Dados dinâmicos (data/site.json) ===== */
+
+.workshop-img-vazia {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background-color: #E6ECF0;
+    color: #005D8F;
+    font-weight: 600;
+}
+
+.workshop-img-vazia[hidden],
+.workshop-img[hidden] {
+    display: none;
+}
+
+.btn-destaque.is-open {
+    background-color: #a0c334;
+}
+
+.btn-destaque.is-open:hover {
+    background-color: #8aa92a;
+}
+
+.btn-destaque:disabled {
+    cursor: not-allowed;
+}
+
+/* ===== Secção Sacolas dentro da página de inscrição ===== */
+.container .sacolas-section {
+    border-radius: 12px;
+    padding: 2rem 1.25rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .container .sacolas-section {
+        padding: 2.5rem 2rem;
+    }
+}
+
+/* Campo "Onde reside?" (lista de províncias) */
+#inscricao-form select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+#inscricao-form select:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+   /* ===== Passo 8: ícones, certificado, lista dinâmica e botão Fazer inscrição ===== */
+   .info-box { flex-wrap: wrap; }
+   .info-item-certificado { flex: 1 1 100%; }
+   .aprendizado-box[hidden],
+   .ws-btn-inscrever[hidden] { display: none !important; }
+   .aprendizado-box { display: block; margin-bottom: 1.25rem; }
+   .aprendizado-box li i { color: #A0C334; margin-right: 0.35rem; }
+   .ws-btn-inscrever {
+       display: block;
+       text-align: center;
+       background: #A0C334;
+       color: #1F1F1F;
+       font-weight: 700;
+       padding: 0.85rem 1.25rem;
+       border-radius: 8px;
+       text-decoration: none;
+       transition: background 0.2s ease;
+   }
+   .ws-btn-inscrever:hover { background: #8aa92a; }
+   #garanta-vaga { scroll-margin-top: 90px; }
+   @media (min-width: 992px) {
+       .ws-btn-inscrever { display: none !important; }
+   }

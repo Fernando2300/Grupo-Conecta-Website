@@ -1,12 +1,10 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Mobile Menu
 
   /*Problema,Causa,Correcção:
 1. Menu mobile não desliza / sobrepõe‑se	-> No CSS você usa a classe .mobile‑nav.active, mas no JS 
 adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “active” OU acrescente o seletor 
 .mobile‑nav.open no CSS.*/
-
-
 
   //Value Proposition Section
   const valueItems = [
@@ -55,17 +53,6 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   //Courses and Workshops Section
   const courses = [
     {
-      title: "Novas Didácticas no Século XXI: Como Ensinar para uma Juventude em Constante Mudança",
-      description:
-        "Descubra metodologias de ensino inovadoras para engajar estudantes e preparar jovens para o futuro.",
-      image: "assets/images/workshop.jpg",
-      buttonText: //"Indisponível",
-        'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />',
-      link: "inscricao.html",
-      status: "aberto",
-      type: "workshop", // ✅ NOVO
-    },
-    {
       title: "EViews para Análise Económica",
       description:
         "Domine o EViews e transforme dados económicos em insights poderosos para decisões e investigação.",
@@ -98,6 +85,30 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
     },
   ];
 
+  // ✅ Workshop activo: vem de data/site.json (editável pelo painel)
+  try {
+    const dados = await SiteData.carregar();
+    const w = SiteData.workshopPorId(dados, dados.workshopActivo);
+    if (w) {
+      const aberto = w.inscricoes === "abertas";
+      courses.unshift({
+        title: w.tema,
+        description:
+          w.resumo || `Com ${w.orador}. ${SiteData.formatarData(w.data)}`,
+        image: w.imagem || "assets/images/workshop.jpg",
+        buttonText: aberto
+          ? 'Inscreva-se <img src="assets/icons/arrow.svg" alt="Right arrow icon" class="arrow-icon" />'
+          : "Inscrições encerradas",
+        link: "inscricao.html",
+        status: aberto ? "aberto" : "fechado",
+        aviso: "Inscrições encerradas. Novidades em breve!",
+        type: "workshop",
+      });
+    }
+  } catch (err) {
+    console.error("Não foi possível carregar o workshop:", err);
+  }
+
   const courseContainer = document.getElementById("courses-container");
 
   courses.forEach((course) => {
@@ -108,20 +119,18 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
 
     //Code for Badge
     let badgeHTML = "";
-      if (course.type === "workshop") {
+    if (course.type === "workshop") {
       badgeHTML = `<div class="badge badge-workshop">Workshop</div>`;
-      } else if (course.type === "curso") {
+    } else if (course.type === "curso") {
       badgeHTML = `<div class="badge badge-curso">Curso</div>`;
     }
-
 
     //Open-Closed System
     if (course.status === "aberto") {
       buttonHTML = `<a href="${course.link}" class="course-button open">${course.buttonText}</a>`;
     } else {
-      buttonHTML = `<button class="course-button closed" onclick="mostrarAviso(this)">${course.buttonText}</button>`;
+      buttonHTML = `<button class="course-button closed" onclick="mostrarAviso(this${course.aviso ? `, '${course.aviso}'` : ""})">${course.buttonText}</button>`;
     }
-
 
     //</img><img src="${course.image}" alt="${course.title}" class="course-image" loading="lazy">
     //card.innerHTML = `
@@ -139,7 +148,6 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
 
     courseContainer.appendChild(card);
   });
-
 
   //Impact Section
 
@@ -201,7 +209,6 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   </div>
 `;
 
-
       container.appendChild(card);
     });
   }
@@ -209,15 +216,14 @@ adiciona "open" (mobileNav.classList.add("open")). -> Troque “open” por “a
   renderImpactCards();
 }); // 🔚 Fecha o DOMContentLoaded aqui
 
-
-
 // FORA do DOMContentLoaded
 //Open-Closed System
-function mostrarAviso(botao) {
+function mostrarAviso(botao, texto) {
   // Criar o aviso dinamicamente
   const aviso = document.createElement("div");
   aviso.className = "aviso-temporario";
-  aviso.innerText = "Curso indisponível no momento. Novidades em breve!";
+  aviso.innerText =
+    texto || "Curso indisponível no momento. Novidades em breve!";
 
   // Posiciona o aviso próximo ao botão clicado
   const rect = botao.getBoundingClientRect();

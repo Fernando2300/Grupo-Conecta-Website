@@ -1,0 +1,161 @@
+{
+  "workshopActivo": "ws5",
+  "videosDestaque": ["ws5", "ws4", "ws3"],
+  "pagamento": {
+    "metodos": [
+      {
+        "id": "kwik",
+        "nome": "Kwik",
+        "titulo": "Kwik",
+        "logo": "assets/images/pagamento-kwik.webp",
+        "activo": true,
+        "titular": "",
+        "instrucao": "Abra a app do seu banco ou carteira móvel, escolha Kwik e envie para o número ou o IBAN abaixo.",
+        "campos": [
+          { "rotulo": "Número Kwik", "valor": "937082461" },
+          { "rotulo": "IBAN", "valor": "AO06041700000093065163247" }
+        ]
+      },
+      {
+        "id": "express",
+        "nome": "Express",
+        "titulo": "Transferência Express",
+        "logo": "assets/images/pagamento-express.webp",
+        "activo": true,
+        "titular": "",
+        "instrucao": "Na app Multicaixa Express, aceda a Transferências, depois a Transferências Express, e envie para o número abaixo.",
+        "campos": [{ "rotulo": "Número", "valor": "937082461" }]
+      },
+      {
+        "id": "unitel",
+        "nome": "Unitel Money",
+        "titulo": "Unitel Money (por referência)",
+        "logo": "assets/images/unitelmoney_logo.jpg",
+        "activo": true,
+        "titular": "",
+        "instrucao": "Use os dados abaixo para realizar o pagamento por referência.",
+        "campos": [
+          { "rotulo": "Entidade", "valor": "00930" },
+          { "rotulo": "Referência", "valor": "937082461" }
+        ]
+      }
+    ],
+    "whatsapp": "244935269451",
+    "email": "gconecta05angola@gmail.com",
+    "valorMinimo": 500
+  },
+  "campanha": {
+    "loteActivo": 1,
+    "titulo": "1.º Lote de Sacolas Reutilizáveis",
+    "meta": 300000,
+    "outrosValores": 0,
+    "imagem": "assets/images/campanha-sacolas.webp",
+    "linkPrestacaoContas": ""
+  },
+    "estatisticas": {
+    "baseParticipacoes": 108,
+    "baseMulheres": 44,
+    "percentagemMulheres": 41
+  },
+  "contactos": {
+    "email": "gconecta05angola@gmail.com",
+    "whatsapp": "244935269451",
+    "whatsappTexto": "(+244) 935269451",
+    "local": "Huambo, Angola"
+  },
+  "workshops": [
+    {
+      "id": "ws1",
+      "numero": 1,
+      "tema": "Empregabilidade Jovem: Oportunidades e Desafios no Mercado de Trabalho Actual",
+      "orador": "Estêvão César",
+      "descricao": "",
+      "data": "2025-08-10",
+      "horaInicio": "",
+      "horaFim": "",
+      "local": "Online – Zoom",
+      "imagem": "",
+      "inscricoes": "encerradas",
+      "video": "https://youtu.be/r3dZWuPqQXs",
+      "lote": 1,
+      "participantes": 25,
+      "arrecadado": 16500
+    },
+    {
+      "id": "ws2",
+      "numero": 2,
+      "tema": "Como Tirar Projectos do Papel: Estratégias para Jovens Empreendedores e Profissionais",
+      "orador": "Feliciano Filjo Manuel",
+      "descricao": "",
+      "data": "2025-08-17",
+      "horaInicio": "",
+      "horaFim": "",
+      "local": "Online – Zoom",
+      "imagem": "",
+      "inscricoes": "encerradas",
+      "video": "https://youtu.be/g1o7I-DQLUY",
+      "lote": 1,
+      "participantes": 22,
+      "arrecadado": 15000
+    },
+    {
+      "id": "ws3",
+      "numero": 3,
+      "tema": "Finanças para Negócios: O que é necessário saber durante a criação e gestão de um negócio",
+      "orador": "Joel João Catuca Neves",
+      "descricao": "",
+      "data": "2025-08-24",
+      "horaInicio": "",
+      "horaFim": "",
+      "local": "Online – Zoom",
+      "imagem": "",
+      "inscricoes": "encerradas",
+      "video": "https://youtu.be/RXU6rVCzpKY",
+      "lote": 1,
+      "participantes": 12,
+      "arrecadado": 11500
+    },
+    {
+      "id": "ws4",
+      "numero": 4,
+      "tema": "O Papel da Língua Inglesa no Acesso a Oportunidades Globais e no Desenvolvimento Profissional",
+      "orador": "Chipunji Jamba",
+      "descricao": "",
+      "data": "2025-08-31",
+      "horaInicio": "",
+      "horaFim": "",
+      "local": "Online – Zoom",
+      "imagem": "",
+      "inscricoes": "encerradas",
+      "video": "https://youtu.be/L_pAT2R1-2U",
+      "lote": 1,
+      "participantes": 15,
+      "arrecadado": 7500
+    },
+    {
+      "id": "ws5",
+      "numero": 5,
+      "tema": "Novas Didácticas no Século XXI: Como Ensinar para uma Juventude em Constante Mudança",
+      "orador": "Dr. Osvaldo Mame",
+      "descricao": "Participe no workshop com o <strong>Doutor Osvaldo Mame</strong> e descubra novas formas de ensinar para uma juventude em constante mudança. Uma sessão inspiradora sobre inovação pedagógica, estratégias modernas e os desafios da educação no século XXI.",
+      "resumo": "Descubra metodologias de ensino inovadoras para engajar estudantes e preparar jovens para o futuro.",
+      "data": "2025-09-21",
+      "horaInicio": "16:00",
+      "horaFim": "17:45",
+      "local": "Online – Zoom",
+      "imagem": "assets/images/workshop.webp",
+      "inscricoes": "encerradas",
+      "video": "https://youtu.be/7i4zRxHrn5I",
+      "lote": 1,
+      "valorMinimo": 500,
+      "aprenderao": [
+        "Como adaptar métodos de ensino às novas realidades dos estudantes",
+        "Estratégias pedagógicas inovadoras aplicáveis no século XXI",
+        "A importância da criatividade e flexibilidade na prática docente",
+        "Inspirações para transformar a sala de aula em um espaço de inovação"
+      ],
+      "participantes": 34,
+      "arrecadado": 23000
+    }
+  ]
+}
