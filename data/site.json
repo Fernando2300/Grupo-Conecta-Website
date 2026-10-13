@@ -1,9 +1,9 @@
 {
   "workshopActivo": "ws5",
   "videosDestaque": [
-    "ws5",
+    "ws3",
     "ws4",
-    "ws3"
+    "ws2"
   ],
   "pagamento": {
     "metodos": [
@@ -164,7 +164,7 @@
       "horaInicio": "16:00",
       "horaFim": "17:45",
       "local": "Online – Zoom",
-      "imagem": "assets/images/workshop.webp",
+      "imagem": "https://res.cloudinary.com/y1pydrcc/image/upload/v1791928355/iksddr98q7bjxxr5c905.webp",
       "inscricoes": "encerradas",
       "video": "https://youtu.be/7i4zRxHrn5I",
       "lote": 1,
