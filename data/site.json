@@ -177,6 +177,31 @@
       ],
       "participantes": 34,
       "arrecadado": 23000
+    },
+    {
+      "id": "ws6",
+      "numero": 6,
+      "tema": "Ter Voz, Fazer a Diferença: Comunicar com Propósito, Conquistar Oportunidades e Deixar a Sua Marca",
+      "orador": "Júlia Cassoma",
+      "descricao": "Participe no workshop com Júlia Cassoma, jornalista e repórter premiada, e descubra\ncomo a comunicação pode abrir portas e criar oportunidades. Uma sessão inspiradora\nsobre oratória, confiança, expressão de ideias e o poder de comunicar com propósito nos\ncontextos pessoal, académico e profissional.",
+      "resumo": "Descubra como comunicar com confiança, expressar as suas ideias com clareza e usar o\npoder da palavra para conquistar oportunidades e deixar a sua marca.",
+      "data": "2026-10-25",
+      "horaInicio": "15:30",
+      "horaFim": "17:45",
+      "local": "Online – Zoom",
+      "imagem": "https://res.cloudinary.com/y1pydrcc/image/upload/v1792248115/bovgn30sckoksvtdxwlt.webp",
+      "inscricoes": "abertas",
+      "video": "",
+      "lote": 1,
+      "valorMinimo": 0,
+      "aprenderao": [
+        "1. Técnicas para comunicar com clareza, confiança e impacto",
+        "2. Como desenvolver competências de oratória e falar em público",
+        "3. Estratégias para expressar ideias e conquistar oportunidades",
+        "4. Como comunicar com propósito e construir uma marca pessoal positiva"
+      ],
+      "participantes": 0,
+      "arrecadado": 0
     }
   ]
 }
