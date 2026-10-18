@@ -1,0 +1,121 @@
+/* =====================================================================
+   consentimento.css  (aviso de cookies)
+   Cores no topo: ajustar se quiser igualar exactamente ao site.
+   ===================================================================== */
+.cc-banner {
+  --cc-azul: #1e3a8a;
+  --cc-texto: #1f2937;
+  --cc-suave: #4b5563;
+  --cc-borda: #d1d5db;
+
+  position: fixed;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 9999;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  color: var(--cc-texto);
+  border: 1px solid var(--cc-borda);
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.18);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.cc-banner[hidden] {
+  display: none;
+}
+
+.cc-banner.cc-visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cc-texto {
+  min-width: 0;
+}
+
+.cc-corpo {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--cc-suave);
+}
+
+.cc-link {
+  color: var(--cc-azul);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.cc-botoes {
+  display: flex;
+  gap: 8px;
+}
+
+/* Mesmo tamanho nos dois botões: um cheio, outro com contorno, ambos bem visíveis */
+.cc-btn {
+  flex: 1 1 0;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.25;
+  border-radius: 8px;
+  border: 2px solid var(--cc-azul);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.cc-btn-aceitar {
+  background: var(--cc-azul);
+  color: #ffffff;
+}
+
+.cc-btn-aceitar:hover {
+  background: #172554;
+  border-color: #172554;
+}
+
+.cc-btn-recusar {
+  background: #ffffff;
+  color: var(--cc-azul);
+}
+
+.cc-btn-recusar:hover {
+  background: #eff6ff;
+}
+
+.cc-btn:focus-visible,
+.cc-link:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .cc-banner {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-banner {
+    transition: none;
+    transform: none;
+  }
+}
