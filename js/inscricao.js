@@ -8,6 +8,16 @@ document.addEventListener("DOMContentLoaded", async function () {
   const loading = document.getElementById("loading");
   const btnInscricao = document.getElementById("btn-inscricao");
 
+    // Origem da visita (ex.: inscricao.html?origem=facebook). Não usa cookies.
+  function lerOrigem() {
+    let o = "";
+    try {
+      o = new URLSearchParams(location.search).get("origem") || "";
+    } catch (e) {}
+    return o.toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
+  }
+  const origem = lerOrigem();
+
   // Dados vindos de data/site.json
   let pagamento = {
     entidade: "",
@@ -425,6 +435,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         metodo,
         email,
         workshop: workshop.id,
+        ...(origem ? { origem } : {}),
         data_envio: new Date().toLocaleString("pt-BR"),
       },
     };
@@ -443,6 +454,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       }, 300);
 
       if (response.ok) {
+        // Pixel: só regista se o visitante aceitou os cookies
+        if (window.Consentimento) {
+          Consentimento.evento("CompleteRegistration");
+        }
         abrirPagamento({
           nome,
           telefone,
