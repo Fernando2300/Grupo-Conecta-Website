@@ -12,7 +12,7 @@
   "use strict";
 
   var ID_ANALYTICS = "G-ZHPQD4KRT1";
-  var ID_PIXEL = "2279744039238290";
+  var ID_PIXEL = "1644615390665044";
   var CHAVE = "conecta_cookies";
   // Subir este número quando a política de cookies mudar: o aviso volta a aparecer.
   var VERSAO = 1;
