@@ -35,21 +35,9 @@
       content="Saiba que dados pessoais o Grupo Conecta recolhe, para que os usa e quais são os seus direitos."
     />
 
-    <!-- ✅ Google Analytics -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ZHPQD4KRT1"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-ZHPQD4KRT1");
-    </script>
-    <!-- ✅ Fim Google Analytics -->
+    <!-- Aviso de cookies (Google Analytics e Meta Pixel só carregam com consentimento) -->
+    <link rel="stylesheet" href="css/consentimento.css" />
+    <script src="js/consentimento.js" defer></script>
 
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/footer.css" />
@@ -118,7 +106,7 @@
     <main>
       <article class="legal-page">
         <h1>Política de Privacidade</h1>
-        <p class="legal-data">Última actualização: 11 de Outubro de 2026</p>
+        <p class="legal-data">Última actualização: 18 de Outubro de 2026</p>
         <div class="legal-intro">
           <p>O Grupo Conecta Angola respeita a sua privacidade. Esta página explica, de forma simples, que dados pessoais recolhemos neste website, para que os usamos e quais são os seus direitos.</p>
         </div>
@@ -137,7 +125,7 @@
         </ul>
         <p><strong>No formulário de contacto:</strong> nome, e-mail, assunto e mensagem.</p>
         <p><strong>Ao enviar comprovativos ou mensagens por WhatsApp ou e-mail:</strong> os dados que você próprio incluir nessa comunicação.</p>
-        <p><strong>Dados de navegação:</strong> o website usa o Google Analytics para obter estatísticas de visitas (por exemplo, páginas mais vistas). Este serviço pode usar cookies e recolhe informação técnica sobre a sua visita, sem nos dizer quem você é.</p>
+        <p><strong>Dados de navegação:</strong> o website usa o Google Analytics para obter estatísticas de visitas (por exemplo, páginas mais vistas) e o Meta Pixel para medir os resultados dos nossos anúncios no Facebook. Estes serviços só são activados se você aceitar o aviso de cookies (ver secção 13). Podem usar cookies e recolher informação técnica sobre a sua visita, como as páginas vistas e o dispositivo.</p>
 
         <h2>3. Para que usamos os dados</h2>
         <ul>
@@ -146,7 +134,8 @@
           <li>emitir e permitir a verificação de certificados digitais de participação;</li>
           <li>responder às suas mensagens;</li>
           <li>produzir estatísticas e relatórios agregados do projecto, como o número de participações;</li>
-          <li>melhorar o website.</li>
+          <li>melhorar o website;</li>
+          <li>medir os resultados dos nossos anúncios, apenas com o seu consentimento.</li>
         </ul>
 
         <h2>4. Serviços de terceiros que utilizamos</h2>
@@ -154,7 +143,8 @@
         <ul>
           <li><strong>Google Sheets:</strong> para gerir dados das inscrições;</li>
           <li><strong>FormSubmit:</strong> para encaminhar as mensagens do formulário de contacto para o nosso e-mail;</li>
-          <li><strong>Google Analytics:</strong> estatísticas de utilização do website;</li>
+          <li><strong>Google Analytics:</strong> estatísticas de utilização do website, só com o seu consentimento;</li>
+          <li><strong>Meta (Facebook) Pixel:</strong> medição dos resultados dos nossos anúncios no Facebook, só com o seu consentimento;</li>
           <li><strong>Zoom:</strong> realização das sessões online;</li>
           <li><strong>YouTube:</strong> publicação das gravações dos workshops; as ligações do site abrem no YouTube, que tem a sua própria política de privacidade;</li>
           <li><strong>WhatsApp e Gmail:</strong> comunicação com a equipa.</li>
@@ -185,7 +175,17 @@
         <h2>12. Alterações a esta política</h2>
         <p>Podemos actualizar esta política. A data da última actualização aparece no início da página.</p>
 
-        <h2>13. Contacto</h2>
+        <h2 id="cookies">13. Cookies e medição de anúncios</h2>
+        <p>Este website só usa cookies de medição se você os aceitar no aviso que aparece na primeira visita. Se escolher "Continuar sem aceitar", nenhum destes serviços é carregado.</p>
+        <ul>
+          <li><strong>Google Analytics:</strong> estatísticas de visitas, como as páginas mais vistas e o tipo de dispositivo;</li>
+          <li><strong>Meta Pixel (Facebook):</strong> serve para saber se os nossos anúncios no Facebook levam a inscrições e para chegar a mais pessoas. Usa cookies do Facebook, que permitem à Meta associar a visita à conta de Facebook de quem tem sessão iniciada. A Meta recebe dados como as páginas visitadas, o dispositivo e acções no site, como concluir uma inscrição.</li>
+        </ul>
+        <p>Não enviamos à Meta o seu nome, telefone nem e-mail através do Pixel. O tratamento dos dados pela Google e pela Meta rege-se pelas políticas de privacidade dessas empresas.</p>
+        <p>Pode mudar a sua escolha a qualquer momento: <a href="#" data-cookies-abrir>alterar a minha escolha</a>. <span data-cookies-estado></span></p>
+        <p>Também pode apagar os cookies nas definições do seu browser e gerir os anúncios nas definições da sua conta de Facebook.</p>
+
+        <h2>14. Contacto</h2>
         <p>Dúvidas sobre privacidade: <a href="mailto:gconecta05angola@gmail.com">gconecta05angola@gmail.com</a>.</p>
       </article>
     </main>
