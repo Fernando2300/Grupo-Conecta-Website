@@ -2,7 +2,7 @@
    consentimento.js
    Aviso de cookies e carregamento condicional de:
      - Google Analytics (G-ZHPQD4KRT1)
-     - Meta Pixel (2279744039238290)
+     - Meta Pixel (1644615390665044)
    Nada disto carrega antes de o visitante clicar em "Aceitar".
    Carregar em todas as páginas públicas, no <head>, com defer:
      <script src="js/consentimento.js" defer></script>
