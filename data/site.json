@@ -1,9 +1,9 @@
 {
   "workshopActivo": "ws6",
   "videosDestaque": [
+    "ws6",
     "ws5",
-    "ws4",
-    "ws3"
+    "ws4"
   ],
   "pagamento": {
     "metodos": [
