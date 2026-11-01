@@ -189,9 +189,9 @@
       "horaInicio": "15:30",
       "horaFim": "17:45",
       "local": "Online – Zoom",
-      "imagem": "https://res.cloudinary.com/y1pydrcc/image/upload/v1792248115/bovgn30sckoksvtdxwlt.webp",
+      "imagem": "https://res.cloudinary.com/y1pydrcc/image/upload/v1793561941/oolvadrzs9k8waxcgbqh.webp",
       "inscricoes": "encerradas",
-      "video": "",
+      "video": "https://youtu.be/Cyr_l1LNXtU?si=Qpy89DY5ICTQ-o4H",
       "lote": 1,
       "valorMinimo": 0,
       "aprenderao": [
@@ -200,8 +200,10 @@
         "3. Estratégias para expressar ideias e conquistar oportunidades, e",
         "4. Como comunicar com propósito e construir uma marca pessoal positiva."
       ],
-      "participantes": 0,
-      "arrecadado": 0
+      "participantes": 83,
+      "arrecadado": 18000,
+      "mulheres": 33,
+      "homens": 50
     }
   ]
 }
