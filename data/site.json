@@ -1,6 +1,10 @@
 {
-  "workshopActivo": "ws5",
-  "videosDestaque": ["ws5", "ws4", "ws3"],
+  "workshopActivo": "ws6",
+  "videosDestaque": [
+    "ws6",
+    "ws5",
+    "ws4"
+  ],
   "pagamento": {
     "metodos": [
       {
@@ -12,8 +16,14 @@
         "titular": "",
         "instrucao": "Abra a app do seu banco ou carteira móvel, escolha Kwik e envie para o número ou o IBAN abaixo.",
         "campos": [
-          { "rotulo": "Número Kwik", "valor": "937082461" },
-          { "rotulo": "IBAN", "valor": "AO06041700000093065163247" }
+          {
+            "rotulo": "Número Kwik",
+            "valor": "937082461"
+          },
+          {
+            "rotulo": "IBAN",
+            "valor": "AO06041700000093708246184"
+          }
         ]
       },
       {
@@ -24,7 +34,12 @@
         "activo": true,
         "titular": "",
         "instrucao": "Na app Multicaixa Express, aceda a Transferências, depois a Transferências Express, e envie para o número abaixo.",
-        "campos": [{ "rotulo": "Número", "valor": "937082461" }]
+        "campos": [
+          {
+            "rotulo": "Número",
+            "valor": "937082461"
+          }
+        ]
       },
       {
         "id": "unitel",
@@ -35,8 +50,14 @@
         "titular": "",
         "instrucao": "Use os dados abaixo para realizar o pagamento por referência.",
         "campos": [
-          { "rotulo": "Entidade", "valor": "00930" },
-          { "rotulo": "Referência", "valor": "937082461" }
+          {
+            "rotulo": "Entidade",
+            "valor": "00930"
+          },
+          {
+            "rotulo": "Referência",
+            "valor": "937082461"
+          }
         ]
       }
     ],
@@ -52,7 +73,7 @@
     "imagem": "assets/images/campanha-sacolas.webp",
     "linkPrestacaoContas": ""
   },
-    "estatisticas": {
+  "estatisticas": {
     "baseParticipacoes": 108,
     "baseMulheres": 44,
     "percentagemMulheres": 41
@@ -147,7 +168,7 @@
       "inscricoes": "encerradas",
       "video": "https://youtu.be/7i4zRxHrn5I",
       "lote": 1,
-      "valorMinimo": 500,
+      "valorMinimo": 0,
       "aprenderao": [
         "Como adaptar métodos de ensino às novas realidades dos estudantes",
         "Estratégias pedagógicas inovadoras aplicáveis no século XXI",
@@ -156,6 +177,58 @@
       ],
       "participantes": 34,
       "arrecadado": 23000
+    },
+    {
+      "id": "ws6",
+      "numero": 6,
+      "tema": "Ter Voz, Fazer a Diferença: Comunicar com Propósito, Conquistar Oportunidades e Deixar a Sua Marca",
+      "orador": "Júlia Cassoma",
+      "descricao": "Participe no workshop com <strong>Júlia Cassoma</strong>, jornalista e repórter premiada, e descubra\ncomo a comunicação pode abrir portas e criar oportunidades. Uma sessão inspiradora\nsobre oratória, confiança, expressão de ideias e o poder de comunicar com propósito nos\ncontextos pessoal, académico e profissional.",
+      "resumo": "Descubra como comunicar com confiança, expressar as suas ideias com clareza e usar o\npoder da palavra para conquistar oportunidades e deixar a sua marca.",
+      "data": "2026-10-25",
+      "horaInicio": "15:30",
+      "horaFim": "17:45",
+      "local": "Online – Zoom",
+      "imagem": "https://res.cloudinary.com/y1pydrcc/image/upload/v1793561941/oolvadrzs9k8waxcgbqh.webp",
+      "inscricoes": "encerradas",
+      "video": "https://youtu.be/Cyr_l1LNXtU?si=Qpy89DY5ICTQ-o4H",
+      "lote": 1,
+      "valorMinimo": 0,
+      "aprenderao": [
+        "1. Técnicas para comunicar com clareza, confiança e impacto;",
+        "2. Como desenvolver competências de oratória e falar em público;",
+        "3. Estratégias para expressar ideias e conquistar oportunidades, e",
+        "4. Como comunicar com propósito e construir uma marca pessoal positiva."
+      ],
+      "participantes": 83,
+      "arrecadado": 18000,
+      "mulheres": 33,
+      "homens": 50
+    },
+    {
+      "id": "ws7",
+      "numero": 7,
+      "tema": "Marketing Digital para Pequenos Negócios: Estratégias para Atrair Clientes, Aumentar Vendas e Fortalecer a Sua Marca",
+      "orador": "Chelsea Lourenço",
+      "descricao": "Participe no workshop com &lt;strong&gt;Chelsea Lourenço&lt;/strong&gt;, oradora da 2ª Edição da\n2ª Temporada dos Workshops Conecta, com moderação de &lt;strong&gt;Janivalda\nMuehombo&lt;/strong&gt;. Profissional angolana de Marketing e Comunicação, é\n&lt;strong&gt;Mestre em Marketing&lt;/strong&gt;, com especialização em Marketing Digital, pela\n&lt;strong&gt;University of Brighton&lt;/strong&gt;, no Reino Unido, onde estudou como\n&lt;strong&gt;bolseira Chevening&lt;/strong&gt;. Tem experiência em estratégia de marca,\ncomunicação corporativa e marketing digital, com projectos em Angola, África do Sul e\nReino Unido, incluindo a &lt;strong&gt;SanlamAllianz&lt;/strong&gt; e a\n&lt;strong&gt;Samsung&lt;/strong&gt;. Será uma excelente oportunidade para aprender estratégias\npráticas e fortalecer marcas e pequenos negócios.",
+      "resumo": "Descubra como o marketing digital pode ajudar os pequenos negócios a atrair clientes,\naumentar as vendas e fortalecer a sua marca.",
+      "data": "2026-11-15",
+      "horaInicio": "16:00",
+      "horaFim": "17:50",
+      "local": "Online – Zoom",
+      "imagem": "https://res.cloudinary.com/y1pydrcc/image/upload/v1794232896/pdtnhejeu8ynva77khoy.webp",
+      "inscricoes": "abertas",
+      "video": "",
+      "lote": 1,
+      "valorMinimo": 0,
+      "aprenderao": [
+        "Como definir o posicionamento e fortalecer a identidade da sua marca no ambiente digital;",
+        "Como compreender o seu público-alvo e criar conteúdos relevantes que despertem interesse e promovam o envolvimento;",
+        "Como utilizar storytelling e estratégias de comunicação digital para construir confiança e estabelecer relações com os clientes,e",
+        "Como aplicar estratégias e ferramentas digitais acessíveis para atrair potenciais clientes, aumentar as vendas e fidelizar consumidores."
+      ],
+      "participantes": 0,
+      "arrecadado": 0
     }
   ]
 }
