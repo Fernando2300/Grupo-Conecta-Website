@@ -218,7 +218,7 @@
       "local": "Online – Zoom",
       "imagem": "https://res.cloudinary.com/y1pydrcc/image/upload/v1794232896/pdtnhejeu8ynva77khoy.webp",
       "inscricoes": "encerradas",
-      "video": "",
+      "video": "https://www.youtube.com/watch?v=SGqvD8_g7bw",
       "lote": 1,
       "valorMinimo": 0,
       "aprenderao": [
@@ -227,8 +227,10 @@
         "Como utilizar storytelling e estratégias de comunicação digital para construir confiança e estabelecer relações com os clientes,e",
         "Como aplicar estratégias e ferramentas digitais acessíveis para atrair potenciais clientes, aumentar as vendas e fidelizar consumidores."
       ],
-      "participantes": 0,
-      "arrecadado": 0
+      "participantes": 67,
+      "arrecadado": 19000,
+      "mulheres": 23,
+      "homens": 44
     }
   ]
 }
