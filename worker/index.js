@@ -3,30 +3,48 @@
    Passo 9, etapa 3. Fluxo: painel (browser) -> este Worker -> API do GitHub.
 
    O token do GitHub vive só aqui (segredo GITHUB_TOKEN); o browser
-   nunca o vê. Este Worker só lê e escreve data/site.json na branch
-   "content" e dispara o workflow de publicação na "main".
+   nunca o vê. Este Worker só lê e escreve, na branch "content",
+   data/site.json e data/certificados-painel.json (lista fechada) e
+   dispara o workflow de publicação na "main".
+   Para os certificados assina os envios ao Cloudinary: o ficheiro vai
+   do browser directamente ao Cloudinary e o API secret nunca sai daqui.
 
    Ligações e variáveis (ver worker/README.md):
-     KV        LIMITES          contagem de tentativas de entrada falhadas
+     KV        LIMITES          tentativas de entrada falhadas e auditoria
+                                dos pedidos de assinatura (auditoria:cert:)
      Segredos  GITHUB_TOKEN     token fine-grained do GitHub
                SESSAO_SEGREDO   chave de assinatura das sessões (>= 32 caracteres)
                SENHAS           JSON com o hash da senha de cada membro
+               CLOUDINARY_API_KEY     chave de API "painel-worker"
+               CLOUDINARY_API_SECRET  segredo dessa chave
      Variáveis REPO             "Fernando2300/Grupo-Conecta-Website"
                ORIGENS          origens permitidas, separadas por vírgula
                WORKFLOW         (opcional) nome do workflow; omissão "pages.yml"
+               CLOUDINARY_CLOUD "y1pydrcc"
 
    Endpoints:
      GET  /               teste de vida (sem dados)
      POST /login          { nome, senha } -> sessão
      GET  /site           -> { dados, sha }
      PUT  /site           { dados, sha } -> valida, grava e publica
-     GET  /historico      -> últimas alterações de data/site.json
+     GET  /historico      -> últimas alterações (?ficheiro=site|certificados; omissão site)
      POST /restaurar      { commit } -> volta a uma versão anterior
+                          (?ficheiro=site|certificados; omissão site)
      POST /logout         (a sessão é só do browser; o painel descarta-a)
+     GET  /certificados             -> { dados, sha } de data/certificados-painel.json
+     PUT  /certificados             { certificados:[...] } -> valida, junta por código
+                                    (nunca apaga), grava e publica
+     POST /certificados/assinatura  { itens:[{codigo, tipo}] } (máx. 25) -> assinaturas
+     GET  /certificados/ficheiros   -> { pdf:[códigos], png:[códigos] } no Cloudinary
    ============================================================ */
 
 /* ---------- Constantes (não vêm do ambiente, de propósito) ---------- */
-var CAMINHO = "data/site.json"; // único ficheiro que se escreve
+// Únicos ficheiros que se escrevem (lista fechada)
+var FICHEIROS = {
+  site: "data/site.json",
+  certificados: "data/certificados-painel.json",
+};
+var CAMINHO = FICHEIROS.site;
 var RAMO = "content"; // única branch onde se escreve
 var REF_WORKFLOW = "main"; // o workflow corre sempre a partir da main
 var TAMANHO_MAX = 200000; // bytes do corpo de um pedido
@@ -36,6 +54,16 @@ var TENTATIVAS_MEMBRO = 5; // falhas por membro
 var TENTATIVAS_IP = 20; // falhas por IP
 var BLOQUEIO_SEG = 900; // 15 minutos
 var PBKDF2_PADRAO = 10000;
+// Certificados
+var CERT_MAX_ITENS_ASSINATURA = 25;
+var CERT_MAX_ENTRADAS = 300;
+var CERT_AVISO_BYTES = 700 * 1024;
+var CERT_MAX_BYTES = 900 * 1024;
+var CERT_PASTA = "certificados";
+var CERT_USAR_ASSET_FOLDER = true; // se o Cloudinary recusar asset_folder, mude para false
+var CERT_AUDITORIA_SEG = 180 * 24 * 3600;
+var CERT_MAX_PAGINAS = 10;
+var RE_CODIGO_CERT = /^CON-(WS|GC|MOD)[0-9]{1,2}-[0-9]{4}-[0-9]{2}-[0-9]{3}$/;
 
 var enc = new TextEncoder();
 var dec = new TextDecoder();
@@ -364,21 +392,35 @@ function gh(env, caminho, opcoes) {
   });
 }
 
-async function lerFicheiro(env, ref) {
+// Caminho de um ficheiro da lista fechada; qualquer outro é recusado
+function caminhoDe(ficheiro) {
+  var f = ficheiro || "site";
+  if (!Object.prototype.hasOwnProperty.call(FICHEIROS, f))
+    throw new ErroHttp(400, "Ficheiro não permitido.");
+  return FICHEIROS[f];
+}
+
+// ficheiro: "site" (omissão) ou "certificados".
+// semFicheiro: se true, devolve null quando o ficheiro não existe (em vez de erro).
+async function lerFicheiro(env, ref, ficheiro, semFicheiro) {
+  var caminho = caminhoDe(ficheiro);
   var r = await gh(
     env,
     "/repos/" +
       repo(env) +
       "/contents/" +
-      CAMINHO +
+      caminho +
       "?ref=" +
       encodeURIComponent(ref),
   );
+  if (r.status === 404 && semFicheiro) return null;
   if (r.status === 404)
     throw new ErroHttp(
       502,
       ref === RAMO
-        ? "Não encontrei data/site.json na branch content (ainda não foi criada?)."
+        ? "Não encontrei " +
+            caminho +
+            " na branch content (ainda não foi criada?)."
         : "Não encontrei essa versão no histórico.",
     );
   if (!r.ok)
@@ -397,18 +439,25 @@ async function lerFicheiro(env, ref) {
   return { sha: j.sha, dados: dados };
 }
 
-async function escrever(env, limpo, shaActual, mensagem) {
+// ficheiro: "site" (omissão) ou "certificados". shaActual null = criar o ficheiro.
+async function escrever(env, limpo, shaActual, mensagem, ficheiro) {
+  var caminho = caminhoDe(ficheiro);
   var texto = JSON.stringify(limpo, null, 2) + "\n";
-  if (texto.length > TAMANHO_MAX)
-    throw new ErroHttp(413, "Os dados são demasiado grandes.");
-  var r = await gh(env, "/repos/" + repo(env) + "/contents/" + CAMINHO, {
+  if (caminho === CAMINHO) {
+    if (texto.length > TAMANHO_MAX)
+      throw new ErroHttp(413, "Os dados são demasiado grandes.");
+  } else if (enc.encode(texto).length > CERT_MAX_BYTES) {
+    throw new ErroHttp(413, MSG_CERT_GRANDE);
+  }
+  var pedido = {
+    message: mensagem,
+    content: paraB64(enc.encode(texto)),
+    branch: RAMO,
+  };
+  if (shaActual) pedido.sha = shaActual;
+  var r = await gh(env, "/repos/" + repo(env) + "/contents/" + caminho, {
     method: "PUT",
-    body: JSON.stringify({
-      message: mensagem,
-      content: paraB64(enc.encode(texto)),
-      sha: shaActual,
-      branch: RAMO,
-    }),
+    body: JSON.stringify(pedido),
   });
   if (r.status === 409 || r.status === 422)
     throw new ErroHttp(409, "Alguém alterou os dados entretanto.", {
@@ -1012,13 +1061,13 @@ async function rotaGravarSite(env, sessao, req) {
   };
 }
 
-async function rotaHistorico(env) {
+async function rotaHistorico(env, ficheiro) {
   var r = await gh(
     env,
     "/repos/" +
       repo(env) +
       "/commits?path=" +
-      encodeURIComponent(CAMINHO) +
+      encodeURIComponent(caminhoDe(ficheiro)) +
       "&sha=" +
       encodeURIComponent(RAMO) +
       "&per_page=20",
@@ -1047,7 +1096,9 @@ async function rotaHistorico(env) {
   };
 }
 
-async function rotaRestaurar(env, sessao, req) {
+async function rotaRestaurar(env, sessao, req, ficheiro) {
+  if (ficheiro === "certificados")
+    return rotaRestaurarCertificados(env, sessao, req);
   var corpo = await lerCorpo(req);
   if (typeof corpo.commit !== "string" || !/^[0-9a-f]{40}$/.test(corpo.commit))
     throw new ErroHttp(400, "Versão inválida.");
@@ -1081,6 +1132,511 @@ async function rotaRestaurar(env, sessao, req) {
 }
 
 /* ==========================================================
+   6b. Certificados (data/certificados-painel.json e Cloudinary)
+   A validação das entradas é igual à de js/admin.js
+   (validarEntradaCert); manter as duas em paralelo.
+   ========================================================== */
+var MSG_CERT_GRANDE =
+  "O ficheiro de certificados ficaria com mais de 900 KB, perto do limite da API de conteúdos do GitHub." +
+  " Fale com o responsável técnico para dividir os dados por ano antes de acrescentar mais.";
+
+var CERT_CAMPOS_PART = [
+  "codigo",
+  "nome",
+  "workshop",
+  "orador",
+  "rotulo_orador",
+  "edicao",
+  "data",
+  "duracao",
+  "plataforma",
+  "entidade_emissora",
+  "kectil",
+  "atualizado",
+];
+var CERT_CAMPOS_FUNCAO = [
+  "codigo",
+  "nome",
+  "funcao",
+  "evento",
+  "edicao",
+  "data",
+  "entidade_emissora",
+  "kectil",
+  "atualizado",
+];
+var CERT_MAX_TEXTO = {
+  codigo: 30,
+  nome: 120,
+  workshop: 300,
+  evento: 300,
+  orador: 120,
+  funcao: 60,
+  rotulo_orador: 30,
+  edicao: 120,
+  plataforma: 40,
+  duracao: 20,
+  entidade_emissora: 80,
+  data: 10,
+  atualizado: 10,
+};
+
+function dataDMAValida(s) {
+  var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s || "");
+  return !!m && dataValida(m[3] + "-" + m[2] + "-" + m[1]);
+}
+
+// Data de hoje em Angola (UTC+1), AAAA-MM-DD
+function hojeAngola() {
+  return new Date(Date.now() + 3600000).toISOString().slice(0, 10);
+}
+
+// Valida e limpa uma entrada. Devolve { entrada, erros:[texto], avisos:[texto] }
+function validarEntradaCert(bruta) {
+  var erros = [];
+  var avisos = [];
+  if (!ehObj(bruta))
+    return { entrada: null, erros: ["a entrada não é um objecto."], avisos };
+  var codigo =
+    typeof bruta.codigo === "string" ? bruta.codigo.trim().toUpperCase() : "";
+  if (!RE_CODIGO_CERT.test(codigo))
+    return {
+      entrada: null,
+      erros: ["código em falta ou inválido."],
+      avisos: avisos,
+    };
+  var part = codigo.indexOf("CON-WS") === 0;
+  var permitidos = part ? CERT_CAMPOS_PART : CERT_CAMPOS_FUNCAO;
+  var obrig = part
+    ? ["codigo", "nome", "edicao", "data", "workshop", "orador"]
+    : ["codigo", "nome", "edicao", "data", "funcao", "evento"];
+  var e = {};
+  Object.keys(bruta).forEach(function (k) {
+    if (permitidos.indexOf(k) === -1) {
+      erros.push("campo desconhecido '" + k + "'.");
+      return;
+    }
+    var v = bruta[k];
+    if (k === "kectil") {
+      if (typeof v !== "boolean")
+        erros.push("'kectil' tem de ser true ou false.");
+      else e.kectil = v;
+      return;
+    }
+    if (typeof v !== "string") {
+      erros.push("'" + k + "' tem de ser texto.");
+      return;
+    }
+    v = v.trim();
+    if (k === "codigo") v = codigo;
+    if (!v) {
+      erros.push("'" + k + "' está vazio.");
+      return;
+    }
+    if (/[<>\u0000-\u001f\u007f]/.test(v)) {
+      erros.push(
+        "'" + k + "' tem caracteres não permitidos (< > ou de controlo).",
+      );
+      return;
+    }
+    if (v.length > CERT_MAX_TEXTO[k]) {
+      erros.push(
+        "'" + k + "' é demasiado longo (máximo " + CERT_MAX_TEXTO[k] + ").",
+      );
+      return;
+    }
+    e[k] = v;
+  });
+  obrig.forEach(function (k) {
+    if (bruta[k] === undefined) erros.push("falta o campo '" + k + "'.");
+  });
+  if (e.data && !dataDMAValida(e.data))
+    erros.push("data inválida (use dd/mm/aaaa).");
+  if (e.duracao && !/^[0-9]{1,2}h([0-9]{2})?$/.test(e.duracao))
+    erros.push("duração inválida (por exemplo 1h50).");
+  if (e.atualizado && !dataValida(e.atualizado))
+    erros.push("'atualizado' inválido (use AAAA-MM-DD).");
+  if (e.data && dataDMAValida(e.data)) {
+    var anoMes = /-(\d{4})-(\d{2})-\d{3}$/.exec(codigo);
+    var dm = e.data.split("/");
+    if (anoMes && (anoMes[1] !== dm[2] || anoMes[2] !== dm[1]))
+      avisos.push(
+        "o mês e o ano do código (" +
+          anoMes[1] +
+          "-" +
+          anoMes[2] +
+          ") não coincidem com a data.",
+      );
+  }
+  // Ordem fixa dos campos
+  var ordenada = {};
+  permitidos.forEach(function (k) {
+    if (e[k] !== undefined) ordenada[k] = e[k];
+  });
+  return { entrada: erros.length ? null : ordenada, erros, avisos };
+}
+
+// Lista de entradas -> { entradas, erros:[{path,msg}], avisos:[{path,msg}] }
+function validarListaCert(lista) {
+  var erros = [];
+  var avisos = [];
+  var entradas = [];
+  var vistos = {};
+  lista.forEach(function (b, i) {
+    var r = validarEntradaCert(b);
+    var rot =
+      (ehObj(b) && typeof b.codigo === "string" && b.codigo.trim()
+        ? b.codigo.trim().toUpperCase()
+        : "Entrada " + (i + 1)) + ": ";
+    r.erros.forEach(function (m) {
+      erros.push({ path: "certificados." + i, msg: rot + m });
+    });
+    r.avisos.forEach(function (m) {
+      avisos.push({ path: "certificados." + i, msg: rot + m });
+    });
+    if (r.entrada) {
+      if (vistos[r.entrada.codigo])
+        erros.push({
+          path: "certificados." + i,
+          msg: rot + "código repetido neste envio.",
+        });
+      vistos[r.entrada.codigo] = true;
+      entradas.push(r.entrada);
+    }
+  });
+  return { entradas, erros, avisos };
+}
+
+function semActualizado(o) {
+  var c = {};
+  Object.keys(o || {}).forEach(function (k) {
+    if (k !== "atualizado") c[k] = o[k];
+  });
+  return JSON.stringify(c);
+}
+
+// Junta por código (nunca apaga). Devolve { lista, novos, corrigidos, inalterados }
+function juntarCertificados(actuais, entradas, hoje) {
+  var lista = actuais.slice();
+  var indice = {};
+  lista.forEach(function (c, i) {
+    if (ehObj(c) && typeof c.codigo === "string")
+      indice[c.codigo.toUpperCase()] = i;
+  });
+  var novos = 0;
+  var corrigidos = 0;
+  var inalterados = 0;
+  entradas.forEach(function (e) {
+    var i = indice[e.codigo];
+    if (i === undefined) {
+      // Entrada nova no ficheiro do painel. Se traz "atualizado", é a
+      // correcção de um certificado que só existia nos JSON antigos.
+      if (e.atualizado) corrigidos++;
+      else novos++;
+      indice[e.codigo] = lista.length;
+      lista.push(e);
+    } else if (semActualizado(lista[i]) === semActualizado(e)) {
+      inalterados++;
+    } else {
+      var n = JSON.parse(JSON.stringify(e));
+      if (!n.atualizado) n.atualizado = hoje;
+      lista[i] = n;
+      corrigidos++;
+    }
+  });
+  return {
+    lista: lista,
+    novos: novos,
+    corrigidos: corrigidos,
+    inalterados: inalterados,
+  };
+}
+
+function listaDoFicheiro(dados) {
+  if (Array.isArray(dados)) return dados;
+  if (ehObj(dados) && Array.isArray(dados.certificados))
+    return dados.certificados;
+  throw new ErroHttp(
+    502,
+    "O ficheiro de certificados no GitHub não tem o formato esperado.",
+  );
+}
+
+async function rotaLerCertificados(env) {
+  var f = await lerFicheiro(env, RAMO, "certificados", true);
+  if (!f) return { dados: { versao: 1, certificados: [] }, sha: null };
+  return {
+    dados: { versao: 1, certificados: listaDoFicheiro(f.dados) },
+    sha: f.sha,
+  };
+}
+
+async function rotaGravarCertificados(env, sessao, req) {
+  var corpo = await lerCorpo(req);
+  if (!Array.isArray(corpo.certificados))
+    throw new ErroHttp(400, "Envie { certificados: [...] }.");
+  if (!corpo.certificados.length)
+    throw new ErroHttp(400, "Não há certificados para gravar.");
+  if (corpo.certificados.length > CERT_MAX_ENTRADAS)
+    throw new ErroHttp(
+      413,
+      "No máximo " +
+        CERT_MAX_ENTRADAS +
+        " certificados de cada vez. Divida o ficheiro.",
+    );
+  var v = validarListaCert(corpo.certificados);
+  if (v.erros.length)
+    throw new ErroHttp(422, "Os certificados não são válidos.", {
+      erros: v.erros,
+      avisos: v.avisos,
+    });
+
+  for (var tentativa = 1; tentativa <= 2; tentativa++) {
+    var actual = await lerFicheiro(env, RAMO, "certificados", true);
+    var lista = actual ? listaDoFicheiro(actual.dados) : [];
+    var j = juntarCertificados(lista, v.entradas, hojeAngola());
+    var resumo = {
+      novos: j.novos,
+      corrigidos: j.corrigidos,
+      inalterados: j.inalterados,
+      total: j.lista.length,
+    };
+    if (v.avisos.length)
+      resumo.avisos = v.avisos.map(function (a) {
+        return a.msg;
+      });
+    if (!j.novos && !j.corrigidos) {
+      resumo.ok = true;
+      resumo.semAlteracoes = true;
+      return resumo;
+    }
+    var dados = { versao: 1, certificados: j.lista };
+    var bytes = enc.encode(JSON.stringify(dados, null, 2) + "\n").length;
+    if (bytes > CERT_MAX_BYTES) throw new ErroHttp(413, MSG_CERT_GRANDE);
+    var msg =
+      "Painel: " +
+      sessao.nome +
+      " actualizou certificados (" +
+      j.novos +
+      " novos, " +
+      j.corrigidos +
+      " corrigidos)";
+    try {
+      await escrever(
+        env,
+        dados,
+        actual ? actual.sha : null,
+        msg,
+        "certificados",
+      );
+    } catch (e) {
+      // Conflito de versão: lê de novo, junta e tenta mais uma vez
+      if (e instanceof ErroHttp && e.status === 409 && tentativa === 1)
+        continue;
+      throw e;
+    }
+    var wf = await dispararPublicacao(env);
+    resumo.ok = true;
+    resumo.publicacaoIniciada = wf;
+    var avisoTam =
+      bytes > CERT_AVISO_BYTES
+        ? "O ficheiro de certificados já tem " +
+          Math.round(bytes / 1024) +
+          " KB (limite prático de 900 KB)."
+        : "";
+    var avisoWf = wf
+      ? ""
+      : "Os certificados foram gravados, mas a publicação automática não arrancou.";
+    var aviso = [avisoWf, avisoTam].filter(Boolean).join(" ");
+    if (aviso) resumo.aviso = aviso;
+    return resumo;
+  }
+}
+
+async function rotaRestaurarCertificados(env, sessao, req) {
+  var corpo = await lerCorpo(req);
+  if (typeof corpo.commit !== "string" || !/^[0-9a-f]{40}$/.test(corpo.commit))
+    throw new ErroHttp(400, "Versão inválida.");
+  var antiga = await lerFicheiro(env, corpo.commit, "certificados");
+  var v = validarListaCert(listaDoFicheiro(antiga.dados));
+  if (v.erros.length)
+    throw new ErroHttp(422, "Essa versão dos certificados não é válida.", {
+      erros: v.erros,
+    });
+  var dados = { versao: 1, certificados: v.entradas };
+  var actual = await lerFicheiro(env, RAMO, "certificados", true);
+  if (actual && JSON.stringify(actual.dados) === JSON.stringify(dados))
+    return { ok: true, semAlteracoes: true, sha: actual.sha };
+  var msg =
+    "Painel: " +
+    sessao.nome +
+    " restaurou a versão " +
+    corpo.commit.slice(0, 7) +
+    " dos certificados";
+  var g = await escrever(
+    env,
+    dados,
+    actual ? actual.sha : null,
+    msg,
+    "certificados",
+  );
+  var wf = await dispararPublicacao(env);
+  return {
+    ok: true,
+    sha: g.sha,
+    commit: g.commit,
+    total: dados.certificados.length,
+    publicacaoIniciada: wf,
+    aviso: wf
+      ? ""
+      : "Os certificados foram restaurados, mas a publicação automática não arrancou.",
+  };
+}
+
+/* ---------- Cloudinary ---------- */
+function cloudinaryConfig(env) {
+  var cloud = String(env.CLOUDINARY_CLOUD || "").trim();
+  var chave = String(env.CLOUDINARY_API_KEY || "").trim();
+  var segredo = String(env.CLOUDINARY_API_SECRET || "").trim();
+  if (!cloud || !chave || !segredo || !/^[a-z0-9_-]+$/i.test(cloud))
+    throw new ErroHttp(500, "Cloudinary não configurado no Worker.");
+  return { cloud: cloud, chave: chave, segredo: segredo };
+}
+
+function paraHex(buf) {
+  var u = new Uint8Array(buf);
+  var s = "";
+  for (var i = 0; i < u.length; i++)
+    s += (u[i] < 16 ? "0" : "") + u[i].toString(16);
+  return s;
+}
+
+// Parâmetros assinados (iguais aos de worker/enviar-certificados.mjs)
+function paramsCert(codigo, tipo, timestamp) {
+  var p = {
+    allowed_formats: tipo,
+    invalidate: "true",
+    overwrite: "true",
+    public_id: CERT_PASTA + "/" + tipo + "/" + codigo,
+    timestamp: String(timestamp),
+  };
+  if (CERT_USAR_ASSET_FOLDER) p.asset_folder = CERT_PASTA + "/" + tipo;
+  return p;
+}
+
+// SHA-1 hexadecimal de "chave=valor&..." (ordenado) seguido do segredo
+async function assinarCloudinary(params, segredo) {
+  var cadeia = Object.keys(params)
+    .sort()
+    .map(function (k) {
+      return k + "=" + params[k];
+    })
+    .join("&");
+  var h = await crypto.subtle.digest("SHA-1", enc.encode(cadeia + segredo));
+  return paraHex(h);
+}
+
+async function rotaAssinatura(env, sessao, req) {
+  var cfg = cloudinaryConfig(env);
+  var corpo = await lerCorpo(req);
+  var itens = corpo.itens;
+  if (!Array.isArray(itens) || !itens.length)
+    throw new ErroHttp(400, "Indique os ficheiros a assinar.");
+  if (itens.length > CERT_MAX_ITENS_ASSINATURA)
+    throw new ErroHttp(
+      400,
+      "No máximo " + CERT_MAX_ITENS_ASSINATURA + " ficheiros por pedido.",
+    );
+  var limpos = itens.map(function (it) {
+    var codigo =
+      ehObj(it) && typeof it.codigo === "string"
+        ? it.codigo.trim().toUpperCase()
+        : "";
+    var tipo = ehObj(it) ? it.tipo : "";
+    if (!RE_CODIGO_CERT.test(codigo))
+      throw new ErroHttp(400, "Código de certificado inválido.");
+    if (tipo !== "pdf" && tipo !== "png")
+      throw new ErroHttp(400, "Tipo de ficheiro inválido (pdf ou png).");
+    return { codigo: codigo, tipo: tipo };
+  });
+  var ts = Math.floor(Date.now() / 1000);
+  var saida = [];
+  for (var i = 0; i < limpos.length; i++) {
+    var p = paramsCert(limpos[i].codigo, limpos[i].tipo, ts);
+    saida.push({
+      codigo: limpos[i].codigo,
+      tipo: limpos[i].tipo,
+      params: p,
+      assinatura: await assinarCloudinary(p, cfg.segredo),
+    });
+  }
+  // Auditoria (best-effort): nunca bloqueia o pedido
+  try {
+    await env.LIMITES.put(
+      "auditoria:cert:" +
+        new Date().toISOString() +
+        ":" +
+        Math.random().toString(36).slice(2, 8),
+      JSON.stringify({
+        nome: sessao.nome,
+        itens: limpos.map(function (x) {
+          return x.codigo + ":" + x.tipo;
+        }),
+        em: new Date().toISOString(),
+      }),
+      { expirationTtl: CERT_AUDITORIA_SEG },
+    );
+  } catch (e) {
+    /* sem auditoria; o envio continua */
+  }
+  return { cloud: cfg.cloud, apiKey: cfg.chave, itens: saida };
+}
+
+async function rotaFicheirosCert(env) {
+  var cfg = cloudinaryConfig(env);
+  var auth = "Basic " + btoa(cfg.chave + ":" + cfg.segredo);
+  var saida = { pdf: [], png: [] };
+  var incompleto = false;
+  var tipos = ["pdf", "png"];
+  for (var t = 0; t < tipos.length; t++) {
+    var tipo = tipos[t];
+    var cursor = "";
+    var vistos = {};
+    for (var pag = 0; pag < CERT_MAX_PAGINAS; pag++) {
+      var url =
+        "https://api.cloudinary.com/v1_1/" +
+        cfg.cloud +
+        "/resources/image/upload?prefix=" +
+        encodeURIComponent(CERT_PASTA + "/" + tipo + "/") +
+        "&max_results=500" +
+        (cursor ? "&next_cursor=" + encodeURIComponent(cursor) : "");
+      var r = await fetch(url, { headers: { Authorization: auth } });
+      if (!r.ok)
+        throw new ErroHttp(
+          502,
+          "O Cloudinary não respondeu como esperado (" + r.status + ").",
+        );
+      var j = await r.json();
+      (j.resources || []).forEach(function (x) {
+        var cod = String(x.public_id || "")
+          .split("/")
+          .pop();
+        if (RE_CODIGO_CERT.test(cod) && !vistos[cod]) {
+          vistos[cod] = true;
+          saida[tipo].push(cod);
+        }
+      });
+      cursor = j.next_cursor || "";
+      if (!cursor) break;
+    }
+    if (cursor) incompleto = true;
+    saida[tipo].sort();
+  }
+  if (incompleto) saida.incompleto = true;
+  return saida;
+}
+
+/* ==========================================================
    7. Entrada
    ========================================================== */
 async function tratar(req, env) {
@@ -1109,17 +1665,35 @@ async function tratar(req, env) {
     "/site": ["GET", "PUT"],
     "/historico": ["GET"],
     "/restaurar": ["POST"],
+    "/certificados": ["GET", "PUT"],
+    "/certificados/assinatura": ["POST"],
+    "/certificados/ficheiros": ["GET"],
   };
   if (!caminhos[rota]) return resp(404, { erro: "Não encontrado." });
   if (caminhos[rota].indexOf(metodo) === -1)
     return resp(405, { erro: "Método não permitido." });
 
   var sessao = await exigirSessao(env, req);
+  // Histórico e restaurar: ?ficheiro=site (omissão) ou certificados
+  var ficheiro = url.searchParams.get("ficheiro") || "site";
+  if (
+    (rota === "/historico" || rota === "/restaurar") &&
+    !Object.prototype.hasOwnProperty.call(FICHEIROS, ficheiro)
+  )
+    throw new ErroHttp(400, "Ficheiro não permitido.");
   var corpo;
   if (rota === "/site" && metodo === "GET") corpo = await rotaLerSite(env);
   else if (rota === "/site") corpo = await rotaGravarSite(env, sessao, req);
-  else if (rota === "/historico") corpo = await rotaHistorico(env);
-  else corpo = await rotaRestaurar(env, sessao, req);
+  else if (rota === "/historico") corpo = await rotaHistorico(env, ficheiro);
+  else if (rota === "/restaurar")
+    corpo = await rotaRestaurar(env, sessao, req, ficheiro);
+  else if (rota === "/certificados" && metodo === "GET")
+    corpo = await rotaLerCertificados(env);
+  else if (rota === "/certificados")
+    corpo = await rotaGravarCertificados(env, sessao, req);
+  else if (rota === "/certificados/assinatura")
+    corpo = await rotaAssinatura(env, sessao, req);
+  else corpo = await rotaFicheirosCert(env);
 
   // Sessão deslizante: cada pedido renova os 30 minutos (até ao máximo absoluto)
   var nova = await criarSessao(env, sessao.nome, sessao.ini);

@@ -664,3 +664,142 @@ body {
 .ad-img-mini[hidden] {
   display: none;
 }
+
+/* ---- Separador Certificados ---- */
+body.ad-sem-barra {
+  padding-bottom: 24px;
+}
+.ad-cert-aviso {
+  border-left-color: var(--blue);
+  background: #eef6fb;
+  border-color: #c9e2f2;
+}
+.ad-cert-zona {
+  border: 2px dashed #b9cbd6;
+  border-radius: 10px;
+  background: var(--gray-50);
+  padding: 18px 12px;
+  margin-top: 10px;
+  text-align: center;
+  color: var(--gray-700);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+.ad-cert-zona i {
+  font-size: 1.4rem;
+  color: var(--blue-dark);
+}
+.ad-cert-zona:hover,
+.ad-cert-zona-activa {
+  border-color: var(--blue);
+  background: #eef6fb;
+}
+.ad-cert-zona:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.ad-cert-msg {
+  font-size: 0.85rem;
+  margin-top: 10px;
+  word-break: break-word;
+}
+.ad-cert-msg.ok {
+  color: #3d6b00;
+}
+.ad-cert-msg.erro {
+  color: var(--red);
+}
+.ad-cert-previa {
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.ad-cert-previa > strong {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.88rem;
+}
+.ad-cert-titulo-erro {
+  color: var(--red);
+}
+.ad-cert-numeros {
+  margin-top: 8px;
+}
+.ad-cert-corr {
+  margin-top: 8px;
+}
+.ad-cert-corr-cod {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--blue-dark);
+}
+.ad-cert-lista {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  max-height: 320px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.ad-cert-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.84rem;
+}
+.ad-cert-item:last-child {
+  border-bottom: 0;
+}
+.ad-cert-item i {
+  margin-top: 3px;
+  color: var(--gray-500);
+}
+.ad-cert-item-txt {
+  min-width: 0;
+}
+.ad-cert-item-txt strong,
+.ad-cert-item-txt small {
+  display: block;
+  word-break: break-word;
+}
+.ad-cert-item-txt small {
+  color: var(--gray-500);
+}
+.ad-cert-enviado i {
+  color: #4d6b0a;
+}
+.ad-cert-falhou i,
+.ad-cert-rejeitado i,
+.ad-cert-falhou small,
+.ad-cert-rejeitado small {
+  color: var(--red);
+}
+.ad-cert-enviando i {
+  color: var(--blue);
+}
+.ad-cert-barra {
+  height: 10px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.ad-cert-barra span {
+  display: block;
+  height: 100%;
+  background: var(--green);
+  transition: width 0.2s ease;
+}
+.ad-cert-copia {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+}

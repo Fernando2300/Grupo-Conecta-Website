@@ -1055,6 +1055,12 @@
     ],
     ["pagamento", "Pagamento", "fa-solid fa-credit-card", renderPagamento],
     ["contactos", "Contactos", "fa-solid fa-address-book", renderContactos],
+    [
+      "certificados",
+      "Certificados",
+      "fa-solid fa-certificate",
+      renderCertificados,
+    ],
   ];
 
   function montarTabs() {
@@ -1098,6 +1104,11 @@
     Array.prototype.forEach.call($("ad-tabs").children, function (b) {
       b.setAttribute("aria-selected", String(b.id === "ad-tab-" + id));
     });
+    // Certificados grava logo: sem barra inferior nem "Alterações por guardar"
+    var cert = id === "certificados";
+    $("ad-barra").hidden = cert || $("ad-app").hidden;
+    $("ad-estado").hidden = cert;
+    document.body.classList.toggle("ad-sem-barra", cert);
     var caixa = $("ad-paineis");
     caixa.textContent = "";
     caixa.setAttribute("role", "tabpanel");
@@ -2019,6 +2030,1446 @@
     caixa.appendChild(c);
   }
 
+  /* ----------------------------------------------------------
+     6.7 Certificados (envia logo; não usa "Publicar")
+     Dados: GET/PUT /certificados no Worker. Ficheiros: o Worker assina
+     e o browser envia directamente ao Cloudinary (o segredo nunca vem cá).
+     ---------------------------------------------------------- */
+  // Manter em sintonia com FICHEIROS_DADOS de js/certificados.js
+  var CERT_FICHEIROS_DADOS = [
+    "assets/certificados-participantes.json",
+    "assets/certificados-oradores.json",
+    "assets/certificados-moderadores.json",
+    "assets/certificados-ws6.json",
+    "assets/certificados-ws7.json",
+  ];
+  var CERT_RE = /^CON-(WS|GC|MOD)[0-9]{1,2}-[0-9]{4}-[0-9]{2}-[0-9]{3}$/;
+  var CERT_RE_NOME =
+    /(?:^|[^A-Za-z0-9])(CON-(?:WS|GC|MOD)[0-9]{1,2}-[0-9]{4}-[0-9]{2}-[0-9]{3})(?![0-9])/gi;
+  var CERT_RE_EDICAO = /^CON-(WS|GC|MOD)([0-9]+)-([0-9]{4})-([0-9]{2})-/;
+  var CERT_JSON_MAX = 200 * 1024;
+  var CERT_MAX_ENTRADAS = 300;
+  var CERT_FICHEIRO_MAX = 10 * 1024 * 1024;
+  var CERT_LOTE = 25;
+  var CERT_EM_PARALELO = 3;
+  var CERT_TENTATIVAS = 3;
+  var CERT_CAMPOS_PART = [
+    "codigo",
+    "nome",
+    "workshop",
+    "orador",
+    "rotulo_orador",
+    "edicao",
+    "data",
+    "duracao",
+    "plataforma",
+    "entidade_emissora",
+    "kectil",
+    "atualizado",
+  ];
+  var CERT_CAMPOS_FUNCAO = [
+    "codigo",
+    "nome",
+    "funcao",
+    "evento",
+    "edicao",
+    "data",
+    "entidade_emissora",
+    "kectil",
+    "atualizado",
+  ];
+  var CERT_MAX_TEXTO = {
+    codigo: 30,
+    nome: 120,
+    workshop: 300,
+    evento: 300,
+    orador: 120,
+    funcao: 60,
+    rotulo_orador: 30,
+    edicao: 120,
+    plataforma: 40,
+    duracao: 20,
+    entidade_emissora: 80,
+    data: 10,
+    atualizado: 10,
+  };
+
+  // Estado do separador (mantém-se ao mudar de separador e ao voltar a entrar)
+  var Cert = {
+    conhecidos: null, // Map código -> entrada (estáticos + painel)
+    doPainel: {}, // códigos que vêm do ficheiro do painel
+    carregando: false,
+    erroCarga: "",
+    edicao: "",
+    previa: null, // resultado da leitura do JSON
+    msgDados: null, // { texto, tipo }
+    filas: { pdf: [], png: [] },
+    aEnviar: false,
+    progresso: { feitos: 0, total: 0 },
+    resumo: { pdf: "", png: "" },
+    avisoSessao: "",
+    ficheiros: null, // resposta de /certificados/ficheiros
+  };
+
+  function certEhObj(v) {
+    return v !== null && typeof v === "object" && !Array.isArray(v);
+  }
+
+  function certDataDMA(s) {
+    var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s || "");
+    return !!m && dataValida(m[3] + "-" + m[2] + "-" + m[1]);
+  }
+
+  function certHoje() {
+    return new Date(Date.now() + 3600000).toISOString().slice(0, 10);
+  }
+
+  // Igual a validarEntradaCert do worker/index.js (manter em paralelo)
+  function certValidarEntrada(bruta) {
+    var erros = [];
+    var avisos = [];
+    if (!certEhObj(bruta))
+      return {
+        entrada: null,
+        erros: ["a entrada não é um objecto."],
+        avisos: avisos,
+      };
+    var codigo =
+      typeof bruta.codigo === "string" ? bruta.codigo.trim().toUpperCase() : "";
+    if (!CERT_RE.test(codigo))
+      return {
+        entrada: null,
+        erros: ["código em falta ou inválido."],
+        avisos: avisos,
+      };
+    var part = codigo.indexOf("CON-WS") === 0;
+    var permitidos = part ? CERT_CAMPOS_PART : CERT_CAMPOS_FUNCAO;
+    var obrig = part
+      ? ["codigo", "nome", "edicao", "data", "workshop", "orador"]
+      : ["codigo", "nome", "edicao", "data", "funcao", "evento"];
+    var e = {};
+    Object.keys(bruta).forEach(function (k) {
+      if (permitidos.indexOf(k) === -1) {
+        erros.push("campo desconhecido '" + k + "'.");
+        return;
+      }
+      var v = bruta[k];
+      if (k === "kectil") {
+        if (typeof v !== "boolean")
+          erros.push("'kectil' tem de ser true ou false.");
+        else e.kectil = v;
+        return;
+      }
+      if (typeof v !== "string") {
+        erros.push("'" + k + "' tem de ser texto.");
+        return;
+      }
+      v = v.trim();
+      if (k === "codigo") v = codigo;
+      if (!v) {
+        erros.push("'" + k + "' está vazio.");
+        return;
+      }
+      if (/[<>\u0000-\u001f\u007f]/.test(v)) {
+        erros.push(
+          "'" + k + "' tem caracteres não permitidos (< > ou de controlo).",
+        );
+        return;
+      }
+      if (v.length > CERT_MAX_TEXTO[k]) {
+        erros.push(
+          "'" + k + "' é demasiado longo (máximo " + CERT_MAX_TEXTO[k] + ").",
+        );
+        return;
+      }
+      e[k] = v;
+    });
+    obrig.forEach(function (k) {
+      if (bruta[k] === undefined) erros.push("falta o campo '" + k + "'.");
+    });
+    if (e.data && !certDataDMA(e.data))
+      erros.push("data inválida (use dd/mm/aaaa).");
+    if (e.duracao && !/^[0-9]{1,2}h([0-9]{2})?$/.test(e.duracao))
+      erros.push("duração inválida (por exemplo 1h50).");
+    if (e.atualizado && !dataValida(e.atualizado))
+      erros.push("'atualizado' inválido (use AAAA-MM-DD).");
+    if (e.data && certDataDMA(e.data)) {
+      var am = /-(\d{4})-(\d{2})-\d{3}$/.exec(codigo);
+      var dm = e.data.split("/");
+      if (am && (am[1] !== dm[2] || am[2] !== dm[1]))
+        avisos.push(
+          "o mês e o ano do código (" +
+            am[1] +
+            "-" +
+            am[2] +
+            ") não coincidem com a data.",
+        );
+    }
+    var ordenada = {};
+    permitidos.forEach(function (k) {
+      if (e[k] !== undefined) ordenada[k] = e[k];
+    });
+    return {
+      entrada: erros.length ? null : ordenada,
+      erros: erros,
+      avisos: avisos,
+    };
+  }
+
+  // Código a partir do nome do ficheiro: { codigo, exacto } ou { erro }
+  function certCodigoDoNome(nome) {
+    var base = String(nome).replace(/\.[^.]*$/, "");
+    var achados = [];
+    var m;
+    CERT_RE_NOME.lastIndex = 0;
+    while ((m = CERT_RE_NOME.exec(base))) achados.push(m[1].toUpperCase());
+    if (!achados.length)
+      return { erro: "o nome não contém um código de certificado." };
+    if (achados.length > 1)
+      return { erro: "o nome contém mais do que um código." };
+    return { codigo: achados[0], exacto: base === achados[0] };
+  }
+
+  function certSemActualizado(o) {
+    var c = {};
+    Object.keys(o || {}).forEach(function (k) {
+      if (k !== "atualizado") c[k] = o[k];
+    });
+    return c;
+  }
+
+  function certEdicaoDe(codigo) {
+    var m = CERT_RE_EDICAO.exec(codigo || "");
+    return m ? m[2] + "|" + m[3] + "-" + m[4] : "";
+  }
+
+  function certRotuloEdicao(chave) {
+    var p = chave.split("|");
+    return "Workshop " + p[0] + " (" + p[1] + ")";
+  }
+
+  function certEdicoes() {
+    var vistas = {};
+    if (Cert.conhecidos)
+      Cert.conhecidos.forEach(function (_, cod) {
+        var k = certEdicaoDe(cod);
+        if (k) vistas[k] = true;
+      });
+    return Object.keys(vistas).sort(function (a, b) {
+      var pa = a.split("|");
+      var pb = b.split("|");
+      if (pa[1] !== pb[1]) return pa[1] < pb[1] ? 1 : -1;
+      return Number(pb[0]) - Number(pa[0]);
+    });
+  }
+
+  function certLerEstaticos() {
+    return Promise.all(
+      CERT_FICHEIROS_DADOS.map(function (u) {
+        return fetch(u + "?v=" + Date.now(), { cache: "no-store" })
+          .then(function (r) {
+            return r.ok ? r.json() : [];
+          })
+          .then(function (j) {
+            return Array.isArray(j)
+              ? j
+              : j && Array.isArray(j.certificados)
+                ? j.certificados
+                : [];
+          })
+          .catch(function () {
+            return [];
+          });
+      }),
+    );
+  }
+
+  function certCarregar(caixa) {
+    Cert.carregando = true;
+    Cert.erroCarga = "";
+    return Promise.all([certLerEstaticos(), api("/certificados")])
+      .then(function (r) {
+        var mapa = new Map();
+        r[0].forEach(function (lista) {
+          lista.forEach(function (c) {
+            if (c && typeof c.codigo === "string")
+              mapa.set(c.codigo.trim().toUpperCase(), c);
+          });
+        });
+        Cert.doPainel = {};
+        ((r[1].dados || {}).certificados || []).forEach(function (c) {
+          if (c && typeof c.codigo === "string") {
+            var k = c.codigo.trim().toUpperCase();
+            mapa.set(k, c);
+            Cert.doPainel[k] = true;
+          }
+        });
+        Cert.conhecidos = mapa;
+        var eds = certEdicoes();
+        if (!Cert.edicao || eds.indexOf(Cert.edicao) === -1)
+          Cert.edicao = eds[0] || "";
+      })
+      .catch(function (e) {
+        if (tratarErroSessao(e)) return;
+        Cert.erroCarga =
+          "Não foi possível ler a lista de certificados. " + e.message;
+      })
+      .then(function () {
+        Cert.carregando = false;
+        if (tabActual === "certificados" && caixa && caixa.isConnected)
+          mostrarTab("certificados");
+      });
+  }
+
+  function renderCertificados(caixa) {
+    caixa.appendChild(
+      el(
+        "div",
+        { class: "ad-banner ad-cert-aviso" },
+        icone("fa-solid fa-circle-info"),
+        el("span", {
+          text:
+            "Este separador grava e envia logo: não precisa de usar «Publicar»." +
+            " Depois de gravar os dados, o site actualiza em 1 a 2 minutos.",
+        }),
+      ),
+    );
+    if (Cert.avisoSessao) {
+      caixa.appendChild(
+        el(
+          "div",
+          { class: "ad-banner ad-banner-erro" },
+          icone("fa-solid fa-triangle-exclamation"),
+          el("span", { text: Cert.avisoSessao }),
+          botao("Fechar aviso", "ad-btn-sec ad-btn-pq", function () {
+            Cert.avisoSessao = "";
+            mostrarTab("certificados");
+          }),
+        ),
+      );
+    }
+    if (!Cert.conhecidos && !Cert.carregando && !Cert.erroCarga) {
+      certCarregar(caixa);
+    }
+    if (Cert.carregando && !Cert.conhecidos) {
+      caixa.appendChild(
+        el("div", {
+          class: "ad-vazio",
+          text: "A carregar a lista de certificados…",
+        }),
+      );
+      return;
+    }
+    if (Cert.erroCarga) {
+      caixa.appendChild(
+        el(
+          "div",
+          { class: "ad-banner ad-banner-erro" },
+          el("span", { text: Cert.erroCarga }),
+          botao("Tentar de novo", "ad-btn-sec ad-btn-pq", function () {
+            Cert.erroCarga = "";
+            mostrarTab("certificados");
+          }),
+        ),
+      );
+      return;
+    }
+    caixa.appendChild(certZonaEdicao());
+    caixa.appendChild(certZonaDados());
+    caixa.appendChild(certZonaFicheiros("pdf"));
+    caixa.appendChild(certZonaFicheiros("png"));
+    caixa.appendChild(certZonaEstado());
+  }
+
+  /* ---- Zona 0: edição ---- */
+  function certZonaEdicao() {
+    var c = el("div", { class: "ad-cartao" }, el("h3", { text: "Edição" }));
+    var eds = certEdicoes();
+    c.appendChild(
+      el("p", {
+        class: "ad-ajuda",
+        text:
+          "Escolha a edição para ver o estado dos ficheiros. Certificados conhecidos: " +
+          (Cert.conhecidos ? Cert.conhecidos.size : 0) +
+          ".",
+      }),
+    );
+    var sel = el("select", {
+      id: "ad-cert-edicao",
+      onchange: function () {
+        Cert.edicao = sel.value;
+        Cert.ficheiros = null;
+        mostrarTab("certificados");
+      },
+    });
+    eds.forEach(function (k) {
+      var n = 0;
+      Cert.conhecidos.forEach(function (_, cod) {
+        if (certEdicaoDe(cod) === k) n++;
+      });
+      var o = el("option", {
+        value: k,
+        text: certRotuloEdicao(k) + " · " + n + " certificados",
+      });
+      if (k === Cert.edicao) o.selected = true;
+      sel.appendChild(o);
+    });
+    c.appendChild(
+      el(
+        "div",
+        { class: "ad-campo" },
+        el("label", { for: "ad-cert-edicao", text: "Edição" }),
+        sel,
+      ),
+    );
+    return c;
+  }
+
+  /* ---- Zona 1: dados (JSON) ---- */
+  function certZonaArrastar(texto, accept, multiplo, aoEscolher, id) {
+    var input = el("input", {
+      type: "file",
+      accept: accept,
+      multiple: multiplo || false,
+      class: "ad-ficheiro",
+      id: id,
+      hidden: true,
+    });
+    input.addEventListener("change", function () {
+      var fs = Array.prototype.slice.call(input.files || []);
+      input.value = "";
+      if (fs.length) aoEscolher(fs);
+    });
+    var zona = el(
+      "div",
+      { class: "ad-cert-zona", tabindex: "0", role: "button" },
+      icone("fa-solid fa-cloud-arrow-up"),
+      el("span", { text: texto }),
+    );
+    function abrir() {
+      if (!Cert.aEnviar) input.click();
+    }
+    zona.addEventListener("click", abrir);
+    zona.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") {
+        ev.preventDefault();
+        abrir();
+      }
+    });
+    zona.addEventListener("dragover", function (ev) {
+      ev.preventDefault();
+      zona.classList.add("ad-cert-zona-activa");
+    });
+    zona.addEventListener("dragleave", function () {
+      zona.classList.remove("ad-cert-zona-activa");
+    });
+    zona.addEventListener("drop", function (ev) {
+      ev.preventDefault();
+      zona.classList.remove("ad-cert-zona-activa");
+      if (Cert.aEnviar) return;
+      var fs = Array.prototype.slice.call(
+        (ev.dataTransfer && ev.dataTransfer.files) || [],
+      );
+      if (fs.length) aoEscolher(multiplo ? fs : fs.slice(0, 1));
+    });
+    return el("div", {}, zona, input);
+  }
+
+  function certZonaDados() {
+    var c = el(
+      "div",
+      { class: "ad-cartao" },
+      el("h3", { text: "1. Dados dos certificados (JSON)" }),
+      el("p", {
+        class: "ad-ajuda",
+        text:
+          "Ficheiro .json com a lista (até 200 KB e " +
+          CERT_MAX_ENTRADAS +
+          " certificados). Antes de gravar vê o que é novo, o que foi corrigido e os erros.",
+      }),
+    );
+    c.appendChild(
+      certZonaArrastar(
+        "Arraste aqui o ficheiro .json ou toque para escolher",
+        ".json,application/json",
+        false,
+        function (fs) {
+          certLerJson(fs[0]);
+        },
+        "ad-cert-json",
+      ),
+    );
+    if (Cert.msgDados)
+      c.appendChild(
+        el("p", {
+          class: "ad-cert-msg " + (Cert.msgDados.tipo || ""),
+          role: Cert.msgDados.tipo === "erro" ? "alert" : null,
+          text: Cert.msgDados.texto,
+        }),
+      );
+    if (Cert.previa) c.appendChild(certPrevia(Cert.previa));
+    c.appendChild(
+      el(
+        "div",
+        { class: "ad-ws-acoes" },
+        botao(
+          "Histórico",
+          "ad-btn-sec ad-btn-pq",
+          abrirHistoricoCert,
+          "fa-solid fa-clock-rotate-left",
+        ),
+      ),
+    );
+    return c;
+  }
+
+  function certLerJson(f) {
+    Cert.previa = null;
+    Cert.msgDados = null;
+    if (!/\.json$/i.test(f.name)) {
+      Cert.msgDados = { texto: "Escolha um ficheiro .json.", tipo: "erro" };
+      return mostrarTab("certificados");
+    }
+    if (f.size > CERT_JSON_MAX) {
+      Cert.msgDados = {
+        texto:
+          "O ficheiro tem mais de 200 KB. Divida-o em partes mais pequenas.",
+        tipo: "erro",
+      };
+      return mostrarTab("certificados");
+    }
+    certLerTexto(f).then(
+      function (texto) {
+        var j;
+        try {
+          j = JSON.parse(texto.replace(/^﻿/, ""));
+        } catch (e) {
+          Cert.msgDados = {
+            texto: "O ficheiro não é um JSON válido.",
+            tipo: "erro",
+          };
+          return mostrarTab("certificados");
+        }
+        var lista = Array.isArray(j)
+          ? j
+          : j && Array.isArray(j.certificados)
+            ? j.certificados
+            : null;
+        if (!lista) {
+          Cert.msgDados = {
+            texto:
+              'O JSON tem de ser uma lista [...] ou {"certificados": [...]}.',
+            tipo: "erro",
+          };
+        } else if (!lista.length) {
+          Cert.msgDados = { texto: "A lista está vazia.", tipo: "erro" };
+        } else if (lista.length > CERT_MAX_ENTRADAS) {
+          Cert.msgDados = {
+            texto:
+              "O ficheiro tem " +
+              lista.length +
+              " certificados. O máximo é " +
+              CERT_MAX_ENTRADAS +
+              " de cada vez: divida o ficheiro.",
+            tipo: "erro",
+          };
+        } else {
+          Cert.previa = certAnalisarLista(lista, f.name);
+        }
+        mostrarTab("certificados");
+      },
+      function () {
+        Cert.msgDados = { texto: "Não consegui ler o ficheiro.", tipo: "erro" };
+        mostrarTab("certificados");
+      },
+    );
+  }
+
+  function certLerTexto(f) {
+    if (f.text) return f.text();
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader();
+      r.onload = function () {
+        resolve(String(r.result));
+      };
+      r.onerror = reject;
+      r.readAsText(f);
+    });
+  }
+
+  // Compara com o que já se conhece. Devolve a pré-visualização.
+  function certAnalisarLista(lista, nomeFicheiro) {
+    var p = {
+      nome: nomeFicheiro,
+      novos: [],
+      corrigidos: [],
+      inalterados: 0,
+      erros: [],
+      avisos: [],
+    };
+    var vistos = {};
+    lista.forEach(function (b, i) {
+      var r = certValidarEntrada(b);
+      var rot =
+        (certEhObj(b) && typeof b.codigo === "string" && b.codigo.trim()
+          ? b.codigo.trim().toUpperCase()
+          : "Entrada " + (i + 1)) + ": ";
+      r.erros.forEach(function (m) {
+        p.erros.push({ msg: "Linha " + (i + 1) + " · " + rot + m });
+      });
+      r.avisos.forEach(function (m) {
+        p.avisos.push({ msg: rot + m });
+      });
+      if (!r.entrada) return;
+      var e = r.entrada;
+      if (vistos[e.codigo]) {
+        p.erros.push({
+          msg:
+            "Linha " + (i + 1) + " · " + rot + "código repetido no ficheiro.",
+        });
+        return;
+      }
+      vistos[e.codigo] = true;
+      var antes = Cert.conhecidos.get(e.codigo);
+      if (!antes) {
+        p.novos.push(e);
+        return;
+      }
+      var dif = Nucleo.diferencas(
+        certSemActualizado(antes),
+        certSemActualizado(e),
+      );
+      if (!dif.length) p.inalterados++;
+      else p.corrigidos.push({ entrada: e, dif: dif });
+    });
+    return p;
+  }
+
+  function certPrevia(p) {
+    var c = el("div", { class: "ad-cert-previa" });
+    c.appendChild(el("p", { class: "ad-ajuda", text: "Ficheiro: " + p.nome }));
+    c.appendChild(
+      el(
+        "div",
+        { class: "ad-numeros ad-cert-numeros" },
+        certNumero(p.novos.length, "Novos"),
+        certNumero(p.corrigidos.length, "Corrigidos"),
+        certNumero(p.inalterados, "Inalterados"),
+        certNumero(p.erros.length, "Erros"),
+      ),
+    );
+    if (p.erros.length) {
+      c.appendChild(
+        el("strong", {
+          class: "ad-cert-titulo-erro",
+          text: "Erros (corrija o ficheiro; nada é gravado enquanto houver erros)",
+        }),
+      );
+      c.appendChild(listaMensagens(p.erros, "e"));
+    }
+    if (p.avisos.length) {
+      c.appendChild(el("strong", { text: "Avisos" }));
+      c.appendChild(listaMensagens(p.avisos, "a"));
+    }
+    if (p.corrigidos.length) {
+      c.appendChild(el("strong", { text: "Corrigidos (antes e depois)" }));
+      p.corrigidos.forEach(function (x) {
+        var bloco = el(
+          "div",
+          { class: "ad-cert-corr" },
+          el("div", { class: "ad-cert-corr-cod", text: x.entrada.codigo }),
+        );
+        x.dif.forEach(function (d) {
+          bloco.appendChild(
+            el(
+              "div",
+              { class: "ad-dif" },
+              el("div", { text: d.campo }),
+              el("div", {
+                class: "antes",
+                text: "Antes: " + (d.antes === "" ? "(vazio)" : d.antes),
+              }),
+              el("div", {
+                class: "depois",
+                text: "Depois: " + (d.depois === "" ? "(vazio)" : d.depois),
+              }),
+            ),
+          );
+        });
+        c.appendChild(bloco);
+      });
+    }
+    if (p.novos.length) {
+      var nomes = p.novos.slice(0, 10).map(function (e) {
+        return e.codigo + " · " + e.nome;
+      });
+      c.appendChild(el("strong", { text: "Novos" }));
+      var ul = el("ul", { class: "ad-lista-msgs" });
+      nomes.forEach(function (t) {
+        ul.appendChild(el("li", { text: t }));
+      });
+      if (p.novos.length > 10)
+        ul.appendChild(
+          el("li", { text: "… e mais " + (p.novos.length - 10) + "." }),
+        );
+      c.appendChild(ul);
+    }
+    var aGravar = p.novos.length + p.corrigidos.length;
+    var btn = botao(
+      "Gravar certificados",
+      "ad-btn-prim",
+      certGravar,
+      "fa-solid fa-floppy-disk",
+    );
+    btn.id = "ad-cert-gravar";
+    btn.disabled = !!(p.erros.length || !aGravar);
+    c.appendChild(
+      el(
+        "div",
+        { class: "ad-ws-acoes" },
+        btn,
+        botao("Limpar", "ad-btn-sec", function () {
+          Cert.previa = null;
+          Cert.msgDados = null;
+          mostrarTab("certificados");
+        }),
+      ),
+    );
+    if (!p.erros.length && !aGravar)
+      c.appendChild(
+        el("p", {
+          class: "ad-nota",
+          text: "Não há nada novo nem corrigido neste ficheiro.",
+        }),
+      );
+    return c;
+  }
+
+  function certNumero(n, rot) {
+    return el(
+      "div",
+      { class: "ad-num" },
+      el("b", { text: String(n) }),
+      el("span", { text: rot }),
+    );
+  }
+
+  function certGravar() {
+    var p = Cert.previa;
+    if (!p || p.erros.length) return;
+    var hoje = certHoje();
+    var envio = p.novos.concat(
+      p.corrigidos.map(function (x) {
+        var e = JSON.parse(JSON.stringify(x.entrada));
+        e.atualizado = hoje;
+        return e;
+      }),
+    );
+    if (!envio.length) return;
+    confirmar(
+      "Gravar certificados",
+      el("p", {
+        text:
+          "Vai gravar " +
+          p.novos.length +
+          " novos e " +
+          p.corrigidos.length +
+          " corrigidos. A página de certificados actualiza em 1 a 2 minutos.",
+      }),
+      "Gravar",
+    ).then(function (ok) {
+      if (!ok) return;
+      var btn = $("ad-cert-gravar");
+      if (btn) btn.disabled = true;
+      Cert.msgDados = { texto: "A gravar…", tipo: "" };
+      api("/certificados", { metodo: "PUT", corpo: { certificados: envio } })
+        .then(function (r) {
+          Cert.previa = null;
+          Cert.msgDados = {
+            texto: r.semAlteracoes
+              ? "Não havia alterações a gravar."
+              : r.novos +
+                " novos, " +
+                r.corrigidos +
+                " corrigidos. A página de certificados actualiza em 1 a 2 minutos." +
+                (r.aviso ? " " + r.aviso : ""),
+            tipo: r.aviso ? "" : "ok",
+          };
+          Cert.conhecidos = null; // recarrega a lista
+          mostrarTab("certificados");
+        })
+        .catch(function (e) {
+          if (tratarErroSessao(e)) return;
+          var extra =
+            e.dados && Array.isArray(e.dados.erros) && e.dados.erros.length
+              ? " " + e.dados.erros[0].msg
+              : "";
+          Cert.msgDados = { texto: e.message + extra, tipo: "erro" };
+          mostrarTab("certificados");
+        });
+    });
+  }
+
+  function abrirHistoricoCert() {
+    api("/historico?ficheiro=certificados")
+      .then(function (r) {
+        var itens = r.itens || [];
+        var escolhido = null;
+        var corpo = el("div");
+        if (!itens.length) {
+          corpo.appendChild(
+            el("p", {
+              text: "Ainda não há versões gravadas dos certificados.",
+            }),
+          );
+        } else {
+          corpo.appendChild(
+            el("p", {
+              text: "Últimas versões dos certificados gravados pelo painel. Restaurar volta a gravar essa versão.",
+            }),
+          );
+          var ul = el("ul", { class: "ad-hist" });
+          itens.forEach(function (it, i) {
+            var quando = it.data
+              ? new Date(it.data).toLocaleString("pt-PT")
+              : "";
+            ul.appendChild(
+              el(
+                "li",
+                {},
+                el(
+                  "div",
+                  {},
+                  el("strong", { text: quando }),
+                  el("small", {
+                    text:
+                      (it.autor ? it.autor + " · " : "") + (it.mensagem || ""),
+                  }),
+                ),
+                i === 0
+                  ? el("span", {
+                      class: "ad-hist-actual",
+                      text: "Versão actual",
+                    })
+                  : botao("Restaurar", "ad-btn-sec ad-btn-pq", function () {
+                      escolhido = it;
+                      $("ad-modal-sim").click();
+                    }),
+              ),
+            );
+          });
+          corpo.appendChild(ul);
+        }
+        return confirmar(
+          "Histórico dos certificados",
+          corpo,
+          "Fechar",
+          false,
+        ).then(function () {
+          if (escolhido) return certRestaurar(escolhido);
+        });
+      })
+      .catch(function (e) {
+        if (tratarErroSessao(e)) return;
+        Cert.msgDados = { texto: e.message, tipo: "erro" };
+        mostrarTab("certificados");
+      });
+  }
+
+  function certRestaurar(it) {
+    var quando = it.data ? new Date(it.data).toLocaleString("pt-PT") : "";
+    return confirmar(
+      "Restaurar esta versão dos certificados?",
+      el("p", {
+        text:
+          "Vai voltar à versão de " +
+          quando +
+          (it.autor ? " (" + it.autor + ")" : "") +
+          ". Os certificados gravados depois dessa versão deixam de aparecer no site (os JSON antigos de assets/ não mudam).",
+      }),
+      "Restaurar",
+    ).then(function (ok) {
+      if (!ok) return;
+      return api("/restaurar?ficheiro=certificados", {
+        metodo: "POST",
+        corpo: { commit: it.sha },
+      }).then(function (r) {
+        Cert.msgDados = {
+          texto: r.semAlteracoes
+            ? "Essa versão já é a actual."
+            : "Versão restaurada. A página de certificados actualiza em 1 a 2 minutos." +
+              (r.aviso ? " " + r.aviso : ""),
+          tipo: r.semAlteracoes || r.aviso ? "" : "ok",
+        };
+        Cert.conhecidos = null;
+        mostrarTab("certificados");
+      });
+    });
+  }
+
+  /* ---- Zonas 2 e 3: ficheiros PDF e PNG ---- */
+  var CERT_CABECALHOS = {
+    pdf: [0x25, 0x50, 0x44, 0x46, 0x2d],
+    png: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+  };
+
+  function certLerInicio(f) {
+    var parte = f.slice(0, 8);
+    if (parte.arrayBuffer)
+      return parte.arrayBuffer().then(function (b) {
+        return new Uint8Array(b);
+      });
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader();
+      r.onload = function () {
+        resolve(new Uint8Array(r.result));
+      };
+      r.onerror = reject;
+      r.readAsArrayBuffer(parte);
+    });
+  }
+
+  function certJuntarFicheiros(tipo, ficheiros) {
+    var fila = Cert.filas[tipo];
+    Cert.resumo[tipo] = "";
+    Promise.all(
+      ficheiros.map(function (f) {
+        return certLerInicio(f).then(
+          function (cab) {
+            return { f: f, cab: cab };
+          },
+          function () {
+            return { f: f, cab: new Uint8Array(0) };
+          },
+        );
+      }),
+    ).then(function (lidos) {
+      lidos.forEach(function (x) {
+        var f = x.f;
+        var it = {
+          nome: f.name,
+          ficheiro: f,
+          tipo: tipo,
+          estado: "pronto",
+          razao: "",
+          aviso: "",
+        };
+        var ext = (/\.([^.]+)$/.exec(f.name) || [])[1];
+        var r = certCodigoDoNome(f.name);
+        var esperado = CERT_CABECALHOS[tipo];
+        var cabOk =
+          x.cab.length >= esperado.length &&
+          esperado.every(function (b, i) {
+            return x.cab[i] === b;
+          });
+        if (!ext || ext.toLowerCase() !== tipo) {
+          it.estado = "rejeitado";
+          it.razao = "extensão errada para esta caixa (use ." + tipo + ").";
+        } else if (r.erro) {
+          it.estado = "rejeitado";
+          it.razao = r.erro;
+        } else if (f.size > CERT_FICHEIRO_MAX) {
+          it.estado = "rejeitado";
+          it.razao = "tem mais de 10 MB.";
+        } else if (!cabOk) {
+          it.estado = "rejeitado";
+          it.razao =
+            "o conteúdo não é um " + tipo.toUpperCase() + " verdadeiro.";
+        } else if (
+          fila.some(function (o) {
+            return o.codigo === r.codigo && o.estado !== "rejeitado";
+          })
+        ) {
+          it.estado = "rejeitado";
+          it.razao = "código repetido na selecção (" + r.codigo + ").";
+        }
+        if (!r.erro) it.codigo = r.codigo;
+        if (it.estado === "pronto") {
+          var avisos = [];
+          if (!r.exacto)
+            avisos.push(
+              "o nome não é exactamente o código; vai como " + r.codigo + ".",
+            );
+          if (Cert.conhecidos && !Cert.conhecidos.has(r.codigo))
+            avisos.push("este código ainda não está na lista de certificados.");
+          it.aviso = avisos.join(" ");
+        }
+        fila.push(it);
+      });
+      mostrarTab("certificados");
+    });
+  }
+
+  var CERT_ESTADOS = {
+    pronto: ["Pronto", "fa-regular fa-circle"],
+    rejeitado: ["Rejeitado", "fa-solid fa-ban"],
+    enviando: ["A enviar", "fa-solid fa-spinner fa-spin"],
+    enviado: ["Enviado", "fa-solid fa-circle-check"],
+    falhou: ["Falhou", "fa-solid fa-circle-xmark"],
+  };
+
+  function certZonaFicheiros(tipo) {
+    var T = tipo.toUpperCase();
+    var fila = Cert.filas[tipo];
+    var c = el(
+      "div",
+      { class: "ad-cartao", id: "ad-cert-zona-" + tipo },
+      el("h3", { text: (tipo === "pdf" ? "2. " : "3. ") + "Ficheiros " + T }),
+      el("p", {
+        class: "ad-ajuda",
+        text:
+          "Ficheiros ." +
+          tipo +
+          " exportados do Canva, com o código no nome (por exemplo CON-WS7-2026-11-001." +
+          tipo +
+          "). Até 10 MB cada. Se o código já tiver ficheiro, é substituído.",
+      }),
+    );
+    c.appendChild(
+      certZonaArrastar(
+        "Arraste aqui os ficheiros " + T + " ou toque para escolher",
+        tipo === "pdf" ? ".pdf,application/pdf" : ".png,image/png",
+        true,
+        function (fs) {
+          certJuntarFicheiros(tipo, fs);
+        },
+        "ad-cert-input-" + tipo,
+      ),
+    );
+    if (fila.length) {
+      var cont = {
+        pronto: 0,
+        rejeitado: 0,
+        enviado: 0,
+        falhou: 0,
+        enviando: 0,
+      };
+      fila.forEach(function (it) {
+        cont[it.estado]++;
+      });
+      c.appendChild(
+        el("p", {
+          class: "ad-ajuda ad-cert-contagem",
+          text:
+            fila.length +
+            " ficheiros · " +
+            cont.pronto +
+            " prontos · " +
+            cont.enviado +
+            " enviados · " +
+            cont.falhou +
+            " falharam · " +
+            cont.rejeitado +
+            " rejeitados",
+        }),
+      );
+      if (Cert.aEnviar && Cert.progresso.tipo === tipo) {
+        var pct = Cert.progresso.total
+          ? Math.round((Cert.progresso.feitos / Cert.progresso.total) * 100)
+          : 0;
+        c.appendChild(
+          el(
+            "div",
+            {
+              class: "ad-cert-barra",
+              role: "progressbar",
+              "aria-valuemin": "0",
+              "aria-valuemax": "100",
+              "aria-valuenow": String(pct),
+              "aria-label": "Progresso do envio " + T,
+            },
+            el("span", { style: "width:" + pct + "%" }),
+          ),
+        );
+      }
+      var ul = el("ul", { class: "ad-cert-lista" });
+      fila.forEach(function (it) {
+        var est = CERT_ESTADOS[it.estado];
+        ul.appendChild(
+          el(
+            "li",
+            { class: "ad-cert-item ad-cert-" + it.estado },
+            icone(est[1]),
+            el(
+              "div",
+              { class: "ad-cert-item-txt" },
+              el("strong", { text: it.codigo || it.nome }),
+              el("small", {
+                text:
+                  est[0] +
+                  (it.razao ? ": " + it.razao : "") +
+                  (it.estado === "pronto" && it.aviso
+                    ? " · Aviso: " + it.aviso
+                    : "") +
+                  (it.codigo && it.nome !== it.codigo + "." + tipo
+                    ? " · " + it.nome
+                    : ""),
+              }),
+            ),
+          ),
+        );
+      });
+      c.appendChild(ul);
+    }
+    if (Cert.resumo[tipo])
+      c.appendChild(
+        el("p", { class: "ad-cert-msg ok", text: Cert.resumo[tipo] }),
+      );
+    var prontos = fila.filter(function (it) {
+      return it.estado === "pronto";
+    }).length;
+    var falhados = fila.filter(function (it) {
+      return it.estado === "falhou";
+    }).length;
+    var acoes = el("div", { class: "ad-ws-acoes" });
+    var bEnviar = botao(
+      prontos
+        ? "Enviar " + prontos + " ficheiros " + T
+        : "Enviar ficheiros " + T,
+      "ad-btn-prim",
+      function () {
+        certEnviar(tipo, "pronto");
+      },
+      "fa-solid fa-cloud-arrow-up",
+    );
+    bEnviar.id = "ad-cert-enviar-" + tipo;
+    bEnviar.disabled = !prontos || Cert.aEnviar;
+    acoes.appendChild(bEnviar);
+    if (falhados) {
+      var bRe = botao(
+        "Reenviar os que falharam (" + falhados + ")",
+        "ad-btn-sec",
+        function () {
+          certEnviar(tipo, "falhou");
+        },
+        "fa-solid fa-rotate-right",
+      );
+      bRe.id = "ad-cert-reenviar-" + tipo;
+      bRe.disabled = Cert.aEnviar;
+      acoes.appendChild(bRe);
+    }
+    if (fila.length) {
+      var bL = botao("Limpar lista", "ad-btn-sec", function () {
+        Cert.filas[tipo] = [];
+        Cert.resumo[tipo] = "";
+        mostrarTab("certificados");
+      });
+      bL.disabled = Cert.aEnviar;
+      acoes.appendChild(bL);
+    }
+    c.appendChild(acoes);
+    return c;
+  }
+
+  function certPintar() {
+    if (tabActual === "certificados" && !$("ad-app").hidden)
+      mostrarTab("certificados");
+  }
+
+  function certEnviarFicheiro(it, assin, cloud, apiKey) {
+    var fd = new FormData();
+    fd.append("file", it.ficheiro, it.codigo + "." + it.tipo);
+    fd.append("api_key", apiKey);
+    Object.keys(assin.params).forEach(function (k) {
+      fd.append(k, assin.params[k]);
+    });
+    fd.append("signature", assin.assinatura);
+    var ctl =
+      typeof AbortController === "function" ? new AbortController() : null;
+    var t = setTimeout(function () {
+      if (ctl) ctl.abort();
+    }, 60000);
+    return fetch("https://api.cloudinary.com/v1_1/" + cloud + "/image/upload", {
+      method: "POST",
+      body: fd,
+      signal: ctl ? ctl.signal : undefined,
+    }).then(
+      function (r) {
+        clearTimeout(t);
+        return r
+          .json()
+          .catch(function () {
+            return {};
+          })
+          .then(function (j) {
+            if (r.ok && j.public_id === assin.params.public_id)
+              return { ok: true };
+            return {
+              ok: false,
+              repetir: r.status >= 500 || r.status === 408 || r.status === 429,
+              razao:
+                (j && j.error && j.error.message) ||
+                "o servidor de ficheiros respondeu " + r.status + ".",
+            };
+          });
+      },
+      function () {
+        clearTimeout(t);
+        return {
+          ok: false,
+          repetir: true,
+          razao: "sem ligação ou tempo esgotado.",
+        };
+      },
+    );
+  }
+
+  function certComTentativas(it, assin, cloud, apiKey) {
+    var n = 0;
+    function tentar() {
+      n++;
+      return certEnviarFicheiro(it, assin, cloud, apiKey).then(function (r) {
+        if (r.ok || !r.repetir || n >= CERT_TENTATIVAS) return r;
+        return new Promise(function (res) {
+          setTimeout(res, 1500 * n);
+        }).then(tentar);
+      });
+    }
+    return tentar();
+  }
+
+  function certEnviar(tipo, estadoAlvo) {
+    if (Cert.aEnviar) return;
+    var itens = Cert.filas[tipo].filter(function (it) {
+      return it.estado === estadoAlvo;
+    });
+    if (!itens.length) return;
+    Cert.aEnviar = true;
+    Cert.resumo[tipo] = "";
+    Cert.progresso = { tipo: tipo, feitos: 0, total: itens.length };
+    itens.forEach(function (it) {
+      it.estado = "enviando";
+      it.razao = "";
+    });
+    certPintar();
+    var lotes = [];
+    for (var i = 0; i < itens.length; i += CERT_LOTE)
+      lotes.push(itens.slice(i, i + CERT_LOTE));
+    var sessaoFim = null;
+
+    function enviarLote(lote) {
+      // Assinaturas pedidas imediatamente antes de enviar este lote
+      return api("/certificados/assinatura", {
+        metodo: "POST",
+        corpo: {
+          itens: lote.map(function (it) {
+            return { codigo: it.codigo, tipo: it.tipo };
+          }),
+        },
+      }).then(function (r) {
+        var porCodigo = {};
+        (r.itens || []).forEach(function (a) {
+          porCodigo[a.codigo + ":" + a.tipo] = a;
+        });
+        var proximo = 0;
+        function trabalhador() {
+          if (proximo >= lote.length) return Promise.resolve();
+          var it = lote[proximo++];
+          var assin = porCodigo[it.codigo + ":" + it.tipo];
+          var p = assin
+            ? certComTentativas(it, assin, r.cloud, r.apiKey)
+            : Promise.resolve({
+                ok: false,
+                razao: "sem assinatura do servidor.",
+              });
+          return p.then(function (res) {
+            it.estado = res.ok ? "enviado" : "falhou";
+            it.razao = res.ok ? "" : res.razao;
+            Cert.progresso.feitos++;
+            tocar(); // envios em curso contam como actividade
+            certPintar();
+            return trabalhador();
+          });
+        }
+        var ts = [];
+        for (var k = 0; k < Math.min(CERT_EM_PARALELO, lote.length); k++)
+          ts.push(trabalhador());
+        return Promise.all(ts);
+      });
+    }
+
+    var cadeia = Promise.resolve();
+    lotes.forEach(function (lote) {
+      cadeia = cadeia.then(function () {
+        if (sessaoFim) return;
+        return enviarLote(lote).catch(function (e) {
+          lote.forEach(function (it) {
+            if (it.estado === "enviando") {
+              it.estado = "falhou";
+              it.razao = e.sessaoInvalida
+                ? "a sessão terminou antes deste envio."
+                : e.message;
+            }
+          });
+          if (e.sessaoInvalida) sessaoFim = e;
+        });
+      });
+    });
+    cadeia.then(function () {
+      // Itens de lotes que não chegaram a ser tentados
+      itens.forEach(function (it) {
+        if (it.estado === "enviando") {
+          it.estado = "falhou";
+          it.razao = "não chegou a ser enviado (a sessão terminou).";
+        }
+      });
+      Cert.aEnviar = false;
+      var env = itens.filter(function (it) {
+        return it.estado === "enviado";
+      }).length;
+      var fal = itens.length - env;
+      Cert.resumo[tipo] = env + " enviados, " + fal + " falharam.";
+      Cert.ficheiros = null;
+      if (sessaoFim) {
+        Cert.avisoSessao =
+          "A sessão terminou durante o envio " +
+          tipo.toUpperCase() +
+          ". Já foram enviados " +
+          env +
+          " ficheiros. Os que faltaram (" +
+          fal +
+          ") estão marcados como «Falhou»: use «Reenviar os que falharam» ou arraste só esses.";
+        tratarErroSessao(sessaoFim);
+        return;
+      }
+      certPintar();
+    });
+  }
+
+  /* ---- Zona 4: estado da edição ---- */
+  function certZonaEstado() {
+    var c = el(
+      "div",
+      { class: "ad-cartao" },
+      el("h3", { text: "4. Estado da edição" }),
+      el("p", {
+        class: "ad-ajuda",
+        text: "Compara a lista de certificados da edição escolhida com os ficheiros que já estão no Cloudinary.",
+      }),
+    );
+    var b = botao(
+      "Verificar ficheiros",
+      "ad-btn-sec",
+      function () {
+        b.disabled = true;
+        api("/certificados/ficheiros")
+          .then(function (r) {
+            Cert.ficheiros = r;
+          })
+          .catch(function (e) {
+            if (tratarErroSessao(e)) return;
+            Cert.ficheiros = { erro: e.message };
+          })
+          .then(certPintar);
+      },
+      "fa-solid fa-magnifying-glass",
+    );
+    b.id = "ad-cert-verificar";
+    c.appendChild(el("div", { class: "ad-ws-acoes" }, b));
+    var f = Cert.ficheiros;
+    if (!f) return c;
+    if (f.erro) {
+      c.appendChild(el("p", { class: "ad-cert-msg erro", text: f.erro }));
+      return c;
+    }
+    var ed = Cert.edicao;
+    var lista = [];
+    Cert.conhecidos.forEach(function (_, cod) {
+      if (certEdicaoDe(cod) === ed) lista.push(cod);
+    });
+    lista.sort();
+    var pdf = {};
+    var png = {};
+    (f.pdf || []).forEach(function (x) {
+      pdf[x] = true;
+    });
+    (f.png || []).forEach(function (x) {
+      png[x] = true;
+    });
+    var faltam = [];
+    var nPdf = 0;
+    var nPng = 0;
+    lista.forEach(function (cod) {
+      if (pdf[cod]) nPdf++;
+      if (png[cod]) nPng++;
+      var t = [];
+      if (!pdf[cod]) t.push("PDF");
+      if (!png[cod]) t.push("PNG");
+      if (t.length) faltam.push(cod + " (" + t.join(" e ") + ")");
+    });
+    c.appendChild(el("p", { class: "ad-ajuda", text: certRotuloEdicao(ed) }));
+    c.appendChild(
+      el(
+        "div",
+        { class: "ad-numeros ad-cert-numeros", id: "ad-cert-estado" },
+        certNumero(lista.length, "Certificados na lista"),
+        certNumero(nPdf, "PDF existentes"),
+        certNumero(nPng, "PNG existentes"),
+        certNumero(faltam.length, "Códigos em falta"),
+      ),
+    );
+    if (f.incompleto)
+      c.appendChild(
+        el("p", {
+          class: "ad-nota ad-nota-aviso",
+          text: "O Cloudinary tem muitos ficheiros: a contagem pode estar incompleta.",
+        }),
+      );
+    if (faltam.length) {
+      var ul = el("ul", { class: "ad-lista-msgs", id: "ad-cert-faltam" });
+      faltam.slice(0, 20).forEach(function (t) {
+        ul.appendChild(el("li", { class: "a", text: t }));
+      });
+      if (faltam.length > 20)
+        ul.appendChild(
+          el("li", { text: "… e mais " + (faltam.length - 20) + "." }),
+        );
+      c.appendChild(ul);
+      var bc = botao(
+        "Copiar todos os códigos em falta",
+        "ad-btn-sec ad-btn-pq",
+        function () {
+          var texto = faltam.join("\n");
+          var feito = function () {
+            bc.textContent = "Copiado";
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText)
+            navigator.clipboard.writeText(texto).then(feito, function () {
+              certCopiarAntigo(texto);
+              feito();
+            });
+          else {
+            certCopiarAntigo(texto);
+            feito();
+          }
+        },
+        "fa-regular fa-copy",
+      );
+      c.appendChild(el("div", { class: "ad-ws-acoes" }, bc));
+    } else if (lista.length) {
+      c.appendChild(
+        el("p", {
+          class: "ad-cert-msg ok",
+          text: "Todos os certificados desta edição têm PDF e PNG.",
+        }),
+      );
+    }
+    return c;
+  }
+
+  function certCopiarAntigo(texto) {
+    var t = el("textarea", { class: "ad-cert-copia", readonly: true });
+    t.value = texto;
+    document.body.appendChild(t);
+    t.select();
+    try {
+      document.execCommand("copy");
+    } catch (e) {
+      /* o membro pode copiar à mão */
+    }
+    t.remove();
+  }
+
   /* ==========================================================
      7. VERIFICAR E DESCARREGAR
      ========================================================== */
@@ -2550,7 +4001,7 @@
       document.addEventListener(ev, tocar, true);
     });
     window.addEventListener("beforeunload", function (ev) {
-      if (alterado) {
+      if (alterado || Cert.aEnviar) {
         ev.preventDefault();
         ev.returnValue = "";
       }
@@ -2572,6 +4023,11 @@
     Fonte: Fonte,
     Sessao: Sessao,
     api: api,
+    Certificados: {
+      validarEntrada: certValidarEntrada,
+      codigoDoNome: certCodigoDoNome,
+      estado: Cert,
+    },
   };
 
   if (document.readyState === "loading")
