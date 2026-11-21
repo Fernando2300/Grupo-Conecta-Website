@@ -117,6 +117,19 @@
     );
   }
 
+    // Miniatura reduzida do PNG (o Cloudinary entrega já em tamanho pequeno)
+  function urlPreview(codigo) {
+    return (
+      "https://res.cloudinary.com/" +
+      CLOUD +
+      "/image/upload/w_700,c_limit,f_auto,q_auto/" +
+      PASTA +
+      "/png/" +
+      codigo +
+      ".png"
+    );
+  }
+
   // "sim" (existe), "nao" (o servidor respondeu sem sucesso) ou "erro" (CORS, rede, tempo)
   function existe(url) {
     var ctl =
@@ -162,7 +175,7 @@
 
   function botaoDescarga(codigo, tipo) {
     var icone = tipo === "pdf" ? "fa-solid fa-file-pdf" : "fa-solid fa-image";
-    var texto = tipo === "pdf" ? "Descarregar PDF" : "Descarregar PNG";
+        var texto = tipo === "pdf" ? "Baixar em PDF" : "Baixar Certificado";
     return (
       '<a class="btn-download btn-download-' +
       tipo +
@@ -189,9 +202,24 @@
         var mostrar = r[i] === "sim" || (r[i] === "erro" && conhecida);
         if (mostrar) botoes += botaoDescarga(codigo, tipo);
       });
+      // Só mostra a miniatura se o PNG existe mesmo (não no plano B)
+      var previa = "";
+      if (r[1] === "sim") {
+        previa =
+          '<a class="cert-preview" href="' +
+          esc(urlVer(codigo, "png")) +
+          '" target="_blank" rel="noopener"><img src="' +
+          esc(urlPreview(codigo)) +
+          '" alt="Pré-visualização do certificado" loading="lazy"></a>';
+      }
       if (botoes) {
         caixa.innerHTML =
-          '<div class="cert-downloads-botoes">' + botoes + "</div>";
+          previa + '<div class="cert-downloads-botoes">' + botoes + "</div>";
+        var img = caixa.querySelector(".cert-preview img");
+        if (img)
+          img.addEventListener("error", function () {
+            img.parentNode.style.display = "none";
+          });
         caixa.hidden = false;
       } else if (conhecida) {
         caixa.innerHTML =

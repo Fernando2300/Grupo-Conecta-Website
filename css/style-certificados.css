@@ -279,3 +279,21 @@
     flex: 0 1 240px;
   }
 }
+
+
+/* ===== Pré-visualização do certificado ===== */
+.cert-preview {
+  display: block;
+  margin: 0 0 1rem;
+}
+
+.cert-preview img {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
