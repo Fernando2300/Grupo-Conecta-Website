@@ -1,12 +1,13 @@
 # Worker do painel (Cloudflare)
 
-O `index.js` é o código do Worker `conecta-painel`. Faz de intermediário entre o painel (`admin.html`) e o GitHub: verifica a senha de cada membro, lê e grava `data/site.json` na branch `content` e dispara a publicação. **O token do GitHub vive só aqui**, como segredo; nunca vai para o browser nem para o repositório.
+O `index.js` é o código do Worker `conecta-painel`. Faz de intermediário entre o painel (`admin.html`) e o GitHub: verifica a senha de cada membro, lê e grava `data/site.json` e `data/certificados-painel.json` na branch `content` e dispara a publicação. Também assina os envios de certificados ao Cloudinary (o ficheiro vai do browser directamente para o Cloudinary; o API secret fica só aqui). **O token do GitHub vive só aqui**, como segredo; nunca vai para o browser nem para o repositório.
 
 Esta pasta **não faz parte do site publicado** (o workflow do Pages deixa-a de fora). Não ponha segredos em nenhum ficheiro desta pasta.
 
 ## Ficheiros
 - `index.js`: o código do Worker (um único ficheiro, para colar no editor da Cloudflare).
 - `gerar-senhas.mjs`: corre no seu computador (Node 18+); gera os *hashes* das senhas e a chave das sessões. Não grava nada em ficheiros.
+- `enviar-certificados.mjs`: corre no seu computador (Node 18+); envia os PDF e PNG dos certificados para o Cloudinary (ver secção no fim).
 
 ## Configuração (uma vez)
 
@@ -22,6 +23,7 @@ Em **Settings, Bindings, Add, KV namespace**: nome da variável `LIMITES`, names
 | `REPO` | `Fernando2300/Grupo-Conecta-Website` |
 | `ORIGENS` | `https://grupoconecta.ligados.net,http://127.0.0.1:5500` |
 | `WORKFLOW` | opcional; omissão `pages.yml` |
+| `CLOUDINARY_CLOUD` | `y1pydrcc` |
 
 ### 4. Segredos (tipo *Secret*)
 | Nome | De onde vem |
@@ -29,6 +31,10 @@ Em **Settings, Bindings, Add, KV namespace**: nome da variável `LIMITES`, names
 | `SENHAS` | linha JSON que o `gerar-senhas.mjs` escreve |
 | `SESSAO_SEGREDO` | texto que o `gerar-senhas.mjs` escreve |
 | `GITHUB_TOKEN` | token fine-grained do GitHub (criado no Passo 10) |
+| `CLOUDINARY_API_KEY` | API Key da chave `painel-worker` (Cloudinary, Settings, API Keys) |
+| `CLOUDINARY_API_SECRET` | API Secret dessa mesma chave |
+
+Sem as três configurações do Cloudinary, as rotas de certificados respondem 500 ("Cloudinary não configurado no Worker"); o resto do painel continua a funcionar.
 
 Gerar `SENHAS` e `SESSAO_SEGREDO`, na pasta do projecto:
 
@@ -41,7 +47,22 @@ O script pede a senha de cada membro (não aparece no ecrã; mínimo 16 caracter
 > Só gere um novo `SESSAO_SEGREDO` se for mesmo preciso: trocá-lo termina todas as sessões abertas.
 
 ### 5. Teste de vida
-Abra o endereço do Worker (`https://conecta-painel.....workers.dev`) no browser. Deve aparecer `{"ok":true,"servico":"conecta-painel"}`.
+Abra o endereço do Worker (`https://conecta-painel.....workers.dev`) no browser. Deve aparecer `{"ok":true,"servico":"conecta-painel"}`. (Este teste não usa sessão nem as chaves do Cloudinary; as rotas novas testam-se no painel, separador **Certificados**, botão **Verificar ficheiros**.)
+
+## Rotas
+| Rota | Para quê |
+|---|---|
+| `GET /` | teste de vida |
+| `POST /login`, `POST /logout` | entrada e saída |
+| `GET /site`, `PUT /site` | ler e publicar `data/site.json` |
+| `GET /historico?ficheiro=site` ou `?ficheiro=certificados` | últimas 20 versões (omissão `site`) |
+| `POST /restaurar?ficheiro=site` ou `?ficheiro=certificados` | voltar a uma versão (omissão `site`) |
+| `GET /certificados` | ler `data/certificados-painel.json` (lista vazia se ainda não existir) |
+| `PUT /certificados` | `{certificados:[...]}`, até 300; valida, junta por código (nunca apaga) e publica |
+| `POST /certificados/assinatura` | `{itens:[{codigo, tipo}]}`, até 25; devolve as assinaturas para o Cloudinary e regista a auditoria no KV (`auditoria:cert:`, 180 dias) |
+| `GET /certificados/ficheiros` | códigos com PDF e com PNG no Cloudinary (Admin API) |
+
+Todas, excepto `GET /` e `POST /login`, exigem sessão.
 
 ## Operação do dia-a-dia
 - **Trocar a senha de um membro:** correr o script, deixar os outros em branco e juntar a entrada nova ao JSON do segredo `SENHAS`.
@@ -52,7 +73,8 @@ Abra o endereço do Worker (`https://conecta-painel.....workers.dev`) no browser
 ## Segurança, em resumo
 - Sessão: token assinado (HMAC-SHA256), expira ao fim de 30 minutos sem actividade e no máximo ao fim de 8 horas. Renova-se a cada pedido.
 - Entrada: 5 falhas por membro ou 20 por IP bloqueiam durante 15 minutos. Se o KV falhar, ninguém entra.
-- Só escreve `data/site.json` na branch `content`; recusa qualquer outro caminho ou branch.
+- Só escreve `data/site.json` e `data/certificados-painel.json` na branch `content` (lista fechada); recusa qualquer outro caminho ou branch.
+- Certificados: valida cada entrada (campos permitidos, sem `<` nem `>`, datas reais); as assinaturas só cobrem `certificados/pdf|png/CÓDIGO` com `allowed_formats` assinado; o API secret nunca é devolvido nem escrito em registos.
 - Valida os dados no servidor com as mesmas regras do painel; limpa o HTML da descrição; grava o `titular` sempre vazio.
 - CORS só para as origens de `ORIGENS`.
 - Limite conhecido: bloquear tentativas por membro permite que alguém mal-intencionado bloqueie um membro durante 15 minutos (não consegue entrar por isso). Aceite.

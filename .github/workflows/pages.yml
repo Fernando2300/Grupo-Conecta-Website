@@ -33,7 +33,9 @@ jobs:
         with:
           ref: content
           path: _content
-          sparse-checkout: data/site.json
+          sparse-checkout: |
+            data/site.json
+            data/certificados-painel.json
           sparse-checkout-cone-mode: false
 
       - name: Juntar os dados e retirar o que não vai para o site
@@ -41,6 +43,16 @@ jobs:
           test -f _content/data/site.json
           python3 -c "import json; json.load(open('_content/data/site.json', encoding='utf-8'))"
           cp _content/data/site.json data/site.json
+          # Certificados do painel: opcional. Se faltar ou for inválido, não bloqueia o site.
+          if [ -f _content/data/certificados-painel.json ]; then
+            if python3 -c "import json; json.load(open('_content/data/certificados-painel.json', encoding='utf-8'))"; then
+              cp _content/data/certificados-painel.json data/certificados-painel.json
+            else
+              echo "::warning::data/certificados-painel.json na content não é JSON válido; não foi copiado."
+            fi
+          else
+            echo "Sem data/certificados-painel.json na content (ainda não foi criado pelo painel)."
+          fi
           rm -rf _content worker .github README.md README-Git-Fluxo.md
 
       - uses: actions/configure-pages@v5
