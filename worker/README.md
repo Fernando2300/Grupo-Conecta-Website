@@ -56,3 +56,44 @@ Abra o endereço do Worker (`https://conecta-painel.....workers.dev`) no browser
 - Valida os dados no servidor com as mesmas regras do painel; limpa o HTML da descrição; grava o `titular` sempre vazio.
 - CORS só para as origens de `ORIGENS`.
 - Limite conhecido: bloquear tentativas por membro permite que alguém mal-intencionado bloqueie um membro durante 15 minutos (não consegue entrar por isso). Aceite.
+
+## Envio dos certificados para o Cloudinary (`enviar-certificados.mjs`)
+
+Corre no seu computador (Node 18 ou superior, sem instalar nada). Envia os PDF e PNG exportados do Canva para o Cloudinary, com o public ID `certificados/pdf/CÓDIGO` e `certificados/png/CÓDIGO`. Serve para o primeiro lote (Workshops 6 e 7) e como alternativa se o painel estiver indisponível. Não vai para o site publicado e não grava nada em ficheiros.
+
+### Chave de API só para este script
+1. Cloudinary, **Settings** (roda dentada), **API Keys**, **Generate New API Key**.
+2. Dê-lhe o nome `script-certificados` (fica separada da chave `painel-worker` que o Worker usa).
+3. Copie a **API Key** e o **API Secret** só quando os for colar no PowerShell. Não os guarde em ficheiros nem os envie a ninguém.
+
+### Variáveis (só nesta janela do PowerShell)
+```powershell
+$env:CLOUDINARY_API_KEY = "cole-aqui-a-chave"
+$env:CLOUDINARY_API_SECRET = "cole-aqui-o-segredo"
+# opcional; por omissão y1pydrcc
+$env:CLOUDINARY_CLOUD_NAME = "y1pydrcc"
+```
+Ao fechar a janela, as variáveis desaparecem.
+
+### Uso
+```powershell
+# 1. Simulação (não envia nada; não precisa das variáveis)
+node worker/enviar-certificados.mjs --pdf "C:\Certificados\WS7\pdf" --png "C:\Certificados\WS7\png" --dados assets/certificados-ws7.json
+
+# 2. Envio a sério
+node worker/enviar-certificados.mjs --pdf "C:\Certificados\WS7\pdf" --png "C:\Certificados\WS7\png" --dados assets/certificados-ws7.json --enviar
+```
+Pode repetir `--dados` (por exemplo `--dados assets/certificados-ws6.json --dados assets/certificados-ws7.json`) e indicar só `--pdf` ou só `--png`.
+
+### O que verifica antes de enviar
+- Cada nome de ficheiro tem exactamente um código válido (`CON-WS7-2026-11-001.pdf`). Maiúsculas e minúsculas são aceites; nomes como `CON-WS7-2026-11-001 (1).png` são aceites com aviso.
+- Extensão `.pdf` na pasta PDF e `.png` na pasta PNG, e conteúdo real (cabeçalho do ficheiro).
+- No máximo 10 MB por ficheiro; nenhum código repetido em dois ficheiros.
+- Os códigos dos `--dados` sem PDF ou PNG aparecem em "Em falta" (aviso).
+- Ficheiros com código fora dos dados aparecem como aviso e **não** são enviados (use `--incluir-extra` se quiser enviá-los).
+- Se houver **erros**, não envia nada.
+
+### Envio e relatório
+3 envios em paralelo, até 3 tentativas por ficheiro, 60 s por envio. No fim confirma cada endereço público (deve responder 200) e mostra o relatório (enviados, falhados, em falta, avisos). Sai com código diferente de 0 se houve erros. Pode correr várias vezes: os ficheiros são substituídos (o mesmo código fica com a versão mais recente).
+
+Se o Cloudinary responder com erro sobre `asset_folder`, abra o script e mude `USAR_ASSET_FOLDER = true` para `false` (o public ID não muda).

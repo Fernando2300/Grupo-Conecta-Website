@@ -45,7 +45,7 @@
     ["Início", "index.html"],
     ["Quem Somos", "sobre.html"],
     ["Workshops gravados", "workshops-gravados.html"],
-    ["Verificar certificado", "certificados.html"],
+    ["Certificados", "certificados.html"],
     ["Contacto", "contacto.html"],
   ];
 

@@ -177,3 +177,105 @@
 
 
 
+
+
+/* ===== Descarga do certificado (PDF e PNG) ===== */
+.cert-downloads {
+  margin: 1.2rem 0 0.4rem;
+}
+
+.cert-downloads-botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 48px;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+  color: var(--white, #fff);
+  background-color: var(--blue-dark, #005d8f);
+  border: 2px solid var(--blue-dark, #005d8f);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-download:hover {
+  background-color: var(--blue, #0077b6);
+  border-color: var(--blue, #0077b6);
+}
+
+.btn-download-png {
+  background-color: var(--green, #a0c334);
+  border-color: var(--green, #a0c334);
+  color: var(--black, #1f1f1f);
+}
+
+.btn-download-png:hover {
+  background-color: #8aa92a;
+  border-color: #8aa92a;
+}
+
+.btn-download:focus-visible {
+  outline: 3px solid var(--blue, #0077b6);
+  outline-offset: 3px;
+}
+
+.btn-download i {
+  font-size: 1.1rem;
+}
+
+.cert-actualizado {
+  font-size: 0.9rem;
+  color: var(--blue-dark, #005d8f);
+}
+
+.cert-actualizado i {
+  margin-right: 0.3rem;
+}
+
+.resultado .cert-a-preparar {
+  color: var(--gray-700, #374151);
+  font-size: 0.9rem;
+}
+
+.resultado .cert-indisponivel {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  background: #fff8e6;
+  border: 1px solid #f0d58a;
+  border-left: 4px solid #b7791f;
+  color: #7a5200;
+  font-size: 0.92rem;
+}
+
+.resultado .cert-indisponivel i {
+  color: #b7791f;
+  margin-right: 0.3rem;
+}
+
+.resultado .cert-indisponivel a {
+  color: var(--blue-dark, #005d8f);
+  font-weight: 600;
+}
+
+@media (min-width: 600px) {
+  .cert-downloads-botoes {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .btn-download {
+    flex: 0 1 240px;
+  }
+}
